@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Fitness Mini App</title>
+  <style>
+    /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: #f5f5f7;
+      color: #1c1c1e;
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .app-container {
+      max-width: 700px;
+      width: 100%;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ===== СЕКЦИИ (страницы) ===== */
+    .page {
+      display: none;
+      flex-direction: column;
+      gap: 24px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== КАРТОЧКИ ===== */
+    .apple-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px 20px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(2px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .apple-card:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 6px 16px rgba(0, 0, 0, 0.03);
+      transform: translateY(-2px);
+    }
+
+    .apple-card:active {
+      transform: scale(0.99);
+      transition-duration: 0.1s;
+    }
+
+    /* ===== ЗАГОЛОВКИ ===== */
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 17px;
+      font-weight: 400;
+      color: #6e6e73;
+      margin-top: 2px;
+    }
+
+    /* ===== КНОПКИ (APPLE‑СТИЛЬ) ===== */
+    .apple-button {
+      background: transparent;
+      border: 1px solid rgba(0, 122, 255, 0.2);
+      border-radius: 40px;
+      padding: 12px 24px;
+      font-size: 17px;
+      font-weight: 500;
+      color: #007aff;
+      background: rgba(0, 122, 255, 0.04);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      user-select: none;
+      width: fit-content;
+      min-width: 120px;
+    }
+
+    .apple-button:active {
+      background: rgba(0, 122, 255, 0.12);
+      transform: scale(0.96);
+    }
+
+    .apple-button-primary {
+      background: #007aff;
+      border: 1px solid #007aff;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+    }
+
+    .apple-button-primary:active {
+      background: #0066d9;
+      transform: scale(0.96);
+    }
+
+    .apple-button-danger {
+      border-color: rgba(255, 59, 48, 0.2);
+      color: #ff3b30;
+      background: rgba(255, 59, 48, 0.04);
+    }
+
+    .apple-button-danger:active {
+      background: rgba(255, 59, 48, 0.12);
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    /* ===== ПОЛЯ ВВОДА ===== */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1c1c1e;
+      letter-spacing: -0.01em;
+    }
+
+    .input-group input,
+    .input-group select {
+      font-size: 17px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid #d2d2d7;
+      background: #f8f8fa;
+      transition: border 0.2s ease;
+      font-family: inherit;
+      color: #1c1c1e;
+      width: 100%;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: #007aff;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+    }
+
+    .input-group input::placeholder {
+      color: #aeaeb2;
+    }
+
+    /* ===== СПИСКИ ===== */
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e5ea;
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-item .left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .list-item .left .title {
+      font-weight: 500;
+      font-size: 17px;
+    }
+
+    .list-item .left .sub {
+      font-size: 15px;
+      color: #6e6e73;
+    }
+
+    .list-item .right {
+      font-weight: 600;
+      font-size: 17px;
+      color: #1c1c1e;
+    }
+
+    .list-item .right .cal {
+      color: #007aff;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #8e8e93;
+      padding: 30px 0;
+      font-size: 17px;
+    }
+
+    /* ===== СТАТИСТИЧЕСКИЕ БЛОКИ ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-box {
+      background: #f8f8fa;
+      border-radius: 16px;
+      padding: 16px 14px;
+      text-align: center;
+    }
+
+    .stat-box .number {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1c1c1e;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-box .label {
+      font-size: 14px;
+      color: #6e6e73;
+      margin-top: 4px;
+    }
+
+    /* ===== ГЛАВНОЕ МЕНЮ ===== */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .menu-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px 16px;
+      text-align: center;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .menu-card:active {
+      transform: scale(0.96);
+    }
+
+    .menu-card .icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .menu-card .label {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1c1c1e;
+    }
+
+    .menu-card .desc {
+      font-size: 14px;
+      color: #6e6e73;
+      margin-top: 4px;
+    }
+
+    /* ===== КНОПКА НАЗАД ===== */
+    .back-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0 8px 0;
+    }
+
+    .back-button {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #007aff;
+      padding: 0;
+      line-height: 1;
+      transition: transform 0.1s ease;
+    }
+
+    .back-button:active {
+      transform: scale(0.9);
+    }
+
+    .back-label {
+      font-size: 17px;
+      font-weight: 500;
+      color: #007aff;
+      cursor: pointer;
+    }
+
+    /* ===== АДАПТИВНОСТЬ ===== */
+    @media (max-width: 500px) {
+      body {
+        padding: 12px;
+      }
+
+      .apple-card {
+        padding: 18px 16px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .menu-card {
+        padding: 18px 12px;
+      }
+
+      .menu-card .icon {
+        font-size: 32px;
+      }
+
+      .menu-card .label {
+        font-size: 16px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .stat-box .number {
+        font-size: 22px;
+      }
+
+      .apple-button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .input-group input,
+      .input-group select {
+        font-size: 16px;
+        padding: 12px 14px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .menu-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .menu-card {
+        padding: 14px 8px;
+      }
+
+      .menu-card .icon {
+        font-size: 28px;
+      }
+    }
+
+    /* ===== УТИЛИТЫ ===== */
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mb-8 { margin-bottom: 8px; }
+    .text-center { text-align: center; }
+    .text-secondary { color: #6e6e73; }
+    .text-accent { color: #007aff; }
+    .flex { display: flex; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .gap-8 { gap: 8px; }
+    .gap-16 { gap: 16px; }
+    .w-full { width: 100%; }
+
+    /* скрываем стрелки у number */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+
+  <!-- ==================== ГЛАВНОЕ МЕНЮ ==================== -->
+  <div id="main-menu" class="page active">
+    <div class="apple-card" style="background: transparent; box-shadow: none; border: none; padding: 0;">
+      <h1 class="page-title">🏋️ Фитнес</h1>
+      <p class="page-subtitle">Тренируйся, питайся, достигай</p>
+    </div>
+
+    <div class="menu-grid">
+      <div class="menu-card" data-page="training">
+        <div class="icon">🏃</div>
+        <div class="label">Тренировка</div>
+        <div class="desc">Добавить упражнение</div>
+      </div>
+      <div class="menu-card" data-page="statistics">
+        <div class="icon">📊</div>
+        <div class="label">Статистика</div>
+        <div class="desc">День / Неделя / Месяц</div>
+      </div>
+      <div class="menu-card" data-page="food">
+        <div class="icon">🍽️</div>
+        <div class="label">Дневник питания</div>
+        <div class="desc">Записать приём пищи</div>
+      </div>
+      <div class="menu-card" data-page="profile">
+        <div class="icon">👤</div>
+        <div class="label">Мой профиль</div>
+        <div class="desc">Вес, рост, цель</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; color: #8e8e93; font-size: 14px; text-align: center; border-top: 1px solid #e5e5ea; padding-top: 20px;">
+      Данные сохраняются локально
+    </div>
+  </div>
+
+  <!-- ==================== ТРЕНИРОВКИ ==================== -->
+  <div id="training" class="page">
+    <div class="back-row">
+      <button class="back-button" data-back>‹</button>
+      <span class="back-label" data-back>Назад</span>
+    </div>
+    <div class="apple-card">
+      <h2 class="page-title" style="font-size: 24px;">🏃 Добавить тренировку</h2>
+      <p class="page-subtitle" style="font-size: 15px;">Выбери упражнение и укажи длительность</p>
+
+      <div class="input-group">
+        <label for="exercise-select">Упражнение</label>
+        <select id="exercise-select">
+          <option value="Бег">Бег</option>
+          <option value="Пресс">Пресс</option>
+          <option value="Йога">Йога</option>
+          <option value="Своё">Своё (введите название)</option>
+        </select>
+      </div>
+
+      <div class="input-group" id="custom-exercise-group" style="display: none;">
+        <label for="custom-exercise">Название упражнения</label>
+        <input type="text" id="custom-exercise" placeholder="Например: Приседания">
+      </div>
+
+      <div class="input-group">
+        <label for="duration">Длительность (минуты)</label>
+        <input type="number" id="duration" min="1" value="10" step="1">
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px 0;">
+        <button class="apple-button apple-button-primary" data-duration-preset="5">5 мин</button>
+        <button class="apple-button apple-button-primary" data-duration-preset="10">10 мин</button>
+        <button class="apple-button apple-button-primary" data-duration-preset="20">20 мин</button>
+        <button class="apple-button apple-button-primary" data-duration-preset="30">30 мин</button>
+        <button class="apple-button apple-button-primary" data-duration-preset="45">45 мин</button>
+      </div>
+
+      <div class="flex-between">
+        <span style="font-weight: 500;">🔥 Сожжёте ≈ <span id="calories-preview">0</span> ккал</span>
+        <button class="apple-button apple-button-primary" id="save-training">Сохранить</button>
+      </div>
+    </div>
+
+    <div class="apple-card">
+      <div class="flex-between">
+        <h3 style="font-size: 18px;">📋 Сегодняшние тренировки</h3>
+        <span class="text-secondary" id="today-training-count">0</span>
+      </div>
+      <div id="today-training-list">
+        <div class="empty-state">Нет тренировок за сегодня</div>
+      </div>
+    </div>
+
+    <div class="apple-card">
+      <div class="flex-between">
+        <h3 style="font-size: 18px;">📅 Все тренировки</h3>
+        <span class="text-secondary" id="total-training-count">0</span>
+      </div>
+      <div id="all-training-list">
+        <div class="empty-state">Нет сохранённых тренировок</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== СТАТИСТИКА ==================== -->
+  <div id="statistics" class="page">
+    <div class="back-row">
+      <button class="back-button" data-back>‹</button>
+      <span class="back-label" data-back>Назад</span>
+    </div>
+
+    <div class="apple-card">
+      <h2 class="page-title" style="font-size: 24px;">📊 Моя статистика</h2>
+      <div style="display: flex; gap: 8px; margin: 12px 0 8px 0; flex-wrap: wrap;">
+        <button class="apple-button apple-button-primary" data-stat-period="day">День</button>
+        <button class="apple-button" data-stat-period="week">Неделя</button>
+        <button class="apple-button" data-stat-period="month">Месяц</button>
+      </div>
+    </div>
+
+    <div id="stat-content">
+      <!-- заполняется JS -->
+    </div>
+  </div>
+
+  <!-- ==================== ДНЕВНИК ПИТАНИЯ ==================== -->
+  <div id="food" class="page">
+    <div class="back-row">
+      <button class="back-button" data-back>‹</button>
+      <span class="back-label" data-back>Назад</span>
+    </div>
+
+    <div class="apple-card">
+      <h2 class="page-title" style="font-size: 24px;">🍽️ Дневник питания</h2>
+      <p class="page-subtitle" style="font-size: 15px;">Запиши приём пищи</p>
+
+      <div class="input-group">
+        <label for="meal-name">Что съели?</label>
+        <input type="text" id="meal-name" placeholder="Например: Овсянка">
+      </div>
+
+      <div class="input-group">
+        <label for="meal-weight">Сколько грамм?</label>
+        <input type="number" id="meal-weight" min="1" placeholder="200" step="1">
+      </div>
+
+      <div class="input-group">
+        <label for="meal-calories">Общая калорийность (ккал)</label>
+        <input type="number" id="meal-calories" min="0" placeholder="150" step="1">
+      </div>
+
+      <button class="apple-button apple-button-primary w-full" id="save-meal">➕ Записать</button>
+    </div>
+
+    <div class="apple-card">
+      <div class="flex-between">
+        <h3 style="font-size: 18px;">Сегодня</h3>
+        <span style="font-weight: 600;">Всего: <span id="today-food-total">0</span> ккал</span>
+      </div>
+      <div id="today-food-list">
+        <div class="empty-state">Нет записей за сегодня</div>
+      </div>
+    </div>
+
+    <div class="apple-card">
+      <h3 style="font-size: 18px;">Все записи</h3>
+      <div id="all-food-list">
+        <div class="empty-state">Нет записей</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ПРОФИЛЬ ==================== -->
+  <div id="profile" class="page">
+    <div class="back-row">
+      <button class="back-button" data-back>‹</button>
+      <span class="back-label" data-back>Назад</span>
+    </div>
+
+    <div class="apple-card">
+      <h2 class="page-title" style="font-size: 24px;">👤 Мой профиль</h2>
+      <p class="page-subtitle" style="font-size: 15px;">Вес, рост, цель</p>
+
+      <div class="input-group">
+        <label for="profile-weight">Вес (кг)</label>
+        <input type="number" id="profile-weight" min="1" step="0.1" placeholder="70">
+      </div>
+
+      <div class="input-group">
+        <label for="profile-height">Рост (см)</label>
+        <input type="number" id="profile-height" min="1" step="1" placeholder="175">
+      </div>
+
+      <div class="input-group">
+        <label for="profile-goal">Цель</label>
+        <select id="profile-goal">
+          <option value="Похудеть">Похудеть</option>
+          <option value="Поддерживать">Поддерживать</option>
+          <option value="Набрать массу">Набрать массу</option>
+        </select>
+      </div>
+
+      <button class="apple-button apple-button-primary w-full" id="save-profile">Сохранить профиль</button>
+    </div>
+
+    <div class="apple-card" id="profile-display">
+      <h3 style="font-size: 18px;">Текущие данные</h3>
+      <div id="profile-info" class="empty-state">Профиль не заполнен</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    'use strict';
+
+    // ===== УТИЛИТЫ =====
+    function getToday() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+    }
+
+    // ===== РАБОТА С LOCALSTORAGE =====
+    function loadData(key, defaultVal) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : defaultVal;
+      } catch {
+        return defaultVal;
+      }
+    }
+
+    function saveData(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+
+    // ===== ДАННЫЕ =====
+    let profile = loadData('fit_profile', { weight: '', height: '', goal: 'Поддерживать' });
+    let trainings = loadData('fit_trainings', []); // [{ date, exercise, duration, calories }]
+    let meals = loadData('fit_meals', []);       // [{ date, name, weight, totalCalories }]
+
+    // ===== КОЭФФИЦИЕНТЫ КАЛОРИЙ (ккал/мин) =====
+    const CAL_PER_MIN = {
+      'Бег': 10,
+      'Пресс': 5,
+      'Йога': 3,
+    };
+
+    // ===== НАВИГАЦИЯ =====
+    const pages = {
+      'main-menu': document.getElementById('main-menu'),
+      'training': document.getElementById('training'),
+      'statistics': document.getElementById('statistics'),
+      'food': document.getElementById('food'),
+      'profile': document.getElementById('profile'),
+    };
+
+    function showPage(pageId) {
+      Object.keys(pages).forEach(id => {
+        pages[id].classList.toggle('active', id === pageId);
+      });
+      // обновляем данные при показе
+      if (pageId === 'training') renderTraining();
+      if (pageId === 'statistics') renderStatistics('day');
+      if (pageId === 'food') renderFood();
+      if (pageId === 'profile') renderProfile();
+    }
+
+    // обработчики для меню
+    document.querySelectorAll('.menu-card[data-page]').forEach(el => {
+      el.addEventListener('click', function(e) {
+        const page = this.dataset.page;
+        if (page === 'training') showPage('training');
+        else if (page === 'statistics') showPage('statistics');
+        else if (page === 'food') showPage('food');
+        else if (page === 'profile') showPage('profile');
+      });
+    });
+
+    // кнопки "Назад"
+    document.querySelectorAll('[data-back]').forEach(el => {
+      el.addEventListener('click', function(e) {
+        showPage('main-menu');
+      });
+    });
+
+    // ===== ТРЕНИРОВКИ =====
+    const exerciseSelect = document.getElementById('exercise-select');
+    const customGroup = document.getElementById('custom-exercise-group');
+    const customInput = document.getElementById('custom-exercise');
+    const durationInput = document.getElementById('duration');
+    const caloriesPreview = document.getElementById('calories-preview');
+
+    function getExerciseName() {
+      if (exerciseSelect.value === 'Своё') {
+        return customInput.value.trim() || 'Своё';
+      }
+      return exerciseSelect.value;
+    }
+
+    function calcCalories(exercise, duration) {
+      const base = CAL_PER_MIN[exercise] || 6; // по умолчанию 6
+      return Math.round(base * duration);
+    }
+
+    function updateCaloriesPreview() {
+      const duration = parseInt(durationInput.value) || 0;
+      const exercise = getExerciseName();
+      const cal = calcCalories(exercise, duration);
+      caloriesPreview.textContent = cal;
+    }
+
+    exerciseSelect.addEventListener('change', function() {
+      customGroup.style.display = this.value === 'Своё' ? 'block' : 'none';
+      updateCaloriesPreview();
+    });
+
+    customInput.addEventListener('input', updateCaloriesPreview);
+    durationInput.addEventListener('input', updateCaloriesPreview);
+
+    // пресеты длительности
+    document.querySelectorAll('[data-duration-preset]').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        durationInput.value = this.dataset.durationPreset;
+        updateCaloriesPreview();
+      });
+    });
+
+    // сохранение тренировки
+    document.getElementById('save-training').addEventListener('click', function() {
+      const exercise = getExerciseName();
+      const duration = parseInt(durationInput.value);
+      if (!duration || duration < 1) {
+        alert('Укажите длительность (минимум 1 минута)');
+        return;
+      }
+      if (!exercise) {
+        alert('Введите название упражнения');
+        return;
+      }
+      const calories = calcCalories(exercise, duration);
+      const today = getToday();
+      trainings.push({
+        date: today,
+        exercise: exercise,
+        duration: duration,
+        calories: calories
+      });
+      saveData('fit_trainings', trainings);
+      renderTraining();
+      // очищаем поля (опционально)
+      durationInput.value = 10;
+      updateCaloriesPreview();
+      // сброс кастомного названия
+      customInput.value = '';
+    });
+
+    function renderTraining() {
+      const today = getToday();
+      const todayTrainings = trainings.filter(t => t.date === today);
+      const allTrainings = trainings.slice().sort((a, b) => a.date.localeCompare(b.date));
+
+      // сегодняшние
+      const todayList = document.getElementById('today-training-list');
+      const todayCount = document.getElementById('today-training-count');
+      todayCount.textContent = todayTrainings.length;
+      if (todayTrainings.length === 0) {
+        todayList.innerHTML = '<div class="empty-state">Нет тренировок за сегодня</div>';
+      } else {
+        todayList.innerHTML = todayTrainings.map(t => `
+          <div class="list-item">
+            <div class="left">
+              <span class="title">${t.exercise}</span>
+              <span class="sub">${t.duration} мин</span>
+            </div>
+            <div class="right">🔥 ${t.calories} ккал</div>
+          </div>
+        `).join('');
+      }
+
+      // все тренировки
+      const allList = document.getElementById('all-training-list');
+      const totalCount = document.getElementById('total-training-count');
+      totalCount.textContent = allTrainings.length;
+      if (allTrainings.length === 0) {
+        allList.innerHTML = '<div class="empty-state">Нет сохранённых тренировок</div>';
+      } else {
+        // покажем последние 10
+        const recent = allTrainings.slice(-10).reverse();
+        allList.innerHTML = recent.map(t => `
+          <div class="list-item">
+            <div class="left">
+              <span class="title">${t.exercise}</span>
+              <span class="sub">${formatDate(t.date)} · ${t.duration} мин</span>
+            </div>
+            <div class="right">🔥 ${t.calories} ккал</div>
+          </div>
+        `).join('');
+        if (allTrainings.length > 10) {
+          allList.innerHTML += `<div class="text-center text-secondary" style="padding: 8px 0;">... и ещё ${allTrainings.length - 10} записей</div>`;
+        }
+      }
+
+      // обновить превью калорий
+      updateCaloriesPreview();
+    }
+
+    // ===== ДНЕВНИК ПИТАНИЯ =====
+    document.getElementById('save-meal').addEventListener('click', function() {
+      const name = document.getElementById('meal-name').value.trim();
+      const weight = parseInt(document.getElementById('meal-weight').value);
+      const totalCal = parseInt(document.getElementById('meal-calories').value);
+
+      if (!name) { alert('Введите название блюда'); return; }
+      if (!weight || weight < 1) { alert('Введите вес в граммах'); return; }
+      if (isNaN(totalCal) || totalCal < 0) { alert('Введите калорийность'); return; }
+
+      const today = getToday();
+      meals.push({
+        date: today,
+        name: name,
+        weight: weight,
+        totalCalories: totalCal
+      });
+      saveData('fit_meals', meals);
+      renderFood();
+      // очистка
+      document.getElementById('meal-name').value = '';
+      document.getElementById('meal-weight').value = '';
+      document.getElementById('meal-calories').value = '';
+    });
+
+    function renderFood() {
+      const today = getToday();
+      const todayMeals = meals.filter(m => m.date === today);
+      const allMeals = meals.slice().sort((a, b) => a.date.localeCompare(b.date));
+
+      const todayList = document.getElementById('today-food-list');
+      const todayTotal = document.getElementById('today-food-total');
+      const sumToday = todayMeals.reduce((acc, m) => acc + m.totalCalories, 0);
+      todayTotal.textContent = sumToday;
+
+      if (todayMeals.length === 0) {
+        todayList.innerHTML = '<div class="empty-state">Нет записей за сегодня</div>';
+      } else {
+        todayList.innerHTML = todayMeals.map(m => `
+          <div class="list-item">
+            <div class="left">
+              <span class="title">${m.name}</span>
+              <span class="sub">${m.weight} г</span>
+            </div>
+            <div class="right">${m.totalCalories} ккал</div>
+          </div>
+        `).join('');
+      }
+
+      const allList = document.getElementById('all-food-list');
+      if (allMeals.length === 0) {
+        allList.innerHTML = '<div class="empty-state">Нет записей</div>';
+      } else {
+        const recent = allMeals.slice(-10).reverse();
+        allList.innerHTML = recent.map(m => `
+          <div class="list-item">
+            <div class="left">
+              <span class="title">${m.name}</span>
+              <span class="sub">${formatDate(m.date)} · ${m.weight} г</span>
+            </div>
+            <div class="right">${m.totalCalories} ккал</div>
+          </div>
+        `).join('');
+        if (allMeals.length > 10) {
+          allList.innerHTML += `<div class="text-center text-secondary" style="padding: 8px 0;">... и ещё ${allMeals.length - 10} записей</div>`;
+        }
+      }
+    }
+
+    // ===== СТАТИСТИКА =====
+    let statPeriod = 'day';
+
+    document.querySelectorAll('[data-stat-period]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // обновляем активную кнопку
+        document.querySelectorAll('[data-stat-period]').forEach(b => b.classList.remove('apple-button-primary'));
+        this.classList.add('apple-button-primary');
+        statPeriod = this.dataset.statPeriod;
+        renderStatistics(statPeriod);
+      });
+    });
+
+    function renderStatistics(period) {
+      const container = document.getElementById('stat-content');
+      const today = new Date();
+      let startDate = new Date(today);
+
+      if (period === 'day') {
+        // сегодня
+        startDate = new Date(today);
+        startDate.setHours(0, 0, 0, 0);
+      } else if (period === 'week') {
+        // последние 7 дней
+        startDate = new Date(today);
+        startDate.setDate(today.getDate() - 6);
+        startDate.setHours(0, 0, 0, 0);
+      } else if (period === 'month') {
+        // последние 30 дней
+        startDate = new Date(today);
+        startDate.setDate(today.getDate() - 29);
+        startDate.setHours(0, 0, 0, 0);
+      }
+
+      const startStr = startDate.toISOString().slice(0, 10);
+      const todayStr = today.toISOString().slice(0, 10);
+
+      // фильтруем тренировки
+      const filteredTrainings = trainings.filter(t => t.date >= startStr && t.date <= todayStr);
+      const trainingCount = filteredTrainings.length;
+      const totalCalBurned = filteredTrainings.reduce((acc, t) => acc + t.calories, 0);
+
+      // фильтруем приёмы пищи
+      const filteredMeals = meals.filter(m => m.date >= startStr && m.date <= todayStr);
+      const totalCalEaten = filteredMeals.reduce((acc, m) => acc + m.totalCalories, 0);
+
+      const balance = totalCalBurned - totalCalEaten;
+
+      container.innerHTML = `
+        <div class="apple-card">
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="number">${trainingCount}</div>
+              <div class="label">Тренировок</div>
+            </div>
+            <div class="stat-box">
+              <div class="number">${totalCalBurned}</div>
+              <div class="label">🔥 Сожжено (ккал)</div>
+            </div>
+            <div class="stat-box">
+              <div class="number">${totalCalEaten}</div>
+              <div class="label">🍽️ Потреблено (ккал)</div>
+            </div>
+            <div class="stat-box" style="background: ${balance >= 0 ? '#e8f5e9' : '#ffebee'}">
+              <div class="number" style="color: ${balance >= 0 ? '#2e7d32' : '#c62828'}">${balance}</div>
+              <div class="label">⚖️ Баланс</div>
+            </div>
+          </div>
+          <div style="margin-top: 12px; text-align: center; font-size: 15px; color: #6e6e73;">
+            Период: ${period === 'day' ? 'Сегодня' : period === 'week' ? 'Неделя' : 'Месяц'}
+          </div>
+        </div>
+      `;
+    }
+
+    // ===== ПРОФИЛЬ =====
+    function renderProfile() {
+      const info = document.getElementById('profile-info');
+      if (profile.weight && profile.height) {
+        info.innerHTML = `
+          <div class="list-item"><span>Вес</span> <span>${profile.weight} кг</span></div>
+          <div class="list-item"><span>Рост</span> <span>${profile.height} см</span></div>
+          <div class="list-item"><span>Цель</span> <span>${profile.goal}</span></div>
+        `;
+      } else {
+        info.innerHTML = '<div class="empty-state">Профиль не заполнен</div>';
+      }
+      // заполняем поля
+      document.getElementById('profile-weight').value = profile.weight || '';
+      document.getElementById('profile-height').value = profile.height || '';
+      document.getElementById('profile-goal').value = profile.goal || 'Поддерживать';
+    }
+
+    document.getElementById('save-profile').addEventListener('click', function() {
+      const weight = parseFloat(document.getElementById('profile-weight').value);
+      const height = parseFloat(document.getElementById('profile-height').value);
+      const goal = document.getElementById('profile-goal').value;
+
+      if (!weight || weight < 1) { alert('Введите корректный вес'); return; }
+      if (!height || height < 1) { alert('Введите корректный рост'); return; }
+
+      profile = { weight, height, goal };
+      saveData('fit_profile', profile);
+      renderProfile();
+      alert('Профиль сохранён!');
+    });
+
+    // ===== ИНИЦИАЛИЗАЦИЯ =====
+    // показываем главное меню
+    showPage('main-menu');
+
+    // также обновляем данные, если вдруг страницы откроются
+    // но они обновятся при переходе
+
+    // дополнительно: обновляем профиль при загрузке
+    renderProfile();
+
+    // автообновление превью калорий
+    updateCaloriesPreview();
+
+    // ===== ДОПОЛНИТЕЛЬНО: если страница статистики, то по умолчанию день =====
+    // кнопка "День" активна
+    document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
+
+  })();
+</script>
+</body>
+</html>
