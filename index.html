@@ -331,11 +331,11 @@
     .search-result-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
+      justify-content: space-between;
+      padding: 10px 14px;
       background: #f8f8fa;
       border-radius: 12px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       cursor: pointer;
       transition: background 0.15s ease;
       border: 1px solid transparent;
@@ -350,36 +350,15 @@
       transform: scale(0.98);
     }
 
-    .search-result-item .info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .search-result-item .info .name {
+    .search-result-item .name {
       font-weight: 500;
       font-size: 16px;
     }
 
-    .search-result-item .info .detail {
-      font-size: 14px;
-      color: #6e6e73;
-    }
-
-    .search-result-item img {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      object-fit: cover;
-      background: #e5e5ea;
-    }
-
-    .search-result-item .badge-cal {
+    .search-result-item .cal {
       font-weight: 600;
-      font-size: 16px;
+      font-size: 15px;
       color: #007aff;
-      white-space: nowrap;
     }
 
     /* ===== АДАПТИВНОСТЬ ===== */
@@ -435,10 +414,6 @@
       .input-group select {
         font-size: 16px;
         padding: 12px 14px;
-      }
-
-      .search-result-item {
-        padding: 8px 10px;
       }
     }
 
@@ -604,7 +579,7 @@
     </div>
   </div>
 
-  <!-- ==================== ДНЕВНИК ПИТАНИЯ (С ПОИСКОМ) ==================== -->
+  <!-- ==================== ДНЕВНИК ПИТАНИЯ (ЛОКАЛЬНАЯ БАЗА) ==================== -->
   <div id="food" class="page">
     <div class="back-row">
       <button class="back-button" data-back>‹</button>
@@ -613,11 +588,11 @@
 
     <div class="apple-card">
       <h2 class="page-title" style="font-size: 24px;">🍽️ Дневник питания</h2>
-      <p class="page-subtitle" style="font-size: 15px;">Найди продукт и добавь приём пищи</p>
+      <p class="page-subtitle" style="font-size: 15px;">🔍 Введи название продукта — калории подставятся сами</p>
 
       <div class="input-group">
-        <label for="meal-search">🔍 Поиск продукта</label>
-        <input type="text" id="meal-search" placeholder="Начните вводить, например, гречка" />
+        <label for="meal-search">Продукт</label>
+        <input type="text" id="meal-search" placeholder="Например: гречка, курица, яблоко" autocomplete="off" />
         <div id="search-results" style="margin-top: 6px;"></div>
       </div>
 
@@ -697,6 +672,167 @@
   (function() {
     'use strict';
 
+    // ===== БАЗА ПРОДУКТОВ (калорий на 100 г) =====
+    const FOOD_DB = {
+      // Крупы и гарниры
+      'гречка': 130,
+      'гречневая': 130,
+      'рис': 116,
+      'рис варёный': 116,
+      'овсянка': 88,
+      'овсяная': 88,
+      'пшено': 90,
+      'манка': 80,
+      'булгур': 83,
+      'киноа': 120,
+      'макароны': 131,
+      'макароны варёные': 131,
+      'спагетти': 131,
+      'картофель': 77,
+      'картошка': 77,
+      'пюре': 85,
+      'картофельное пюре': 85,
+
+      // Мясо и птица
+      'курица': 165,
+      'куриная грудка': 165,
+      'куриное филе': 165,
+      'индейка': 135,
+      'говядина': 187,
+      'свинина': 242,
+      'баранина': 209,
+      'кролик': 156,
+
+      // Рыба и морепродукты
+      'лосось': 208,
+      'семга': 208,
+      'форель': 148,
+      'тунец': 144,
+      'треска': 78,
+      'минтай': 72,
+      'креветки': 99,
+      'кальмар': 92,
+
+      // Яйца и молочка
+      'яйцо': 155,
+      'яйца': 155,
+      'молоко': 42,
+      'кефир': 41,
+      'творог': 121,
+      'творог обезжиренный': 71,
+      'сметана': 206,
+      'йогурт': 60,
+      'сыр': 350,
+      'пармезан': 431,
+
+      // Овощи
+      'огурец': 15,
+      'огурцы': 15,
+      'помидор': 20,
+      'томат': 20,
+      'капуста': 25,
+      'капуста белокочанная': 25,
+      'брокколи': 34,
+      'цветная капуста': 25,
+      'морковь': 32,
+      'свекла': 40,
+      'лук': 41,
+      'чеснок': 149,
+      'перец болгарский': 26,
+      'кабачок': 24,
+      'баклажан': 24,
+
+      // Фрукты и ягоды
+      'яблоко': 52,
+      'банан': 89,
+      'апельсин': 47,
+      'груша': 57,
+      'виноград': 69,
+      'арбуз': 30,
+      'дыня': 34,
+      'клубника': 32,
+      'малина': 52,
+      'черника': 44,
+      'голубика': 44,
+      'персик': 39,
+      'киви': 61,
+      'лимон': 34,
+      'грейпфрут': 42,
+
+      // Орехи и сухофрукты
+      'грецкий орех': 654,
+      'миндаль': 579,
+      'фундук': 628,
+      'кешью': 553,
+      'арахис': 567,
+      'фисташки': 556,
+      'изюм': 299,
+      'курага': 241,
+      'финики': 282,
+      'чернослив': 240,
+
+      // Хлеб и выпечка
+      'хлеб': 265,
+      'хлеб белый': 265,
+      'хлеб ржаной': 210,
+      'бородинский': 210,
+      'батон': 264,
+      'лаваш': 275,
+      'сухари': 335,
+
+      // Соусы и масла
+      'масло сливочное': 748,
+      'масло растительное': 884,
+      'оливковое масло': 884,
+      'подсолнечное масло': 884,
+      'майонез': 624,
+      'кетчуп': 101,
+      'мед': 304,
+      'джем': 250,
+      'варенье': 250,
+
+      // Напитки
+      'чай': 1,
+      'кофе': 2,
+      'сок яблочный': 46,
+      'сок апельсиновый': 45,
+      'сок томатный': 17,
+      'кола': 42,
+      'лимонад': 40,
+
+      // Готовые блюда и прочее
+      'суп': 40,
+      'борщ': 45,
+      'щи': 35,
+      'каша': 90,
+      'омлет': 154,
+      'блины': 189,
+      'пельмени': 220,
+      'вареники': 200,
+      'котлета': 260,
+      'шницель': 250,
+      'стейк': 270,
+      'шашлык': 250,
+      'пицца': 266,
+      'бургер': 295,
+      'картошка фри': 312,
+      'салат': 50,
+      'винегрет': 80,
+      'оливье': 95,
+      'сельдь под шубой': 120,
+      'торт': 350,
+      'пирожное': 300,
+      'шоколад': 546,
+      'шоколад молочный': 546,
+      'шоколад темный': 540,
+      'конфеты': 450,
+      'мороженое': 207,
+      'йогурт фруктовый': 90,
+      'творожная масса': 150,
+      'сырники': 220,
+      'запеканка': 150,
+    };
+
     // ===== УТИЛИТЫ =====
     function getToday() {
       return new Date().toISOString().slice(0, 10);
@@ -712,6 +848,10 @@
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
+    }
+
+    function normalizeText(text) {
+      return text.toLowerCase().trim().replace(/ё/g, 'е');
     }
 
     // ===== РАБОТА С LOCALSTORAGE =====
@@ -887,98 +1027,78 @@
       updateCaloriesPreview();
     }
 
-    // ===== ДНЕВНИК ПИТАНИЯ С ПОИСКОМ =====
+    // ===== ДНЕВНИК ПИТАНИЯ (ЛОКАЛЬНАЯ БАЗА) =====
     const searchInput = document.getElementById('meal-search');
     const resultsContainer = document.getElementById('search-results');
     const mealWeightInput = document.getElementById('meal-weight');
     const mealCaloriesInput = document.getElementById('meal-calories');
+    let selectedProduct = null;
     let searchTimeout;
 
-    // Очистка результата при потере фокуса (задержка, чтобы клик по результату сработал)
-    let blurTimeout;
+    function searchInDB(query) {
+      const normalized = normalizeText(query);
+      const results = [];
+
+      // Ищем точные совпадения
+      for (const [key, cal] of Object.entries(FOOD_DB)) {
+        if (normalized.includes(key) || key.includes(normalized)) {
+          results.push({ name: key, cal: cal, score: key.length });
+        }
+      }
+
+      // Сортируем по длине ключа (чем короче — тем точнее)
+      results.sort((a, b) => a.score - b.score);
+      return results.slice(0, 6);
+    }
 
     searchInput.addEventListener('input', function() {
       clearTimeout(searchTimeout);
-      clearTimeout(blurTimeout);
       const query = this.value.trim();
-      if (query.length < 2) {
+      if (query.length < 1) {
         resultsContainer.innerHTML = '';
+        selectedProduct = null;
         return;
       }
-      searchTimeout = setTimeout(() => searchProducts(query), 400);
-    });
 
-    // Если пользователь убрал фокус, скрываем результаты через паузу
-    searchInput.addEventListener('blur', function() {
-      blurTimeout = setTimeout(() => {
-        // Не скрываем, если есть выбранный продукт (проверим через флаг)
-        if (!selectedProduct) {
-          resultsContainer.innerHTML = '';
-        }
-      }, 300);
-    });
-
-    searchInput.addEventListener('focus', function() {
-      clearTimeout(blurTimeout);
-    });
-
-    let selectedProduct = null;
-
-    async function searchProducts(query) {
-      try {
-        const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=5`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (!data.products || data.products.length === 0) {
-          resultsContainer.innerHTML = '<div style="padding: 10px 0; color: #6e6e73; font-size: 15px;">Ничего не найдено</div>';
+      searchTimeout = setTimeout(() => {
+        const results = searchInDB(query);
+        if (results.length === 0) {
+          resultsContainer.innerHTML = `
+            <div style="padding: 10px 0; color: #6e6e73; font-size: 15px;">
+              🤷 Не найдено. Введите калории вручную.
+            </div>
+          `;
           return;
         }
 
         let html = '';
-        data.products.forEach(product => {
-          const name = product.product_name || product.generic_name || 'Без названия';
-          const calories = product.nutriments?.['energy-kcal_100g'] || product.nutriments?.energy_value || 0;
-          const protein = product.nutriments?.proteins_100g || 0;
-          const fat = product.nutriments?.fat_100g || 0;
-          const carbs = product.nutriments?.carbohydrates_100g || 0;
-          const img = product.image_front_small_url || '';
-
+        results.forEach(item => {
           html += `
-            <div class="search-result-item" data-name="${escapeHtml(name)}" data-cal="${calories}" data-protein="${protein}" data-fat="${fat}" data-carbs="${carbs}">
-              <div class="info">
-                <span class="name">${escapeHtml(name)}</span>
-                <span class="detail">Б:${protein}г · Ж:${fat}г · У:${carbs}г</span>
-              </div>
-              ${img ? `<img src="${img}" alt="" loading="lazy" />` : ''}
-              <span class="badge-cal">${calories} ккал</span>
+            <div class="search-result-item" data-name="${escapeHtml(item.name)}" data-cal="${item.cal}">
+              <span class="name">${escapeHtml(item.name)}</span>
+              <span class="cal">${item.cal} ккал / 100г</span>
             </div>
           `;
         });
 
         resultsContainer.innerHTML = html;
 
-        document.querySelectorAll('.search-result-item').forEach(item => {
-          item.addEventListener('click', function() {
+        document.querySelectorAll('.search-result-item').forEach(el => {
+          el.addEventListener('click', function() {
             const name = this.dataset.name;
             const cal = parseFloat(this.dataset.cal) || 0;
             searchInput.value = name;
             mealCaloriesInput.value = cal;
             selectedProduct = { name, cal };
             resultsContainer.innerHTML = '';
-            // маленькая анимация/подтверждение
             searchInput.style.borderColor = '#34c759';
             setTimeout(() => {
               searchInput.style.borderColor = '';
             }, 800);
           });
         });
-
-      } catch (error) {
-        console.error('API error:', error);
-        resultsContainer.innerHTML = '<div style="padding: 10px 0; color: #ff3b30; font-size: 15px;">⚠️ Ошибка загрузки, попробуйте позже</div>';
-      }
-    }
+      }, 300);
+    });
 
     // Сохранение приёма пищи
     document.getElementById('save-meal').addEventListener('click', function() {
@@ -986,15 +1106,15 @@
       const weight = parseInt(mealWeightInput.value);
       let totalCal = parseInt(mealCaloriesInput.value);
 
-      if (!name) { alert('Введите название блюда или выберите из поиска'); return; }
+      if (!name) { alert('Введите название блюда'); return; }
       if (!weight || weight < 1) { alert('Введите вес в граммах'); return; }
+
       if (isNaN(totalCal) || totalCal < 0) {
-        // Если калории не введены, но есть выбранный продукт — используем его
         if (selectedProduct && selectedProduct.cal > 0) {
           totalCal = Math.round((weight / 100) * selectedProduct.cal);
           mealCaloriesInput.value = totalCal;
         } else {
-          alert('Введите калорийность или выберите продукт из поиска');
+          alert('Введите калорийность вручную');
           return;
         }
       }
@@ -1008,7 +1128,7 @@
       });
       saveData('fit_meals', meals);
       renderFood();
-      // Очистка
+
       searchInput.value = '';
       mealWeightInput.value = '';
       mealCaloriesInput.value = '';
@@ -1016,7 +1136,6 @@
       resultsContainer.innerHTML = '';
     });
 
-    // Пересчёт калорий при изменении веса (если выбран продукт)
     mealWeightInput.addEventListener('input', function() {
       const weight = parseInt(this.value) || 0;
       if (selectedProduct && selectedProduct.cal > 0 && weight > 0) {
