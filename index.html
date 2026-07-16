@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>Fitness Mini App</title>
   <style>
     /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
@@ -10,19 +10,23 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
       background: #f5f5f7;
       color: #1c1c1e;
-      padding: 16px;
+      padding: 12px 12px 40px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+      touch-action: manipulation;
     }
 
     .app-container {
@@ -31,73 +35,84 @@
       background: transparent;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
     }
 
-    /* ===== СЕКЦИИ (страницы) ===== */
+    /* ===== АНИМАЦИЯ СТРАНИЦ (для телефона — быстрее) ===== */
     .page {
       display: none;
       flex-direction: column;
-      gap: 24px;
-      animation: fadeIn 0.2s ease;
+      gap: 20px;
+      animation: pageFadeInMobile 0.28s cubic-bezier(0.2, 0.8, 0.35, 1) forwards;
+      will-change: transform, opacity;
     }
 
     .page.active {
       display: flex;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes pageFadeInMobile {
+      0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.97);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
-    /* ===== КАРТОЧКИ ===== */
+    /* ===== АНИМАЦИЯ КАРТОЧЕК (быстрое появление) ===== */
     .apple-card {
       background: #ffffff;
       border-radius: 20px;
-      padding: 24px 20px;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+      padding: 20px 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(2px);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.35, 1),
+                  box-shadow 0.25s ease;
+      animation: cardAppearMobile 0.3s ease forwards;
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+      will-change: transform, opacity;
     }
 
-    .apple-card:hover {
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 6px 16px rgba(0, 0, 0, 0.03);
-      transform: translateY(-2px);
+    .apple-card:nth-child(1) { animation-delay: 0.03s; }
+    .apple-card:nth-child(2) { animation-delay: 0.06s; }
+    .apple-card:nth-child(3) { animation-delay: 0.09s; }
+    .apple-card:nth-child(4) { animation-delay: 0.12s; }
+    .apple-card:nth-child(5) { animation-delay: 0.15s; }
+
+    @keyframes cardAppearMobile {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .apple-card:active {
-      transform: scale(0.99);
-      transition-duration: 0.1s;
+      transform: scale(0.985);
+      transition-duration: 0.06s;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
     }
 
-    /* ===== ЗАГОЛОВКИ ===== */
-    .page-title {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
-    }
-
-    .page-subtitle {
-      font-size: 17px;
-      font-weight: 400;
-      color: #6e6e73;
-      margin-top: 2px;
-    }
-
-    /* ===== КНОПКИ (APPLE‑СТИЛЬ) ===== */
+    /* ===== КНОПКИ (мобильный тактильный отклик) ===== */
     .apple-button {
       background: transparent;
       border: 1px solid rgba(0, 122, 255, 0.2);
       border-radius: 40px;
-      padding: 12px 24px;
+      padding: 13px 22px;
       font-size: 17px;
       font-weight: 500;
       color: #007aff;
       background: rgba(0, 122, 255, 0.04);
-      transition: all 0.2s ease;
+      transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.35, 1),
+                  background 0.15s ease,
+                  box-shadow 0.2s ease;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -105,24 +120,53 @@
       gap: 8px;
       user-select: none;
       width: fit-content;
-      min-width: 120px;
+      min-width: 110px;
+      position: relative;
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+      will-change: transform;
+    }
+
+    /* Эффект пульсации при нажатии (только для телефона — лёгкий) */
+    .apple-button::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 40px;
+      background: rgba(0, 122, 255, 0.08);
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .apple-button:active::after {
+      transform: scale(1);
+      opacity: 1;
+      transition-duration: 0.05s;
     }
 
     .apple-button:active {
+      transform: scale(0.94);
+      transition-duration: 0.04s;
       background: rgba(0, 122, 255, 0.12);
-      transform: scale(0.96);
     }
 
     .apple-button-primary {
       background: #007aff;
       border: 1px solid #007aff;
       color: #fff;
-      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+      box-shadow: 0 2px 12px rgba(0, 122, 255, 0.2);
+    }
+
+    .apple-button-primary::after {
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .apple-button-primary:active {
       background: #0066d9;
-      transform: scale(0.96);
+      transform: scale(0.94);
+      box-shadow: 0 1px 6px rgba(0, 122, 255, 0.15);
     }
 
     .apple-button-danger {
@@ -138,16 +182,16 @@
     .button-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 8px;
+      gap: 10px;
+      margin-top: 6px;
     }
 
-    /* ===== ПОЛЯ ВВОДА ===== */
+    /* ===== ПОЛЯ ВВОДА (мобильный фокус) ===== */
     .input-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-bottom: 16px;
+      gap: 5px;
+      margin-bottom: 14px;
     }
 
     .input-group label {
@@ -164,37 +208,89 @@
       border-radius: 14px;
       border: 1px solid #d2d2d7;
       background: #f8f8fa;
-      transition: border 0.2s ease;
+      transition: border 0.2s ease,
+                  box-shadow 0.2s ease,
+                  transform 0.1s ease;
       font-family: inherit;
       color: #1c1c1e;
       width: 100%;
       outline: none;
       -webkit-appearance: none;
       appearance: none;
+      touch-action: manipulation;
     }
 
     .input-group input:focus,
     .input-group select:focus {
       border-color: #007aff;
       background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.08);
+      transform: scale(1.005);
+    }
+
+    .input-group input:active {
+      transform: scale(0.99);
     }
 
     .input-group input::placeholder {
       color: #aeaeb2;
     }
 
-    /* ===== СПИСКИ ===== */
+    /* Зелёная вспышка при выборе продукта */
+    .input-group input.flash-green {
+      border-color: #34c759 !important;
+      box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.12) !important;
+      animation: flashGreenMobile 0.5s ease;
+    }
+
+    @keyframes flashGreenMobile {
+      0% { border-color: #34c759; box-shadow: 0 0 0 6px rgba(52, 199, 89, 0.2); }
+      50% { border-color: #34c759; box-shadow: 0 0 0 2px rgba(52, 199, 89, 0.05); }
+      100% { border-color: #34c759; box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.12); }
+    }
+
+    /* ===== СПИСКИ (мобильная анимация) ===== */
     .list-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 12px 0;
       border-bottom: 1px solid #e5e5ea;
+      animation: listItemAppearMobile 0.25s ease forwards;
+      opacity: 0;
+      transform: translateX(-6px);
+      touch-action: manipulation;
+    }
+
+    .list-item:nth-child(1) { animation-delay: 0.03s; }
+    .list-item:nth-child(2) { animation-delay: 0.06s; }
+    .list-item:nth-child(3) { animation-delay: 0.09s; }
+    .list-item:nth-child(4) { animation-delay: 0.12s; }
+    .list-item:nth-child(5) { animation-delay: 0.15s; }
+    .list-item:nth-child(6) { animation-delay: 0.18s; }
+    .list-item:nth-child(7) { animation-delay: 0.21s; }
+    .list-item:nth-child(8) { animation-delay: 0.24s; }
+    .list-item:nth-child(9) { animation-delay: 0.27s; }
+    .list-item:nth-child(10) { animation-delay: 0.30s; }
+
+    @keyframes listItemAppearMobile {
+      0% {
+        opacity: 0;
+        transform: translateX(-6px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .list-item:last-child {
       border-bottom: none;
+    }
+
+    .list-item:active {
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 8px;
     }
 
     .list-item .left {
@@ -209,7 +305,7 @@
     }
 
     .list-item .left .sub {
-      font-size: 15px;
+      font-size: 14px;
       color: #6e6e73;
     }
 
@@ -226,83 +322,154 @@
     .empty-state {
       text-align: center;
       color: #8e8e93;
-      padding: 30px 0;
-      font-size: 17px;
+      padding: 28px 0;
+      font-size: 16px;
+      animation: fadeInMobile 0.3s ease;
+    }
+
+    @keyframes fadeInMobile {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
     }
 
     /* ===== СТАТИСТИЧЕСКИЕ БЛОКИ ===== */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 12px;
     }
 
     .stat-box {
       background: #f8f8fa;
       border-radius: 16px;
-      padding: 16px 14px;
+      padding: 14px 12px;
       text-align: center;
+      transition: transform 0.15s ease;
+      animation: statAppearMobile 0.35s ease forwards;
+      opacity: 0;
+      transform: scale(0.94);
+      touch-action: manipulation;
+    }
+
+    .stat-box:nth-child(1) { animation-delay: 0.04s; }
+    .stat-box:nth-child(2) { animation-delay: 0.08s; }
+    .stat-box:nth-child(3) { animation-delay: 0.12s; }
+    .stat-box:nth-child(4) { animation-delay: 0.16s; }
+
+    @keyframes statAppearMobile {
+      0% {
+        opacity: 0;
+        transform: scale(0.94);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .stat-box:active {
+      transform: scale(0.96);
+      transition-duration: 0.04s;
     }
 
     .stat-box .number {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
       color: #1c1c1e;
       letter-spacing: -0.02em;
+      transition: transform 0.2s ease;
+    }
+
+    .stat-box .number:active {
+      transform: scale(1.05);
     }
 
     .stat-box .label {
-      font-size: 14px;
+      font-size: 13px;
       color: #6e6e73;
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
     /* ===== ГЛАВНОЕ МЕНЮ ===== */
     .menu-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 8px;
+      gap: 14px;
+      margin-top: 6px;
     }
 
     .menu-card {
       background: #ffffff;
       border-radius: 20px;
-      padding: 24px 16px;
+      padding: 20px 12px;
       text-align: center;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.35, 1),
+                  box-shadow 0.2s ease,
+                  background 0.15s ease;
       cursor: pointer;
       border: 1px solid rgba(255, 255, 255, 0.3);
+      animation: menuCardAppearMobile 0.28s ease forwards;
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+      will-change: transform;
+    }
+
+    .menu-card:nth-child(1) { animation-delay: 0.04s; }
+    .menu-card:nth-child(2) { animation-delay: 0.08s; }
+    .menu-card:nth-child(3) { animation-delay: 0.12s; }
+    .menu-card:nth-child(4) { animation-delay: 0.16s; }
+
+    @keyframes menuCardAppearMobile {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .menu-card:active {
-      transform: scale(0.96);
+      transform: scale(0.95);
+      transition-duration: 0.05s;
+      background: #f8f8fa;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     }
 
     .menu-card .icon {
-      font-size: 40px;
-      margin-bottom: 12px;
+      font-size: 36px;
+      margin-bottom: 10px;
+      transition: transform 0.2s ease;
+      display: block;
+    }
+
+    .menu-card:active .icon {
+      transform: scale(0.9);
     }
 
     .menu-card .label {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 600;
       color: #1c1c1e;
     }
 
     .menu-card .desc {
-      font-size: 14px;
+      font-size: 13px;
       color: #6e6e73;
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
     /* ===== КНОПКА НАЗАД ===== */
     .back-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 0 8px 0;
+      gap: 6px;
+      padding: 2px 0 6px 0;
+      animation: fadeInMobile 0.25s ease;
     }
 
     .back-button {
@@ -311,13 +478,15 @@
       font-size: 28px;
       cursor: pointer;
       color: #007aff;
-      padding: 0;
+      padding: 4px 4px 4px 0;
       line-height: 1;
-      transition: transform 0.1s ease;
+      transition: transform 0.12s ease, color 0.15s ease;
+      touch-action: manipulation;
     }
 
     .back-button:active {
-      transform: scale(0.9);
+      transform: scale(0.85) translateX(-4px);
+      color: #0055cc;
     }
 
     .back-label {
@@ -325,6 +494,13 @@
       font-weight: 500;
       color: #007aff;
       cursor: pointer;
+      transition: transform 0.12s ease, color 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .back-label:active {
+      transform: scale(0.95);
+      color: #0055cc;
     }
 
     /* ===== РЕЗУЛЬТАТЫ ПОИСКА ===== */
@@ -335,19 +511,28 @@
       padding: 10px 14px;
       background: #f8f8fa;
       border-radius: 12px;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       cursor: pointer;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease,
+                  transform 0.1s ease;
       border: 1px solid transparent;
+      animation: listItemAppearMobile 0.2s ease forwards;
+      opacity: 0;
+      transform: translateX(-4px);
+      touch-action: manipulation;
     }
 
-    .search-result-item:hover {
-      background: #e8ecf0;
-    }
+    .search-result-item:nth-child(1) { animation-delay: 0.02s; }
+    .search-result-item:nth-child(2) { animation-delay: 0.05s; }
+    .search-result-item:nth-child(3) { animation-delay: 0.08s; }
+    .search-result-item:nth-child(4) { animation-delay: 0.11s; }
+    .search-result-item:nth-child(5) { animation-delay: 0.14s; }
+    .search-result-item:nth-child(6) { animation-delay: 0.17s; }
 
     .search-result-item:active {
       background: #d2d2d7;
-      transform: scale(0.98);
+      transform: scale(0.97);
+      transition-duration: 0.04s;
     }
 
     .search-result-item .name {
@@ -364,71 +549,150 @@
     /* ===== АДАПТИВНОСТЬ ===== */
     @media (max-width: 500px) {
       body {
-        padding: 12px;
+        padding: 10px 10px 30px;
       }
 
       .apple-card {
-        padding: 18px 16px;
+        padding: 16px 14px;
+        border-radius: 18px;
       }
 
       .page-title {
-        font-size: 24px;
+        font-size: 22px;
       }
 
       .menu-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        gap: 10px;
       }
 
       .menu-card {
-        padding: 18px 12px;
+        padding: 16px 10px;
+        border-radius: 18px;
       }
 
       .menu-card .icon {
-        font-size: 32px;
+        font-size: 30px;
       }
 
       .menu-card .label {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .stats-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        gap: 10px;
       }
 
       .stat-box .number {
-        font-size: 22px;
+        font-size: 20px;
       }
 
       .apple-button {
         width: 100%;
         justify-content: center;
+        padding: 12px 18px;
+        font-size: 16px;
+        min-width: unset;
       }
 
       .button-group {
         flex-direction: column;
+        gap: 8px;
       }
 
       .input-group input,
       .input-group select {
         font-size: 16px;
         padding: 12px 14px;
+        border-radius: 12px;
+      }
+
+      .list-item {
+        padding: 10px 0;
+      }
+
+      .list-item .left .title {
+        font-size: 16px;
+      }
+
+      .list-item .right {
+        font-size: 16px;
+      }
+
+      .back-button {
+        font-size: 24px;
+      }
+
+      .search-result-item {
+        padding: 8px 12px;
+        border-radius: 10px;
+      }
+
+      .search-result-item .name {
+        font-size: 15px;
+      }
+
+      .search-result-item .cal {
+        font-size: 14px;
       }
     }
 
     @media (max-width: 380px) {
+      body {
+        padding: 8px 8px 20px;
+      }
+
       .menu-grid {
         grid-template-columns: 1fr 1fr;
         gap: 8px;
       }
 
       .menu-card {
-        padding: 14px 8px;
+        padding: 12px 8px;
+        border-radius: 16px;
       }
 
       .menu-card .icon {
-        font-size: 28px;
+        font-size: 26px;
+      }
+
+      .menu-card .label {
+        font-size: 14px;
+      }
+
+      .menu-card .desc {
+        font-size: 12px;
+      }
+
+      .apple-card {
+        padding: 14px 12px;
+        border-radius: 16px;
+      }
+
+      .stat-box .number {
+        font-size: 18px;
+      }
+
+      .page-title {
+        font-size: 20px;
+      }
+    }
+
+    /* ===== ПОДДЕРЖКА СИСТЕМНЫХ ЖЕСТОВ ===== */
+    @supports (padding: max(0px)) {
+      body {
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+        padding-bottom: max(30px, env(safe-area-inset-bottom));
+      }
+    }
+
+    @media (max-width: 500px) {
+      @supports (padding: max(0px)) {
+        body {
+          padding-left: max(10px, env(safe-area-inset-left));
+          padding-right: max(10px, env(safe-area-inset-right));
+          padding-bottom: max(20px, env(safe-area-inset-bottom));
+        }
       }
     }
 
@@ -453,6 +717,22 @@
     input[type="number"] {
       -moz-appearance: textfield;
     }
+
+    /* Сглаживание скролла */
+    .page {
+      scroll-behavior: smooth;
+    }
+
+    /* Отключение выделения текста при нажатии */
+    .menu-card,
+    .apple-button,
+    .search-result-item,
+    .list-item,
+    .back-button,
+    .back-label {
+      -webkit-user-select: none;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
@@ -460,35 +740,35 @@
 
   <!-- ==================== ГЛАВНОЕ МЕНЮ ==================== -->
   <div id="main-menu" class="page active">
-    <div class="apple-card" style="background: transparent; box-shadow: none; border: none; padding: 0;">
+    <div class="apple-card" style="background: transparent; box-shadow: none; border: none; padding: 0; animation: none;">
       <h1 class="page-title">🏋️ Фитнес</h1>
       <p class="page-subtitle">Тренируйся, питайся, достигай</p>
     </div>
 
     <div class="menu-grid">
       <div class="menu-card" data-page="training">
-        <div class="icon">🏃</div>
+        <span class="icon">🏃</span>
         <div class="label">Тренировка</div>
         <div class="desc">Добавить упражнение</div>
       </div>
       <div class="menu-card" data-page="statistics">
-        <div class="icon">📊</div>
+        <span class="icon">📊</span>
         <div class="label">Статистика</div>
         <div class="desc">День / Неделя / Месяц</div>
       </div>
       <div class="menu-card" data-page="food">
-        <div class="icon">🍽️</div>
+        <span class="icon">🍽️</span>
         <div class="label">Дневник питания</div>
         <div class="desc">Поиск продуктов</div>
       </div>
       <div class="menu-card" data-page="profile">
-        <div class="icon">👤</div>
+        <span class="icon">👤</span>
         <div class="label">Мой профиль</div>
         <div class="desc">Вес, рост, цель</div>
       </div>
     </div>
 
-    <div style="margin-top: 24px; color: #8e8e93; font-size: 14px; text-align: center; border-top: 1px solid #e5e5ea; padding-top: 20px;">
+    <div style="margin-top: 20px; color: #8e8e93; font-size: 14px; text-align: center; border-top: 1px solid #e5e5ea; padding-top: 18px; animation: fadeInMobile 0.5s ease;">
       Данные сохраняются локально
     </div>
   </div>
@@ -523,7 +803,7 @@
         <input type="number" id="duration" min="1" value="10" step="1">
       </div>
 
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px 0;">
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px 0;">
         <button class="apple-button apple-button-primary" data-duration-preset="5">5 мин</button>
         <button class="apple-button apple-button-primary" data-duration-preset="10">10 мин</button>
         <button class="apple-button apple-button-primary" data-duration-preset="20">20 мин</button>
@@ -567,7 +847,7 @@
 
     <div class="apple-card">
       <h2 class="page-title" style="font-size: 24px;">📊 Моя статистика</h2>
-      <div style="display: flex; gap: 8px; margin: 12px 0 8px 0; flex-wrap: wrap;">
+      <div style="display: flex; gap: 8px; margin: 10px 0 6px 0; flex-wrap: wrap;">
         <button class="apple-button apple-button-primary" data-stat-period="day">День</button>
         <button class="apple-button" data-stat-period="week">Неделя</button>
         <button class="apple-button" data-stat-period="month">Месяц</button>
@@ -579,7 +859,7 @@
     </div>
   </div>
 
-  <!-- ==================== ДНЕВНИК ПИТАНИЯ (ЛОКАЛЬНАЯ БАЗА) ==================== -->
+  <!-- ==================== ДНЕВНИК ПИТАНИЯ ==================== -->
   <div id="food" class="page">
     <div class="back-row">
       <button class="back-button" data-back>‹</button>
@@ -672,165 +952,43 @@
   (function() {
     'use strict';
 
-    // ===== БАЗА ПРОДУКТОВ (калорий на 100 г) =====
+    // ===== БАЗА ПРОДУКТОВ =====
     const FOOD_DB = {
-      // Крупы и гарниры
-      'гречка': 130,
-      'гречневая': 130,
-      'рис': 116,
-      'рис варёный': 116,
-      'овсянка': 88,
-      'овсяная': 88,
-      'пшено': 90,
-      'манка': 80,
-      'булгур': 83,
-      'киноа': 120,
-      'макароны': 131,
-      'макароны варёные': 131,
-      'спагетти': 131,
-      'картофель': 77,
-      'картошка': 77,
-      'пюре': 85,
-      'картофельное пюре': 85,
-
-      // Мясо и птица
-      'курица': 165,
-      'куриная грудка': 165,
-      'куриное филе': 165,
-      'индейка': 135,
-      'говядина': 187,
-      'свинина': 242,
-      'баранина': 209,
-      'кролик': 156,
-
-      // Рыба и морепродукты
-      'лосось': 208,
-      'семга': 208,
-      'форель': 148,
-      'тунец': 144,
-      'треска': 78,
-      'минтай': 72,
-      'креветки': 99,
-      'кальмар': 92,
-
-      // Яйца и молочка
-      'яйцо': 155,
-      'яйца': 155,
-      'молоко': 42,
-      'кефир': 41,
-      'творог': 121,
-      'творог обезжиренный': 71,
-      'сметана': 206,
-      'йогурт': 60,
-      'сыр': 350,
-      'пармезан': 431,
-
-      // Овощи
-      'огурец': 15,
-      'огурцы': 15,
-      'помидор': 20,
-      'томат': 20,
-      'капуста': 25,
-      'капуста белокочанная': 25,
-      'брокколи': 34,
-      'цветная капуста': 25,
-      'морковь': 32,
-      'свекла': 40,
-      'лук': 41,
-      'чеснок': 149,
-      'перец болгарский': 26,
-      'кабачок': 24,
-      'баклажан': 24,
-
-      // Фрукты и ягоды
-      'яблоко': 52,
-      'банан': 89,
-      'апельсин': 47,
-      'груша': 57,
-      'виноград': 69,
-      'арбуз': 30,
-      'дыня': 34,
-      'клубника': 32,
-      'малина': 52,
-      'черника': 44,
-      'голубика': 44,
-      'персик': 39,
-      'киви': 61,
-      'лимон': 34,
-      'грейпфрут': 42,
-
-      // Орехи и сухофрукты
-      'грецкий орех': 654,
-      'миндаль': 579,
-      'фундук': 628,
-      'кешью': 553,
-      'арахис': 567,
-      'фисташки': 556,
-      'изюм': 299,
-      'курага': 241,
-      'финики': 282,
-      'чернослив': 240,
-
-      // Хлеб и выпечка
-      'хлеб': 265,
-      'хлеб белый': 265,
-      'хлеб ржаной': 210,
-      'бородинский': 210,
-      'батон': 264,
-      'лаваш': 275,
-      'сухари': 335,
-
-      // Соусы и масла
-      'масло сливочное': 748,
-      'масло растительное': 884,
-      'оливковое масло': 884,
-      'подсолнечное масло': 884,
-      'майонез': 624,
-      'кетчуп': 101,
-      'мед': 304,
-      'джем': 250,
-      'варенье': 250,
-
-      // Напитки
-      'чай': 1,
-      'кофе': 2,
-      'сок яблочный': 46,
-      'сок апельсиновый': 45,
-      'сок томатный': 17,
-      'кола': 42,
-      'лимонад': 40,
-
-      // Готовые блюда и прочее
-      'суп': 40,
-      'борщ': 45,
-      'щи': 35,
-      'каша': 90,
-      'омлет': 154,
-      'блины': 189,
-      'пельмени': 220,
-      'вареники': 200,
-      'котлета': 260,
-      'шницель': 250,
-      'стейк': 270,
-      'шашлык': 250,
-      'пицца': 266,
-      'бургер': 295,
-      'картошка фри': 312,
-      'салат': 50,
-      'винегрет': 80,
-      'оливье': 95,
-      'сельдь под шубой': 120,
-      'торт': 350,
-      'пирожное': 300,
-      'шоколад': 546,
-      'шоколад молочный': 546,
-      'шоколад темный': 540,
-      'конфеты': 450,
-      'мороженое': 207,
-      'йогурт фруктовый': 90,
-      'творожная масса': 150,
-      'сырники': 220,
-      'запеканка': 150,
+      'гречка': 130, 'гречневая': 130, 'рис': 116, 'рис варёный': 116,
+      'овсянка': 88, 'овсяная': 88, 'пшено': 90, 'манка': 80,
+      'булгур': 83, 'киноа': 120, 'макароны': 131, 'макароны варёные': 131,
+      'спагетти': 131, 'картофель': 77, 'картошка': 77, 'пюре': 85,
+      'курица': 165, 'куриная грудка': 165, 'куриное филе': 165, 'индейка': 135,
+      'говядина': 187, 'свинина': 242, 'баранина': 209, 'кролик': 156,
+      'лосось': 208, 'семга': 208, 'форель': 148, 'тунец': 144,
+      'треска': 78, 'минтай': 72, 'креветки': 99, 'кальмар': 92,
+      'яйцо': 155, 'яйца': 155, 'молоко': 42, 'кефир': 41,
+      'творог': 121, 'творог обезжиренный': 71, 'сметана': 206, 'йогурт': 60,
+      'сыр': 350, 'пармезан': 431, 'огурец': 15, 'огурцы': 15,
+      'помидор': 20, 'томат': 20, 'капуста': 25, 'капуста белокочанная': 25,
+      'брокколи': 34, 'цветная капуста': 25, 'морковь': 32, 'свекла': 40,
+      'лук': 41, 'чеснок': 149, 'перец болгарский': 26, 'кабачок': 24,
+      'баклажан': 24, 'яблоко': 52, 'банан': 89, 'апельсин': 47,
+      'груша': 57, 'виноград': 69, 'арбуз': 30, 'дыня': 34,
+      'клубника': 32, 'малина': 52, 'черника': 44, 'голубика': 44,
+      'персик': 39, 'киви': 61, 'лимон': 34, 'грейпфрут': 42,
+      'грецкий орех': 654, 'миндаль': 579, 'фундук': 628, 'кешью': 553,
+      'арахис': 567, 'фисташки': 556, 'изюм': 299, 'курага': 241,
+      'финики': 282, 'чернослив': 240, 'хлеб': 265, 'хлеб белый': 265,
+      'хлеб ржаной': 210, 'бородинский': 210, 'батон': 264, 'лаваш': 275,
+      'сухари': 335, 'масло сливочное': 748, 'масло растительное': 884,
+      'оливковое масло': 884, 'подсолнечное масло': 884, 'майонез': 624,
+      'кетчуп': 101, 'мед': 304, 'джем': 250, 'варенье': 250,
+      'чай': 1, 'кофе': 2, 'сок яблочный': 46, 'сок апельсиновый': 45,
+      'сок томатный': 17, 'кола': 42, 'лимонад': 40, 'суп': 40,
+      'борщ': 45, 'щи': 35, 'каша': 90, 'омлет': 154,
+      'блины': 189, 'пельмени': 220, 'вареники': 200, 'котлета': 260,
+      'шницель': 250, 'стейк': 270, 'шашлык': 250, 'пицца': 266,
+      'бургер': 295, 'картошка фри': 312, 'салат': 50, 'винегрет': 80,
+      'оливье': 95, 'сельдь под шубой': 120, 'торт': 350, 'пирожное': 300,
+      'шоколад': 546, 'шоколад молочный': 546, 'шоколад темный': 540,
+      'конфеты': 450, 'мороженое': 207, 'йогурт фруктовый': 90,
+      'творожная масса': 150, 'сырники': 220, 'запеканка': 150,
     };
 
     // ===== УТИЛИТЫ =====
@@ -892,6 +1050,13 @@
     function showPage(pageId) {
       Object.keys(pages).forEach(id => {
         pages[id].classList.toggle('active', id === pageId);
+      });
+      // Перезапускаем анимации карточек
+      document.querySelectorAll('.apple-card').forEach(card => {
+        card.style.animation = 'none';
+        requestAnimationFrame(() => {
+          card.style.animation = '';
+        });
       });
       if (pageId === 'training') renderTraining();
       if (pageId === 'statistics') renderStatistics('day');
@@ -1027,7 +1192,7 @@
       updateCaloriesPreview();
     }
 
-    // ===== ДНЕВНИК ПИТАНИЯ (ЛОКАЛЬНАЯ БАЗА) =====
+    // ===== ДНЕВНИК ПИТАНИЯ =====
     const searchInput = document.getElementById('meal-search');
     const resultsContainer = document.getElementById('search-results');
     const mealWeightInput = document.getElementById('meal-weight');
@@ -1039,14 +1204,12 @@
       const normalized = normalizeText(query);
       const results = [];
 
-      // Ищем точные совпадения
       for (const [key, cal] of Object.entries(FOOD_DB)) {
         if (normalized.includes(key) || key.includes(normalized)) {
           results.push({ name: key, cal: cal, score: key.length });
         }
       }
 
-      // Сортируем по длине ключа (чем короче — тем точнее)
       results.sort((a, b) => a.score - b.score);
       return results.slice(0, 6);
     }
@@ -1064,7 +1227,7 @@
         const results = searchInDB(query);
         if (results.length === 0) {
           resultsContainer.innerHTML = `
-            <div style="padding: 10px 0; color: #6e6e73; font-size: 15px;">
+            <div style="padding: 10px 0; color: #6e6e73; font-size: 15px; animation: fadeInMobile 0.3s ease;">
               🤷 Не найдено. Введите калории вручную.
             </div>
           `;
@@ -1091,16 +1254,15 @@
             mealCaloriesInput.value = cal;
             selectedProduct = { name, cal };
             resultsContainer.innerHTML = '';
-            searchInput.style.borderColor = '#34c759';
+            searchInput.classList.add('flash-green');
             setTimeout(() => {
-              searchInput.style.borderColor = '';
-            }, 800);
+              searchInput.classList.remove('flash-green');
+            }, 600);
           });
         });
       }, 300);
     });
 
-    // Сохранение приёма пищи
     document.getElementById('save-meal').addEventListener('click', function() {
       const name = searchInput.value.trim();
       const weight = parseInt(mealWeightInput.value);
@@ -1231,7 +1393,7 @@
       const balance = totalCalBurned - totalCalEaten;
 
       container.innerHTML = `
-        <div class="apple-card">
+        <div class="apple-card" style="animation: cardAppearMobile 0.3s ease forwards; opacity: 0; transform: translateY(10px) scale(0.98);">
           <div class="stats-grid">
             <div class="stat-box">
               <div class="number">${trainingCount}</div>
@@ -1250,7 +1412,7 @@
               <div class="label">⚖️ Баланс</div>
             </div>
           </div>
-          <div style="margin-top: 12px; text-align: center; font-size: 15px; color: #6e6e73;">
+          <div style="margin-top: 12px; text-align: center; font-size: 15px; color: #6e6e73; animation: fadeInMobile 0.5s ease;">
             Период: ${period === 'day' ? 'Сегодня' : period === 'week' ? 'Неделя' : 'Месяц'}
           </div>
         </div>
