@@ -327,6 +327,61 @@
       cursor: pointer;
     }
 
+    /* ===== РЕЗУЛЬТАТЫ ПОИСКА ===== */
+    .search-result-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #f8f8fa;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      border: 1px solid transparent;
+    }
+
+    .search-result-item:hover {
+      background: #e8ecf0;
+    }
+
+    .search-result-item:active {
+      background: #d2d2d7;
+      transform: scale(0.98);
+    }
+
+    .search-result-item .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .search-result-item .info .name {
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    .search-result-item .info .detail {
+      font-size: 14px;
+      color: #6e6e73;
+    }
+
+    .search-result-item img {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #e5e5ea;
+    }
+
+    .search-result-item .badge-cal {
+      font-weight: 600;
+      font-size: 16px;
+      color: #007aff;
+      white-space: nowrap;
+    }
+
     /* ===== АДАПТИВНОСТЬ ===== */
     @media (max-width: 500px) {
       body {
@@ -381,6 +436,10 @@
         font-size: 16px;
         padding: 12px 14px;
       }
+
+      .search-result-item {
+        padding: 8px 10px;
+      }
     }
 
     @media (max-width: 380px) {
@@ -411,7 +470,6 @@
     .gap-16 { gap: 16px; }
     .w-full { width: 100%; }
 
-    /* скрываем стрелки у number */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
       -webkit-appearance: none;
@@ -446,7 +504,7 @@
       <div class="menu-card" data-page="food">
         <div class="icon">🍽️</div>
         <div class="label">Дневник питания</div>
-        <div class="desc">Записать приём пищи</div>
+        <div class="desc">Поиск продуктов</div>
       </div>
       <div class="menu-card" data-page="profile">
         <div class="icon">👤</div>
@@ -546,7 +604,7 @@
     </div>
   </div>
 
-  <!-- ==================== ДНЕВНИК ПИТАНИЯ ==================== -->
+  <!-- ==================== ДНЕВНИК ПИТАНИЯ (С ПОИСКОМ) ==================== -->
   <div id="food" class="page">
     <div class="back-row">
       <button class="back-button" data-back>‹</button>
@@ -555,11 +613,12 @@
 
     <div class="apple-card">
       <h2 class="page-title" style="font-size: 24px;">🍽️ Дневник питания</h2>
-      <p class="page-subtitle" style="font-size: 15px;">Запиши приём пищи</p>
+      <p class="page-subtitle" style="font-size: 15px;">Найди продукт и добавь приём пищи</p>
 
       <div class="input-group">
-        <label for="meal-name">Что съели?</label>
-        <input type="text" id="meal-name" placeholder="Например: Овсянка">
+        <label for="meal-search">🔍 Поиск продукта</label>
+        <input type="text" id="meal-search" placeholder="Начните вводить, например, гречка" />
+        <div id="search-results" style="margin-top: 6px;"></div>
       </div>
 
       <div class="input-group">
@@ -569,7 +628,7 @@
 
       <div class="input-group">
         <label for="meal-calories">Общая калорийность (ккал)</label>
-        <input type="number" id="meal-calories" min="0" placeholder="150" step="1">
+        <input type="number" id="meal-calories" min="0" placeholder="автозаполнится" step="1">
       </div>
 
       <button class="apple-button apple-button-primary w-full" id="save-meal">➕ Записать</button>
@@ -648,6 +707,13 @@
       return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
     }
 
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
     // ===== РАБОТА С LOCALSTORAGE =====
     function loadData(key, defaultVal) {
       try {
@@ -664,10 +730,10 @@
 
     // ===== ДАННЫЕ =====
     let profile = loadData('fit_profile', { weight: '', height: '', goal: 'Поддерживать' });
-    let trainings = loadData('fit_trainings', []); // [{ date, exercise, duration, calories }]
-    let meals = loadData('fit_meals', []);       // [{ date, name, weight, totalCalories }]
+    let trainings = loadData('fit_trainings', []);
+    let meals = loadData('fit_meals', []);
 
-    // ===== КОЭФФИЦИЕНТЫ КАЛОРИЙ (ккал/мин) =====
+    // ===== КОЭФФИЦИЕНТЫ КАЛОРИЙ =====
     const CAL_PER_MIN = {
       'Бег': 10,
       'Пресс': 5,
@@ -687,16 +753,14 @@
       Object.keys(pages).forEach(id => {
         pages[id].classList.toggle('active', id === pageId);
       });
-      // обновляем данные при показе
       if (pageId === 'training') renderTraining();
       if (pageId === 'statistics') renderStatistics('day');
       if (pageId === 'food') renderFood();
       if (pageId === 'profile') renderProfile();
     }
 
-    // обработчики для меню
     document.querySelectorAll('.menu-card[data-page]').forEach(el => {
-      el.addEventListener('click', function(e) {
+      el.addEventListener('click', function() {
         const page = this.dataset.page;
         if (page === 'training') showPage('training');
         else if (page === 'statistics') showPage('statistics');
@@ -705,9 +769,8 @@
       });
     });
 
-    // кнопки "Назад"
     document.querySelectorAll('[data-back]').forEach(el => {
-      el.addEventListener('click', function(e) {
+      el.addEventListener('click', function() {
         showPage('main-menu');
       });
     });
@@ -727,7 +790,7 @@
     }
 
     function calcCalories(exercise, duration) {
-      const base = CAL_PER_MIN[exercise] || 6; // по умолчанию 6
+      const base = CAL_PER_MIN[exercise] || 6;
       return Math.round(base * duration);
     }
 
@@ -746,15 +809,13 @@
     customInput.addEventListener('input', updateCaloriesPreview);
     durationInput.addEventListener('input', updateCaloriesPreview);
 
-    // пресеты длительности
     document.querySelectorAll('[data-duration-preset]').forEach(btn => {
-      btn.addEventListener('click', function(e) {
+      btn.addEventListener('click', function() {
         durationInput.value = this.dataset.durationPreset;
         updateCaloriesPreview();
       });
     });
 
-    // сохранение тренировки
     document.getElementById('save-training').addEventListener('click', function() {
       const exercise = getExerciseName();
       const duration = parseInt(durationInput.value);
@@ -776,10 +837,8 @@
       });
       saveData('fit_trainings', trainings);
       renderTraining();
-      // очищаем поля (опционально)
       durationInput.value = 10;
       updateCaloriesPreview();
-      // сброс кастомного названия
       customInput.value = '';
     });
 
@@ -788,7 +847,6 @@
       const todayTrainings = trainings.filter(t => t.date === today);
       const allTrainings = trainings.slice().sort((a, b) => a.date.localeCompare(b.date));
 
-      // сегодняшние
       const todayList = document.getElementById('today-training-list');
       const todayCount = document.getElementById('today-training-count');
       todayCount.textContent = todayTrainings.length;
@@ -798,7 +856,7 @@
         todayList.innerHTML = todayTrainings.map(t => `
           <div class="list-item">
             <div class="left">
-              <span class="title">${t.exercise}</span>
+              <span class="title">${escapeHtml(t.exercise)}</span>
               <span class="sub">${t.duration} мин</span>
             </div>
             <div class="right">🔥 ${t.calories} ккал</div>
@@ -806,19 +864,17 @@
         `).join('');
       }
 
-      // все тренировки
       const allList = document.getElementById('all-training-list');
       const totalCount = document.getElementById('total-training-count');
       totalCount.textContent = allTrainings.length;
       if (allTrainings.length === 0) {
         allList.innerHTML = '<div class="empty-state">Нет сохранённых тренировок</div>';
       } else {
-        // покажем последние 10
         const recent = allTrainings.slice(-10).reverse();
         allList.innerHTML = recent.map(t => `
           <div class="list-item">
             <div class="left">
-              <span class="title">${t.exercise}</span>
+              <span class="title">${escapeHtml(t.exercise)}</span>
               <span class="sub">${formatDate(t.date)} · ${t.duration} мин</span>
             </div>
             <div class="right">🔥 ${t.calories} ккал</div>
@@ -828,20 +884,120 @@
           allList.innerHTML += `<div class="text-center text-secondary" style="padding: 8px 0;">... и ещё ${allTrainings.length - 10} записей</div>`;
         }
       }
-
-      // обновить превью калорий
       updateCaloriesPreview();
     }
 
-    // ===== ДНЕВНИК ПИТАНИЯ =====
-    document.getElementById('save-meal').addEventListener('click', function() {
-      const name = document.getElementById('meal-name').value.trim();
-      const weight = parseInt(document.getElementById('meal-weight').value);
-      const totalCal = parseInt(document.getElementById('meal-calories').value);
+    // ===== ДНЕВНИК ПИТАНИЯ С ПОИСКОМ =====
+    const searchInput = document.getElementById('meal-search');
+    const resultsContainer = document.getElementById('search-results');
+    const mealWeightInput = document.getElementById('meal-weight');
+    const mealCaloriesInput = document.getElementById('meal-calories');
+    let searchTimeout;
 
-      if (!name) { alert('Введите название блюда'); return; }
+    // Очистка результата при потере фокуса (задержка, чтобы клик по результату сработал)
+    let blurTimeout;
+
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      clearTimeout(blurTimeout);
+      const query = this.value.trim();
+      if (query.length < 2) {
+        resultsContainer.innerHTML = '';
+        return;
+      }
+      searchTimeout = setTimeout(() => searchProducts(query), 400);
+    });
+
+    // Если пользователь убрал фокус, скрываем результаты через паузу
+    searchInput.addEventListener('blur', function() {
+      blurTimeout = setTimeout(() => {
+        // Не скрываем, если есть выбранный продукт (проверим через флаг)
+        if (!selectedProduct) {
+          resultsContainer.innerHTML = '';
+        }
+      }, 300);
+    });
+
+    searchInput.addEventListener('focus', function() {
+      clearTimeout(blurTimeout);
+    });
+
+    let selectedProduct = null;
+
+    async function searchProducts(query) {
+      try {
+        const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=5`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (!data.products || data.products.length === 0) {
+          resultsContainer.innerHTML = '<div style="padding: 10px 0; color: #6e6e73; font-size: 15px;">Ничего не найдено</div>';
+          return;
+        }
+
+        let html = '';
+        data.products.forEach(product => {
+          const name = product.product_name || product.generic_name || 'Без названия';
+          const calories = product.nutriments?.['energy-kcal_100g'] || product.nutriments?.energy_value || 0;
+          const protein = product.nutriments?.proteins_100g || 0;
+          const fat = product.nutriments?.fat_100g || 0;
+          const carbs = product.nutriments?.carbohydrates_100g || 0;
+          const img = product.image_front_small_url || '';
+
+          html += `
+            <div class="search-result-item" data-name="${escapeHtml(name)}" data-cal="${calories}" data-protein="${protein}" data-fat="${fat}" data-carbs="${carbs}">
+              <div class="info">
+                <span class="name">${escapeHtml(name)}</span>
+                <span class="detail">Б:${protein}г · Ж:${fat}г · У:${carbs}г</span>
+              </div>
+              ${img ? `<img src="${img}" alt="" loading="lazy" />` : ''}
+              <span class="badge-cal">${calories} ккал</span>
+            </div>
+          `;
+        });
+
+        resultsContainer.innerHTML = html;
+
+        document.querySelectorAll('.search-result-item').forEach(item => {
+          item.addEventListener('click', function() {
+            const name = this.dataset.name;
+            const cal = parseFloat(this.dataset.cal) || 0;
+            searchInput.value = name;
+            mealCaloriesInput.value = cal;
+            selectedProduct = { name, cal };
+            resultsContainer.innerHTML = '';
+            // маленькая анимация/подтверждение
+            searchInput.style.borderColor = '#34c759';
+            setTimeout(() => {
+              searchInput.style.borderColor = '';
+            }, 800);
+          });
+        });
+
+      } catch (error) {
+        console.error('API error:', error);
+        resultsContainer.innerHTML = '<div style="padding: 10px 0; color: #ff3b30; font-size: 15px;">⚠️ Ошибка загрузки, попробуйте позже</div>';
+      }
+    }
+
+    // Сохранение приёма пищи
+    document.getElementById('save-meal').addEventListener('click', function() {
+      const name = searchInput.value.trim();
+      const weight = parseInt(mealWeightInput.value);
+      let totalCal = parseInt(mealCaloriesInput.value);
+
+      if (!name) { alert('Введите название блюда или выберите из поиска'); return; }
       if (!weight || weight < 1) { alert('Введите вес в граммах'); return; }
-      if (isNaN(totalCal) || totalCal < 0) { alert('Введите калорийность'); return; }
+      if (isNaN(totalCal) || totalCal < 0) {
+        // Если калории не введены, но есть выбранный продукт — используем его
+        if (selectedProduct && selectedProduct.cal > 0) {
+          totalCal = Math.round((weight / 100) * selectedProduct.cal);
+          mealCaloriesInput.value = totalCal;
+        } else {
+          alert('Введите калорийность или выберите продукт из поиска');
+          return;
+        }
+      }
 
       const today = getToday();
       meals.push({
@@ -852,10 +1008,21 @@
       });
       saveData('fit_meals', meals);
       renderFood();
-      // очистка
-      document.getElementById('meal-name').value = '';
-      document.getElementById('meal-weight').value = '';
-      document.getElementById('meal-calories').value = '';
+      // Очистка
+      searchInput.value = '';
+      mealWeightInput.value = '';
+      mealCaloriesInput.value = '';
+      selectedProduct = null;
+      resultsContainer.innerHTML = '';
+    });
+
+    // Пересчёт калорий при изменении веса (если выбран продукт)
+    mealWeightInput.addEventListener('input', function() {
+      const weight = parseInt(this.value) || 0;
+      if (selectedProduct && selectedProduct.cal > 0 && weight > 0) {
+        const total = Math.round((weight / 100) * selectedProduct.cal);
+        mealCaloriesInput.value = total;
+      }
     });
 
     function renderFood() {
@@ -874,7 +1041,7 @@
         todayList.innerHTML = todayMeals.map(m => `
           <div class="list-item">
             <div class="left">
-              <span class="title">${m.name}</span>
+              <span class="title">${escapeHtml(m.name)}</span>
               <span class="sub">${m.weight} г</span>
             </div>
             <div class="right">${m.totalCalories} ккал</div>
@@ -890,7 +1057,7 @@
         allList.innerHTML = recent.map(m => `
           <div class="list-item">
             <div class="left">
-              <span class="title">${m.name}</span>
+              <span class="title">${escapeHtml(m.name)}</span>
               <span class="sub">${formatDate(m.date)} · ${m.weight} г</span>
             </div>
             <div class="right">${m.totalCalories} ккал</div>
@@ -907,7 +1074,6 @@
 
     document.querySelectorAll('[data-stat-period]').forEach(btn => {
       btn.addEventListener('click', function() {
-        // обновляем активную кнопку
         document.querySelectorAll('[data-stat-period]').forEach(b => b.classList.remove('apple-button-primary'));
         this.classList.add('apple-button-primary');
         statPeriod = this.dataset.statPeriod;
@@ -921,16 +1087,13 @@
       let startDate = new Date(today);
 
       if (period === 'day') {
-        // сегодня
         startDate = new Date(today);
         startDate.setHours(0, 0, 0, 0);
       } else if (period === 'week') {
-        // последние 7 дней
         startDate = new Date(today);
         startDate.setDate(today.getDate() - 6);
         startDate.setHours(0, 0, 0, 0);
       } else if (period === 'month') {
-        // последние 30 дней
         startDate = new Date(today);
         startDate.setDate(today.getDate() - 29);
         startDate.setHours(0, 0, 0, 0);
@@ -939,12 +1102,10 @@
       const startStr = startDate.toISOString().slice(0, 10);
       const todayStr = today.toISOString().slice(0, 10);
 
-      // фильтруем тренировки
       const filteredTrainings = trainings.filter(t => t.date >= startStr && t.date <= todayStr);
       const trainingCount = filteredTrainings.length;
       const totalCalBurned = filteredTrainings.reduce((acc, t) => acc + t.calories, 0);
 
-      // фильтруем приёмы пищи
       const filteredMeals = meals.filter(m => m.date >= startStr && m.date <= todayStr);
       const totalCalEaten = filteredMeals.reduce((acc, m) => acc + m.totalCalories, 0);
 
@@ -989,7 +1150,6 @@
       } else {
         info.innerHTML = '<div class="empty-state">Профиль не заполнен</div>';
       }
-      // заполняем поля
       document.getElementById('profile-weight').value = profile.weight || '';
       document.getElementById('profile-height').value = profile.height || '';
       document.getElementById('profile-goal').value = profile.goal || 'Поддерживать';
@@ -1010,20 +1170,9 @@
     });
 
     // ===== ИНИЦИАЛИЗАЦИЯ =====
-    // показываем главное меню
     showPage('main-menu');
-
-    // также обновляем данные, если вдруг страницы откроются
-    // но они обновятся при переходе
-
-    // дополнительно: обновляем профиль при загрузке
     renderProfile();
-
-    // автообновление превью калорий
     updateCaloriesPreview();
-
-    // ===== ДОПОЛНИТЕЛЬНО: если страница статистики, то по умолчанию день =====
-    // кнопка "День" активна
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
 
   })();
