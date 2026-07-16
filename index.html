@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Fitness Mini App</title>
+  <title>Fitness Tracker</title>
   <style>
     /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
     * {
@@ -17,7 +17,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
       background: #f5f5f7;
       color: #1c1c1e;
-      padding: 12px 12px 40px;
+      padding: 16px 16px 40px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -27,6 +27,7 @@
       -webkit-touch-callout: none;
       overscroll-behavior: none;
       touch-action: manipulation;
+      line-height: 1.5;
     }
 
     .app-container {
@@ -35,14 +36,14 @@
       background: transparent;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
 
-    /* ===== АНИМАЦИЯ СТРАНИЦ (для телефона — быстрее) ===== */
+    /* ===== СТРАНИЦЫ ===== */
     .page {
       display: none;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
       animation: pageFadeInMobile 0.28s cubic-bezier(0.2, 0.8, 0.35, 1) forwards;
       will-change: transform, opacity;
     }
@@ -52,25 +53,18 @@
     }
 
     @keyframes pageFadeInMobile {
-      0% {
-        opacity: 0;
-        transform: translateY(16px) scale(0.97);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(16px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* ===== АНИМАЦИЯ КАРТОЧЕК (быстрое появление) ===== */
+    /* ===== КАРТОЧКИ ===== */
     .apple-card {
       background: #ffffff;
-      border-radius: 20px;
-      padding: 20px 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.02);
+      border-radius: 24px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.3);
-      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.35, 1),
-                  box-shadow 0.25s ease;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.35, 1), box-shadow 0.25s ease;
       animation: cardAppearMobile 0.3s ease forwards;
       opacity: 0;
       transform: translateY(10px) scale(0.98);
@@ -84,35 +78,49 @@
     .apple-card:nth-child(5) { animation-delay: 0.15s; }
 
     @keyframes cardAppearMobile {
-      0% {
-        opacity: 0;
-        transform: translateY(10px) scale(0.98);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(10px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .apple-card:active {
       transform: scale(0.985);
       transition-duration: 0.06s;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
     }
 
-    /* ===== КНОПКИ (мобильный тактильный отклик) ===== */
+    /* ===== ЗАГОЛОВКИ ===== */
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .page-subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      color: #6e6e73;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    /* ===== КНОПКИ ===== */
     .apple-button {
       background: transparent;
       border: 1px solid rgba(0, 122, 255, 0.2);
       border-radius: 40px;
-      padding: 13px 22px;
+      padding: 14px 24px;
       font-size: 17px;
       font-weight: 500;
       color: #007aff;
       background: rgba(0, 122, 255, 0.04);
-      transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.35, 1),
-                  background 0.15s ease,
-                  box-shadow 0.2s ease;
+      transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.35, 1), background 0.15s ease, box-shadow 0.2s ease;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -125,25 +133,7 @@
       touch-action: manipulation;
       -webkit-touch-callout: none;
       will-change: transform;
-    }
-
-    /* Эффект пульсации при нажатии (только для телефона — лёгкий) */
-    .apple-button::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 40px;
-      background: rgba(0, 122, 255, 0.08);
-      transform: scale(0);
-      opacity: 0;
-      transition: transform 0.25s ease, opacity 0.2s ease;
-      pointer-events: none;
-    }
-
-    .apple-button:active::after {
-      transform: scale(1);
-      opacity: 1;
-      transition-duration: 0.05s;
+      line-height: 1.2;
     }
 
     .apple-button:active {
@@ -159,14 +149,9 @@
       box-shadow: 0 2px 12px rgba(0, 122, 255, 0.2);
     }
 
-    .apple-button-primary::after {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
     .apple-button-primary:active {
       background: #0066d9;
       transform: scale(0.94);
-      box-shadow: 0 1px 6px rgba(0, 122, 255, 0.15);
     }
 
     .apple-button-danger {
@@ -186,12 +171,12 @@
       margin-top: 6px;
     }
 
-    /* ===== ПОЛЯ ВВОДА (мобильный фокус) ===== */
+    /* ===== ПОЛЯ ВВОДА ===== */
     .input-group {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      margin-bottom: 14px;
+      gap: 6px;
+      margin-bottom: 18px;
     }
 
     .input-group label {
@@ -199,6 +184,7 @@
       font-weight: 500;
       color: #1c1c1e;
       letter-spacing: -0.01em;
+      line-height: 1.3;
     }
 
     .input-group input,
@@ -208,9 +194,7 @@
       border-radius: 14px;
       border: 1px solid #d2d2d7;
       background: #f8f8fa;
-      transition: border 0.2s ease,
-                  box-shadow 0.2s ease,
-                  transform 0.1s ease;
+      transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
       font-family: inherit;
       color: #1c1c1e;
       width: 100%;
@@ -218,25 +202,21 @@
       -webkit-appearance: none;
       appearance: none;
       touch-action: manipulation;
+      line-height: 1.4;
     }
 
     .input-group input:focus,
     .input-group select:focus {
       border-color: #007aff;
       background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.08);
+      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.08);
       transform: scale(1.005);
-    }
-
-    .input-group input:active {
-      transform: scale(0.99);
     }
 
     .input-group input::placeholder {
       color: #aeaeb2;
     }
 
-    /* Зелёная вспышка при выборе продукта */
     .input-group input.flash-green {
       border-color: #34c759 !important;
       box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.12) !important;
@@ -249,17 +229,18 @@
       100% { border-color: #34c759; box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.12); }
     }
 
-    /* ===== СПИСКИ (мобильная анимация) ===== */
+    /* ===== СПИСКИ ===== */
     .list-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
+      padding: 14px 0;
       border-bottom: 1px solid #e5e5ea;
       animation: listItemAppearMobile 0.25s ease forwards;
       opacity: 0;
       transform: translateX(-6px);
       touch-action: manipulation;
+      gap: 12px;
     }
 
     .list-item:nth-child(1) { animation-delay: 0.03s; }
@@ -274,57 +255,49 @@
     .list-item:nth-child(10) { animation-delay: 0.30s; }
 
     @keyframes listItemAppearMobile {
-      0% {
-        opacity: 0;
-        transform: translateX(-6px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
+      0% { opacity: 0; transform: translateX(-6px); }
+      100% { opacity: 1; transform: translateX(0); }
     }
 
     .list-item:last-child {
       border-bottom: none;
     }
 
-    .list-item:active {
-      background: rgba(0, 0, 0, 0.02);
-      border-radius: 8px;
-    }
-
     .list-item .left {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
+      flex: 1;
+      min-width: 0;
     }
 
     .list-item .left .title {
       font-weight: 500;
       font-size: 17px;
+      line-height: 1.3;
     }
 
     .list-item .left .sub {
       font-size: 14px;
       color: #6e6e73;
+      line-height: 1.4;
     }
 
     .list-item .right {
       font-weight: 600;
       font-size: 17px;
       color: #1c1c1e;
-    }
-
-    .list-item .right .cal {
-      color: #007aff;
+      white-space: nowrap;
+      line-height: 1.3;
     }
 
     .empty-state {
       text-align: center;
       color: #8e8e93;
-      padding: 28px 0;
+      padding: 32px 0;
       font-size: 16px;
       animation: fadeInMobile 0.3s ease;
+      line-height: 1.5;
     }
 
     @keyframes fadeInMobile {
@@ -332,17 +305,17 @@
       100% { opacity: 1; }
     }
 
-    /* ===== СТАТИСТИЧЕСКИЕ БЛОКИ ===== */
+    /* ===== СТАТИСТИКА ===== */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 14px;
     }
 
     .stat-box {
       background: #f8f8fa;
       border-radius: 16px;
-      padding: 14px 12px;
+      padding: 16px 12px;
       text-align: center;
       transition: transform 0.15s ease;
       animation: statAppearMobile 0.35s ease forwards;
@@ -357,14 +330,8 @@
     .stat-box:nth-child(4) { animation-delay: 0.16s; }
 
     @keyframes statAppearMobile {
-      0% {
-        opacity: 0;
-        transform: scale(0.94);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
+      0% { opacity: 0; transform: scale(0.94); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
     .stat-box:active {
@@ -373,21 +340,18 @@
     }
 
     .stat-box .number {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
       color: #1c1c1e;
       letter-spacing: -0.02em;
-      transition: transform 0.2s ease;
-    }
-
-    .stat-box .number:active {
-      transform: scale(1.05);
+      line-height: 1.2;
     }
 
     .stat-box .label {
       font-size: 13px;
       color: #6e6e73;
-      margin-top: 3px;
+      margin-top: 4px;
+      line-height: 1.3;
     }
 
     /* ===== ГЛАВНОЕ МЕНЮ ===== */
@@ -401,12 +365,10 @@
     .menu-card {
       background: #ffffff;
       border-radius: 20px;
-      padding: 20px 12px;
+      padding: 22px 14px;
       text-align: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-      transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.35, 1),
-                  box-shadow 0.2s ease,
-                  background 0.15s ease;
+      transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.35, 1), box-shadow 0.2s ease, background 0.15s ease;
       cursor: pointer;
       border: 1px solid rgba(255, 255, 255, 0.3);
       animation: menuCardAppearMobile 0.28s ease forwards;
@@ -423,28 +385,22 @@
     .menu-card:nth-child(4) { animation-delay: 0.16s; }
 
     @keyframes menuCardAppearMobile {
-      0% {
-        opacity: 0;
-        transform: translateY(10px) scale(0.97);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(10px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .menu-card:active {
       transform: scale(0.95);
       transition-duration: 0.05s;
       background: #f8f8fa;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     }
 
     .menu-card .icon {
-      font-size: 36px;
+      font-size: 38px;
       margin-bottom: 10px;
       transition: transform 0.2s ease;
       display: block;
+      line-height: 1;
     }
 
     .menu-card:active .icon {
@@ -455,12 +411,14 @@
       font-size: 17px;
       font-weight: 600;
       color: #1c1c1e;
+      line-height: 1.3;
     }
 
     .menu-card .desc {
       font-size: 13px;
       color: #6e6e73;
-      margin-top: 3px;
+      margin-top: 4px;
+      line-height: 1.3;
     }
 
     /* ===== КНОПКА НАЗАД ===== */
@@ -468,7 +426,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 2px 0 6px 0;
+      padding: 4px 0 8px 0;
       animation: fadeInMobile 0.25s ease;
     }
 
@@ -496,6 +454,7 @@
       cursor: pointer;
       transition: transform 0.12s ease, color 0.15s ease;
       touch-action: manipulation;
+      line-height: 1.3;
     }
 
     .back-label:active {
@@ -508,26 +467,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
+      padding: 12px 16px;
       background: #f8f8fa;
-      border-radius: 12px;
-      margin-bottom: 5px;
+      border-radius: 14px;
+      margin-bottom: 6px;
       cursor: pointer;
-      transition: background 0.15s ease,
-                  transform 0.1s ease;
+      transition: background 0.15s ease, transform 0.1s ease;
       border: 1px solid transparent;
       animation: listItemAppearMobile 0.2s ease forwards;
       opacity: 0;
       transform: translateX(-4px);
       touch-action: manipulation;
+      gap: 12px;
     }
-
-    .search-result-item:nth-child(1) { animation-delay: 0.02s; }
-    .search-result-item:nth-child(2) { animation-delay: 0.05s; }
-    .search-result-item:nth-child(3) { animation-delay: 0.08s; }
-    .search-result-item:nth-child(4) { animation-delay: 0.11s; }
-    .search-result-item:nth-child(5) { animation-delay: 0.14s; }
-    .search-result-item:nth-child(6) { animation-delay: 0.17s; }
 
     .search-result-item:active {
       background: #d2d2d7;
@@ -538,27 +490,61 @@
     .search-result-item .name {
       font-weight: 500;
       font-size: 16px;
+      line-height: 1.3;
     }
 
     .search-result-item .cal {
       font-weight: 600;
       font-size: 15px;
       color: #007aff;
+      white-space: nowrap;
+      line-height: 1.3;
     }
 
-    /* ===== АДАПТИВНОСТЬ ===== */
+    /* ===== УТИЛИТЫ ===== */
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .w-full { width: 100%; }
+    .text-secondary { color: #6e6e73; }
+    .text-center { text-align: center; }
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mb-8 { margin-bottom: 8px; }
+    .gap-8 { gap: 8px; }
+    .gap-16 { gap: 16px; }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    /* ===== АДАПТИВ ===== */
     @media (max-width: 500px) {
       body {
-        padding: 10px 10px 30px;
+        padding: 12px 12px 30px;
       }
 
       .apple-card {
-        padding: 16px 14px;
-        border-radius: 18px;
+        padding: 18px 16px;
+        border-radius: 20px;
       }
 
       .page-title {
         font-size: 22px;
+      }
+
+      .page-subtitle {
+        font-size: 15px;
       }
 
       .menu-grid {
@@ -578,25 +564,24 @@
         font-size: 15px;
       }
 
+      .menu-card .desc {
+        font-size: 12px;
+      }
+
       .stats-grid {
         gap: 10px;
       }
 
       .stat-box .number {
-        font-size: 20px;
+        font-size: 22px;
       }
 
       .apple-button {
         width: 100%;
         justify-content: center;
-        padding: 12px 18px;
+        padding: 13px 18px;
         font-size: 16px;
         min-width: unset;
-      }
-
-      .button-group {
-        flex-direction: column;
-        gap: 8px;
       }
 
       .input-group input,
@@ -607,7 +592,7 @@
       }
 
       .list-item {
-        padding: 10px 0;
+        padding: 12px 0;
       }
 
       .list-item .left .title {
@@ -623,8 +608,8 @@
       }
 
       .search-result-item {
-        padding: 8px 12px;
-        border-radius: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
       }
 
       .search-result-item .name {
@@ -633,6 +618,14 @@
 
       .search-result-item .cal {
         font-size: 14px;
+      }
+
+      .app-container {
+        gap: 18px;
+      }
+
+      .page {
+        gap: 18px;
       }
     }
 
@@ -660,7 +653,7 @@
       }
 
       .menu-card .desc {
-        font-size: 12px;
+        font-size: 11px;
       }
 
       .apple-card {
@@ -668,16 +661,15 @@
         border-radius: 16px;
       }
 
-      .stat-box .number {
-        font-size: 18px;
-      }
-
       .page-title {
         font-size: 20px;
       }
+
+      .stat-box .number {
+        font-size: 18px;
+      }
     }
 
-    /* ===== ПОДДЕРЖКА СИСТЕМНЫХ ЖЕСТОВ ===== */
     @supports (padding: max(0px)) {
       body {
         padding-left: max(12px, env(safe-area-inset-left));
@@ -686,44 +678,10 @@
       }
     }
 
-    @media (max-width: 500px) {
-      @supports (padding: max(0px)) {
-        body {
-          padding-left: max(10px, env(safe-area-inset-left));
-          padding-right: max(10px, env(safe-area-inset-right));
-          padding-bottom: max(20px, env(safe-area-inset-bottom));
-        }
-      }
-    }
-
-    /* ===== УТИЛИТЫ ===== */
-    .mt-8 { margin-top: 8px; }
-    .mt-16 { margin-top: 16px; }
-    .mb-8 { margin-bottom: 8px; }
-    .text-center { text-align: center; }
-    .text-secondary { color: #6e6e73; }
-    .text-accent { color: #007aff; }
-    .flex { display: flex; }
-    .flex-between { display: flex; justify-content: space-between; align-items: center; }
-    .gap-8 { gap: 8px; }
-    .gap-16 { gap: 16px; }
-    .w-full { width: 100%; }
-
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input[type="number"] {
-      -moz-appearance: textfield;
-    }
-
-    /* Сглаживание скролла */
     .page {
       scroll-behavior: smooth;
     }
 
-    /* Отключение выделения текста при нажатии */
     .menu-card,
     .apple-button,
     .search-result-item,
@@ -780,8 +738,8 @@
       <span class="back-label" data-back>Назад</span>
     </div>
     <div class="apple-card">
-      <h2 class="page-title" style="font-size: 24px;">🏃 Добавить тренировку</h2>
-      <p class="page-subtitle" style="font-size: 15px;">Выбери упражнение и укажи длительность</p>
+      <h2 class="page-title">🏃 Добавить тренировку</h2>
+      <p class="page-subtitle">Выбери упражнение и укажи длительность</p>
 
       <div class="input-group">
         <label for="exercise-select">Упражнение</label>
@@ -846,7 +804,7 @@
     </div>
 
     <div class="apple-card">
-      <h2 class="page-title" style="font-size: 24px;">📊 Моя статистика</h2>
+      <h2 class="page-title">📊 Моя статистика</h2>
       <div style="display: flex; gap: 8px; margin: 10px 0 6px 0; flex-wrap: wrap;">
         <button class="apple-button apple-button-primary" data-stat-period="day">День</button>
         <button class="apple-button" data-stat-period="week">Неделя</button>
@@ -867,8 +825,8 @@
     </div>
 
     <div class="apple-card">
-      <h2 class="page-title" style="font-size: 24px;">🍽️ Дневник питания</h2>
-      <p class="page-subtitle" style="font-size: 15px;">🔍 Введи название продукта — калории подставятся сами</p>
+      <h2 class="page-title">🍽️ Дневник питания</h2>
+      <p class="page-subtitle">🔍 Введи название продукта — калории подставятся сами</p>
 
       <div class="input-group">
         <label for="meal-search">Продукт</label>
@@ -915,8 +873,8 @@
     </div>
 
     <div class="apple-card">
-      <h2 class="page-title" style="font-size: 24px;">👤 Мой профиль</h2>
-      <p class="page-subtitle" style="font-size: 15px;">Вес, рост, цель</p>
+      <h2 class="page-title">👤 Мой профиль</h2>
+      <p class="page-subtitle">Вес, рост, цель</p>
 
       <div class="input-group">
         <label for="profile-weight">Вес (кг)</label>
@@ -952,7 +910,9 @@
   (function() {
     'use strict';
 
-    // ===== БАЗА ПРОДУКТОВ =====
+    // =====================================================
+    // 1. БАЗА ПРОДУКТОВ
+    // =====================================================
     const FOOD_DB = {
       'гречка': 130, 'гречневая': 130, 'рис': 116, 'рис варёный': 116,
       'овсянка': 88, 'овсяная': 88, 'пшено': 90, 'манка': 80,
@@ -991,7 +951,9 @@
       'творожная масса': 150, 'сырники': 220, 'запеканка': 150,
     };
 
-    // ===== УТИЛИТЫ =====
+    // =====================================================
+    // 2. УТИЛИТЫ
+    // =====================================================
     function getToday() {
       return new Date().toISOString().slice(0, 10);
     }
@@ -1012,7 +974,13 @@
       return text.toLowerCase().trim().replace(/ё/g, 'е');
     }
 
-    // ===== РАБОТА С LOCALSTORAGE =====
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+
+    // =====================================================
+    // 3. LOCALSTORAGE
+    // =====================================================
     function loadData(key, defaultVal) {
       try {
         const raw = localStorage.getItem(key);
@@ -1026,19 +994,22 @@
       localStorage.setItem(key, JSON.stringify(data));
     }
 
-    // ===== ДАННЫЕ =====
+    // =====================================================
+    // 4. ДАННЫЕ
+    // =====================================================
     let profile = loadData('fit_profile', { weight: '', height: '', goal: 'Поддерживать' });
     let trainings = loadData('fit_trainings', []);
     let meals = loadData('fit_meals', []);
 
-    // ===== КОЭФФИЦИЕНТЫ КАЛОРИЙ =====
     const CAL_PER_MIN = {
       'Бег': 10,
       'Пресс': 5,
       'Йога': 3,
     };
 
-    // ===== НАВИГАЦИЯ =====
+    // =====================================================
+    // 5. НАВИГАЦИЯ
+    // =====================================================
     const pages = {
       'main-menu': document.getElementById('main-menu'),
       'training': document.getElementById('training'),
@@ -1051,7 +1022,6 @@
       Object.keys(pages).forEach(id => {
         pages[id].classList.toggle('active', id === pageId);
       });
-      // Перезапускаем анимации карточек
       document.querySelectorAll('.apple-card').forEach(card => {
         card.style.animation = 'none';
         requestAnimationFrame(() => {
@@ -1066,11 +1036,7 @@
 
     document.querySelectorAll('.menu-card[data-page]').forEach(el => {
       el.addEventListener('click', function() {
-        const page = this.dataset.page;
-        if (page === 'training') showPage('training');
-        else if (page === 'statistics') showPage('statistics');
-        else if (page === 'food') showPage('food');
-        else if (page === 'profile') showPage('profile');
+        showPage(this.dataset.page);
       });
     });
 
@@ -1080,7 +1046,9 @@
       });
     });
 
-    // ===== ТРЕНИРОВКИ =====
+    // =====================================================
+    // 6. ТРЕНИРОВКИ
+    // =====================================================
     const exerciseSelect = document.getElementById('exercise-select');
     const customGroup = document.getElementById('custom-exercise-group');
     const customInput = document.getElementById('custom-exercise');
@@ -1135,10 +1103,12 @@
       const calories = calcCalories(exercise, duration);
       const today = getToday();
       trainings.push({
+        id: generateId(),
         date: today,
         exercise: exercise,
         duration: duration,
-        calories: calories
+        calories: calories,
+        done: false
       });
       saveData('fit_trainings', trainings);
       renderTraining();
@@ -1162,7 +1132,7 @@
           <div class="list-item">
             <div class="left">
               <span class="title">${escapeHtml(t.exercise)}</span>
-              <span class="sub">${t.duration} мин</span>
+              <span class="sub">${t.duration} мин ${t.done ? '✅' : ''}</span>
             </div>
             <div class="right">🔥 ${t.calories} ккал</div>
           </div>
@@ -1192,7 +1162,9 @@
       updateCaloriesPreview();
     }
 
-    // ===== ДНЕВНИК ПИТАНИЯ =====
+    // =====================================================
+    // 7. ДНЕВНИК ПИТАНИЯ
+    // =====================================================
     const searchInput = document.getElementById('meal-search');
     const resultsContainer = document.getElementById('search-results');
     const mealWeightInput = document.getElementById('meal-weight');
@@ -1283,6 +1255,7 @@
 
       const today = getToday();
       meals.push({
+        id: generateId(),
         date: today,
         name: name,
         weight: weight,
@@ -1350,7 +1323,9 @@
       }
     }
 
-    // ===== СТАТИСТИКА =====
+    // =====================================================
+    // 8. СТАТИСТИКА
+    // =====================================================
     let statPeriod = 'day';
 
     document.querySelectorAll('[data-stat-period]').forEach(btn => {
@@ -1419,7 +1394,9 @@
       `;
     }
 
-    // ===== ПРОФИЛЬ =====
+    // =====================================================
+    // 9. ПРОФИЛЬ
+    // =====================================================
     function renderProfile() {
       const info = document.getElementById('profile-info');
       if (profile.weight && profile.height) {
@@ -1447,14 +1424,18 @@
       profile = { weight, height, goal };
       saveData('fit_profile', profile);
       renderProfile();
-      alert('Профиль сохранён!');
+      alert('✅ Профиль сохранён!');
     });
 
-    // ===== ИНИЦИАЛИЗАЦИЯ =====
+    // =====================================================
+    // 10. ИНИЦИАЛИЗАЦИЯ
+    // =====================================================
     showPage('main-menu');
     renderProfile();
     updateCaloriesPreview();
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
+
+    console.log('🚀 Fitness Tracker запущен!');
 
   })();
 </script>
