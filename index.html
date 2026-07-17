@@ -6,6 +6,7 @@
   <title>FitApp</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
   <style>
     /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
     * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -171,7 +172,235 @@
       background: rgba(10, 132, 255, 0.2) !important;
       color: #0a84ff !important;
     }
-
+    /* Стили для календаря */
+    .calendar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 12px 0 16px;
+    }
+    .calendar-nav {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #007aff;
+      padding: 4px 12px;
+      touch-action: manipulation;
+    }
+    .calendar-date-label {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 14px;
+      color: #8e8e93;
+      margin-bottom: 4px;
+    }
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+    .calendar-day {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 0;
+      border-radius: 30px;
+      font-size: 16px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #1c1c1e;
+      transition: background 0.2s;
+      touch-action: manipulation;
+    }
+    .calendar-day.selected {
+      background: #007aff;
+      color: #fff;
+    }
+    .calendar-day.has-plan::after {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 5px;
+      background: #34c759;
+      border-radius: 50%;
+      margin: 2px auto 0;
+    }
+    .calendar-day.other-month {
+      color: #aeaeb2;
+    }
+    .calendar-day:active {
+      transform: scale(0.9);
+    }
+    body.dark-theme .calendar-day {
+      color: #f2f2f7;
+    }
+    body.dark-theme .calendar-day.other-month {
+      color: #6e6e73;
+    }
+    body.dark-theme .calendar-day.selected {
+      background: #0a84ff;
+    }
+    /* Карточки упражнений */
+    .exercise-card {
+      background: #f8f8fa;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      border-left: 4px solid #007aff;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      touch-action: manipulation;
+    }
+    .exercise-card:active {
+      transform: scale(0.98);
+      background: #e5e5ea;
+    }
+    .exercise-card .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .exercise-card .header .name {
+      font-weight: 600;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .exercise-card .header .name .icon {
+      font-size: 20px;
+    }
+    .exercise-card .header .right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .exercise-card .header .right .difficulty {
+      font-size: 14px;
+      color: #8e8e93;
+    }
+    .exercise-card .details {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #e5e5ea;
+    }
+    .exercise-card .details.open {
+      display: block;
+    }
+    .exercise-card .details .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .exercise-card .details .meta .tag {
+      background: rgba(0, 122, 255, 0.1);
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      color: #007aff;
+    }
+    .exercise-card .details .video-link {
+      color: #007aff;
+      text-decoration: none;
+      font-size: 15px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+    .exercise-card .details .note {
+      font-size: 15px;
+      color: #6e6e73;
+      margin-top: 4px;
+    }
+    .exercise-card .done {
+      border-left-color: #34c759;
+    }
+    .exercise-card .done .header .name {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    body.dark-theme .exercise-card {
+      background: #3a3a3c;
+      border-left-color: #0a84ff;
+    }
+    body.dark-theme .exercise-card .details .meta .tag {
+      background: rgba(10, 132, 255, 0.2);
+      color: #0a84ff;
+    }
+    body.dark-theme .exercise-card .done {
+      border-left-color: #34c759;
+    }
+    body.dark-theme .exercise-card .details {
+      border-top-color: #4a4a4c;
+    }
+    /* Стили для шаблонов */
+    .template-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 12px;
+    }
+    .template-btn {
+      background: rgba(0, 122, 255, 0.08);
+      border: none;
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 14px;
+      color: #007aff;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .template-btn:active {
+      background: rgba(0, 122, 255, 0.2);
+    }
+    body.dark-theme .template-btn {
+      background: rgba(10, 132, 255, 0.15);
+      color: #0a84ff;
+    }
+    /* Стили для звёзд */
+    .stars {
+      display: inline-flex;
+      gap: 2px;
+      font-size: 18px;
+      color: #ffcc00;
+    }
+    .stars .star-empty {
+      color: #e5e5ea;
+    }
+    body.dark-theme .stars .star-empty {
+      color: #4a4a4c;
+    }
+    .sortable-ghost {
+      opacity: 0.4;
+      background: #d2d2d7;
+    }
+    .sortable-drag {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    body.dark-theme .sortable-ghost {
+      background: #4a4a4c;
+    }
+    /* прочие */
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .text-center { text-align: center; }
+    .w-full { width: 100%; }
+    .gap-8 { gap: 8px; }
     .theme-switch {
       display: flex;
       align-items: center;
@@ -220,7 +449,6 @@
     body.dark-theme .switch.active {
       background: #34c759;
     }
-
     .app-container {
       max-width: 700px;
       width: 100%;
@@ -654,7 +882,6 @@
       border-radius: 12px;
       margin-left: 8px;
     }
-
     .water-quick-buttons {
       display: flex;
       flex-wrap: wrap;
@@ -757,6 +984,7 @@
       .export-options .input-group { min-width: unset; }
       .theme-switch { flex-wrap: wrap; }
       .chart-container { height: 160px; }
+      .calendar-day { padding: 6px 0; font-size: 14px; }
     }
     @media (max-width: 400px) {
       body { padding: 12px 8px 20px; }
@@ -776,6 +1004,7 @@
       .stat-period-buttons .apple-button { font-size: 13px; padding: 8px 6px; min-height: 36px; border-radius: 24px; }
       .tab-group .apple-button { font-size: 14px; min-height: 42px; padding: 8px 10px; }
       .chart-container { height: 140px; }
+      .calendar-day { padding: 4px 0; font-size: 13px; }
     }
     @media (max-width: 360px) {
       .menu-grid { gap: 10px; }
@@ -815,7 +1044,7 @@
       <p class="page-subtitle">Тренируйся, питайся, достигай</p>
     </div>
     <div class="menu-grid">
-      <button class="menu-card" data-page="training"><span class="icon">🏋️</span><span class="label">Тренировки</span><span class="desc">План</span></button>
+      <button class="menu-card" data-page="training"><span class="icon">📋</span><span class="label">Тренировки</span><span class="desc">План</span></button>
       <button class="menu-card" data-page="food"><span class="icon">🥗</span><span class="label">Питание</span><span class="desc">Дневник</span></button>
       <button class="menu-card" data-page="water"><span class="icon">💧</span><span class="label">Вода</span><span class="desc">Трекер</span></button>
       <button class="menu-card" data-page="profile"><span class="icon">📊</span><span class="label">Профиль</span><span class="desc">Статистика</span></button>
@@ -825,65 +1054,96 @@
     </div>
   </div>
 
-  <!-- ==================== ТРЕНИРОВКИ ==================== -->
+  <!-- ==================== ТРЕНИРОВКИ (обновлённые) ==================== -->
   <div id="training" class="page">
     <div class="back-row"><button class="back-button" data-back>‹</button><span class="back-label" data-back>Назад</span></div>
+
     <div class="apple-card">
       <h2 class="page-title">📋 План тренировок</h2>
-      <p class="page-subtitle">Выбери дни и добавь упражнения</p>
-      <div class="input-group">
-        <label>Дни тренировок</label>
-        <div class="day-checkbox-group" id="daySelector">
-          <label class="day-checkbox" data-day="1">Пн</label>
-          <label class="day-checkbox" data-day="2">Вт</label>
-          <label class="day-checkbox" data-day="3">Ср</label>
-          <label class="day-checkbox" data-day="4">Чт</label>
-          <label class="day-checkbox" data-day="5">Пт</label>
-          <label class="day-checkbox" data-day="6">Сб</label>
-          <label class="day-checkbox" data-day="0">Вс</label>
+      <p class="page-subtitle">Выбери день и добавь упражнения</p>
+
+      <!-- Календарь -->
+      <div class="calendar-container">
+        <button class="calendar-nav" id="calPrev">‹</button>
+        <span class="calendar-date-label" id="calLabel">Июль 2026</span>
+        <button class="calendar-nav" id="calNext">›</button>
+      </div>
+      <div class="calendar-weekdays">
+        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+      </div>
+      <div class="calendar-days" id="calendarDays"></div>
+
+      <!-- Добавление упражнения -->
+      <div style="margin-top: 16px;">
+        <div class="input-group">
+          <label for="plan-exercise">Упражнение</label>
+          <input type="text" id="plan-exercise" placeholder="Например: Приседания со штангой">
+        </div>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <div class="input-group" style="flex:1; min-width:80px;">
+            <label for="plan-sets">Подходы</label>
+            <input type="number" id="plan-sets" min="1" value="3">
+          </div>
+          <div class="input-group" style="flex:1; min-width:80px;">
+            <label for="plan-reps">Повторения</label>
+            <input type="number" id="plan-reps" min="1" value="10">
+          </div>
+          <div class="input-group" style="flex:1; min-width:80px;">
+            <label for="plan-weight">Вес (кг)</label>
+            <input type="number" id="plan-weight" min="0" value="0" step="2.5">
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="plan-tags">Теги (через запятую, например: #кардио, #сила)</label>
+          <input type="text" id="plan-tags" placeholder="#кардио, #сила, #растяжка">
+        </div>
+        <div class="input-group">
+          <label for="plan-difficulty">Сложность (1–5)</label>
+          <input type="number" id="plan-difficulty" min="1" max="5" value="3" step="1">
+        </div>
+        <div class="input-group">
+          <label for="plan-video">Ссылка на видео (YouTube)</label>
+          <input type="url" id="plan-video" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="input-group">
+          <label for="plan-note">Заметка</label>
+          <textarea id="plan-note" placeholder="Техника, советы..." rows="2"></textarea>
+        </div>
+        <button class="apple-button apple-button-primary apple-button-block" id="add-plan-exercise">➕ Добавить в план</button>
+      </div>
+
+      <!-- Шаблоны -->
+      <div style="margin-top: 16px; border-top: 1px solid #e5e5ea; padding-top: 16px;">
+        <div class="flex-between">
+          <span style="font-weight: 600;">Шаблоны</span>
+          <button class="apple-button apple-button-sm" id="save-template-btn">💾 Сохранить как шаблон</button>
+        </div>
+        <div class="template-selector" id="templateSelector"></div>
+      </div>
+
+      <!-- Список упражнений на выбранный день -->
+      <div style="margin-top: 16px;">
+        <div class="flex-between">
+          <h3 style="font-size: 20px;">📅 Тренировка на <span id="selected-date-label">сегодня</span></h3>
+          <span class="text-secondary" id="plan-exercises-count">0 упражнений</span>
+        </div>
+        <div style="margin: 10px 0 6px 0;">
+          <div class="progress-label"><span>Выполнение</span><span id="progress-text">0%</span></div>
+          <div class="progress-bar-container"><div class="progress-bar" id="progress-bar" style="width: 0%;"></div></div>
+        </div>
+        <div id="plan-list">
+          <div class="empty-state">Нет упражнений на этот день</div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+          <button class="apple-button apple-button-success apple-button-block" id="mark-day-done">✅ День готов</button>
+          <button class="apple-button apple-button-danger apple-button-block" id="clear-plan">🗑️ Очистить день</button>
+          <button class="apple-button apple-button-primary apple-button-block" id="copy-week-plan">📋 Копировать на след. неделю</button>
         </div>
       </div>
-      <div class="input-group">
-        <label for="plan-exercise">Упражнение</label>
-        <input type="text" id="plan-exercise" placeholder="Например: Приседания со штангой">
-      </div>
-      <div style="display: flex; gap: 14px; flex-wrap: wrap;">
-        <div class="input-group" style="flex:1; min-width:80px;">
-          <label for="plan-sets">Подходы</label>
-          <input type="number" id="plan-sets" min="1" value="3">
-        </div>
-        <div class="input-group" style="flex:1; min-width:80px;">
-          <label for="plan-reps">Повторения</label>
-          <input type="number" id="plan-reps" min="1" value="10">
-        </div>
-        <div class="input-group" style="flex:1; min-width:80px;">
-          <label for="plan-weight">Вес (кг)</label>
-          <input type="number" id="plan-weight" min="0" value="0" step="2.5">
-        </div>
-      </div>
-      <div class="input-group">
-        <label for="plan-note">Заметка (опционально)</label>
-        <textarea id="plan-note" placeholder="Техника, советы, ссылка на видео..." rows="2"></textarea>
-      </div>
-      <button class="apple-button apple-button-primary apple-button-block" id="add-plan-exercise">➕ Добавить в план</button>
     </div>
+
     <div class="apple-card">
-      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <h3 style="font-size: 20px;">📅 Текущий план</h3>
-        <span class="text-secondary" id="plan-exercises-count">0 упражнений</span>
-      </div>
-      <div style="margin: 12px 0 8px 0;">
-        <div class="progress-label"><span>Выполнение</span><span id="progress-text">0%</span></div>
-        <div class="progress-bar-container"><div class="progress-bar" id="progress-bar" style="width: 0%;"></div></div>
-      </div>
-      <div id="plan-list"><div class="empty-state">Нет упражнений в плане</div></div>
-      <div style="display: flex; gap: 12px; margin-top: 16px;">
-        <button class="apple-button apple-button-success apple-button-block" id="mark-day-done">✅ День готов</button>
-        <button class="apple-button apple-button-danger apple-button-block" id="clear-plan">🗑️ Очистить</button>
-      </div>
-    </div>
-    <div class="apple-card">
-      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div class="flex-between">
         <h3 style="font-size: 20px;">📆 История планов</h3>
         <span class="text-secondary" id="history-count">0</span>
       </div>
@@ -914,10 +1174,7 @@
       <button class="apple-button apple-button-success apple-button-block" id="add-product-btn" style="margin-top: 12px;">📦 Добавить продукт в базу</button>
     </div>
     <div class="apple-card">
-      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <h3 style="font-size: 20px;">Сегодня</h3>
-        <span style="font-weight: 600; font-size: 18px;">Всего: <span id="today-food-total">0</span> ккал</span>
-      </div>
+      <div class="flex-between"><h3 style="font-size: 20px;">Сегодня</h3><span style="font-weight: 600; font-size: 18px;">Всего: <span id="today-food-total">0</span> ккал</span></div>
       <div id="today-food-list"><div class="empty-state">Нет записей за сегодня</div></div>
     </div>
     <div class="apple-card">
@@ -1067,7 +1324,7 @@
     'use strict';
 
     // =====================================================
-    // БАЗА ПРОДУКТОВ (сокращённая для примера)
+    // БАЗА ПРОДУКТОВ (сокращённая, но можно расширить)
     // =====================================================
     const BASE_FOOD_DB = {
       'гречка':130,'гречневая':130,'рис':116,'рис варёный':116,'рис бурый':123,
@@ -1216,7 +1473,6 @@
     function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
     function normalizeText(text) { return text.toLowerCase().trim().replace(/ё/g, 'е'); }
     function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
-
     function loadData(key, def) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : def; } catch { return def; } }
     function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
@@ -1225,9 +1481,26 @@
     // =====================================================
     let profile = loadData('fit_profile', { weight: '', height: '', goal: 'Поддерживать', waterGoal: 2000 });
     let meals = loadData('fit_meals', []);
-    let plan = loadData('fit_plan', { days: [], exercises: [], history: [] });
+    let plan = loadData('fit_plan', { days: [], exercises: {}, history: [] });
     let waterLog = loadData('fit_water', {});
     let weightLog = loadData('fit_weight_log', []);
+    let templates = loadData('fit_templates', [
+      { id: 't1', name: 'День груди', exercises: [
+          { name: 'Жим лёжа', sets: 4, reps: 10, weight: 0, note: '', tags: ['#сила'], difficulty: 4, video: '' },
+          { name: 'Разводка гантелей', sets: 3, reps: 12, weight: 0, note: '', tags: ['#сила'], difficulty: 3, video: '' },
+          { name: 'Пуловер', sets: 3, reps: 12, weight: 0, note: '', tags: ['#сила'], difficulty: 3, video: '' }
+        ] },
+      { id: 't2', name: 'День спины', exercises: [
+          { name: 'Тяга штанги в наклоне', sets: 4, reps: 10, weight: 0, note: '', tags: ['#сила'], difficulty: 4, video: '' },
+          { name: 'Подтягивания', sets: 3, reps: 8, weight: 0, note: '', tags: ['#сила'], difficulty: 5, video: '' },
+          { name: 'Становая тяга', sets: 3, reps: 6, weight: 0, note: '', tags: ['#сила'], difficulty: 5, video: '' }
+        ] },
+      { id: 't3', name: 'Кардио', exercises: [
+          { name: 'Бег', sets: 1, reps: 0, weight: 0, note: '30 минут', tags: ['#кардио'], difficulty: 3, video: '' },
+          { name: 'Велосипед', sets: 1, reps: 0, weight: 0, note: '20 минут', tags: ['#кардио'], difficulty: 2, video: '' },
+          { name: 'Скакалка', sets: 3, reps: 50, weight: 0, note: '', tags: ['#кардио'], difficulty: 3, video: '' }
+        ] }
+    ]);
 
     // =====================================================
     // НАВИГАЦИЯ
@@ -1250,7 +1523,7 @@
         card.style.animation = 'none';
         requestAnimationFrame(() => { card.style.animation = ''; });
       });
-      if (pageId === 'training') renderPlan();
+      if (pageId === 'training') { renderCalendar(); renderExercises(); renderHistory(); renderTemplates(); }
       if (pageId === 'food') renderFood();
       if (pageId === 'water') renderWater();
       if (pageId === 'profile') { renderProfile(); renderStatistics('day'); }
@@ -1264,124 +1537,423 @@
     });
 
     // =====================================================
-    // ТРЕНИРОВКИ
+    // ТРЕНИРОВКИ (НОВАЯ ЛОГИКА)
     // =====================================================
-    const daySelector = document.getElementById('daySelector');
+
+    // --- Календарь ---
+    let currentDate = new Date();
+    let selectedDate = getToday();
+
+    const calPrev = document.getElementById('calPrev');
+    const calNext = document.getElementById('calNext');
+    const calLabel = document.getElementById('calLabel');
+    const calendarDays = document.getElementById('calendarDays');
+    const selectedDateLabel = document.getElementById('selected-date-label');
+
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      let startOffset = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+
+      calLabel.textContent = `${firstDay.toLocaleString('ru', { month: 'long' })} ${year}`;
+
+      let html = '';
+      const todayStr = getToday();
+      for (let i = 0; i < startOffset; i++) {
+        html += '<div></div>';
+      }
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dateObj = new Date(year, month, d);
+        const dateStr = dateObj.toISOString().slice(0, 10);
+        const isSelected = dateStr === selectedDate;
+        const hasPlan = plan.exercises[dateStr] && plan.exercises[dateStr].length > 0;
+        let classNames = 'calendar-day';
+        if (isSelected) classNames += ' selected';
+        if (hasPlan) classNames += ' has-plan';
+        html += `<button class="${classNames}" data-date="${dateStr}">${d}</button>`;
+      }
+      calendarDays.innerHTML = html;
+
+      document.querySelectorAll('.calendar-day').forEach(el => {
+        el.addEventListener('click', function() {
+          selectedDate = this.dataset.date;
+          renderCalendar();
+          renderExercises();
+          renderHistory();
+          const dateObj = new Date(selectedDate);
+          selectedDateLabel.textContent = dateObj.toLocaleDateString('ru', { day: 'numeric', month: 'long' });
+        });
+      });
+
+      const dateObj = new Date(selectedDate);
+      selectedDateLabel.textContent = dateObj.toLocaleDateString('ru', { day: 'numeric', month: 'long' });
+    }
+
+    calPrev.addEventListener('click', function() {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar();
+    });
+    calNext.addEventListener('click', function() {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar();
+    });
+
+    // --- Добавление упражнения ---
     const planExercise = document.getElementById('plan-exercise');
     const planSets = document.getElementById('plan-sets');
     const planReps = document.getElementById('plan-reps');
     const planWeight = document.getElementById('plan-weight');
+    const planTags = document.getElementById('plan-tags');
+    const planDifficulty = document.getElementById('plan-difficulty');
+    const planVideo = document.getElementById('plan-video');
     const planNote = document.getElementById('plan-note');
     const addBtn = document.getElementById('add-plan-exercise');
-    const planList = document.getElementById('plan-list');
-    const progressBar = document.getElementById('progress-bar');
-    const progressText = document.getElementById('progress-text');
-    const planExercisesCount = document.getElementById('plan-exercises-count');
-    const markDayDoneBtn = document.getElementById('mark-day-done');
-    const clearPlanBtn = document.getElementById('clear-plan');
-    const historyList = document.getElementById('history-list');
-    const historyCount = document.getElementById('history-count');
-
-    function initDaySelector() {
-      const checkboxes = daySelector.querySelectorAll('.day-checkbox');
-      checkboxes.forEach(el => {
-        const day = parseInt(el.dataset.day);
-        if (plan.days.includes(day)) el.classList.add('active');
-        el.addEventListener('click', function() {
-          const dayNum = parseInt(this.dataset.day);
-          const idx = plan.days.indexOf(dayNum);
-          if (idx > -1) { plan.days.splice(idx, 1); this.classList.remove('active'); }
-          else { plan.days.push(dayNum); this.classList.add('active'); }
-          saveData('fit_plan', plan);
-        });
-      });
-    }
 
     addBtn.addEventListener('click', function() {
       const name = planExercise.value.trim();
       const sets = parseInt(planSets.value) || 0;
       const reps = parseInt(planReps.value) || 0;
       const weight = parseFloat(planWeight.value) || 0;
+      const tags = planTags.value.split(',').map(t => t.trim()).filter(t => t);
+      const difficulty = parseInt(planDifficulty.value) || 3;
+      const video = planVideo.value.trim();
       const note = planNote.value.trim();
       if (!name) { alert('Введите название упражнения'); return; }
       if (sets < 1 || reps < 1) { alert('Укажите подходы и повторения'); return; }
-      if (plan.days.length === 0) { alert('Выберите хотя бы один день для тренировок'); return; }
-      plan.exercises.push({ id: generateId(), name, sets, reps, weight, note, done: false });
+
+      if (!plan.exercises[selectedDate]) {
+        plan.exercises[selectedDate] = [];
+      }
+      plan.exercises[selectedDate].push({
+        id: generateId(),
+        name,
+        sets,
+        reps,
+        weight,
+        tags,
+        difficulty,
+        video,
+        note,
+        done: false
+      });
       saveData('fit_plan', plan);
-      renderPlan();
-      planExercise.value = ''; planSets.value = '3'; planReps.value = '10'; planWeight.value = '0'; planNote.value = '';
+      renderExercises();
+      renderCalendar();
+      clearInputs();
     });
 
-    function renderPlan() {
-      const total = plan.exercises.length;
-      const done = plan.exercises.filter(e => e.done).length;
+    function clearInputs() {
+      planExercise.value = '';
+      planSets.value = '3';
+      planReps.value = '10';
+      planWeight.value = '0';
+      planTags.value = '';
+      planDifficulty.value = '3';
+      planVideo.value = '';
+      planNote.value = '';
+    }
+
+    // --- Рендер упражнений ---
+    function renderExercises() {
+      const list = document.getElementById('plan-list');
+      const exercises = plan.exercises[selectedDate] || [];
+      const total = exercises.length;
+      const done = exercises.filter(e => e.done).length;
       const percent = total > 0 ? Math.round((done / total) * 100) : 0;
-      progressBar.style.width = percent + '%';
-      progressText.textContent = percent + '%';
-      planExercisesCount.textContent = total + ' упражнений';
+      document.getElementById('progress-bar').style.width = percent + '%';
+      document.getElementById('progress-text').textContent = percent + '%';
+      document.getElementById('plan-exercises-count').textContent = total + ' упражнений';
+
       if (total === 0) {
-        planList.innerHTML = '<div class="empty-state">Нет упражнений в плане</div>';
-      } else {
-        planList.innerHTML = plan.exercises.map((ex) => `
-          <div class="list-item" data-id="${ex.id}">
-            <div class="left">
-              <span class="title">${ex.done ? '✅' : '⬜'} ${escapeHtml(ex.name)}</span>
-              <span class="sub">${ex.sets}×${ex.reps} · ${ex.weight} кг ${ex.note ? '📎 ' + escapeHtml(ex.note) : ''}</span>
-            </div>
-            <div style="display:flex; gap:8px;">
-              <button class="apple-button apple-button-success apple-button-sm" onclick="window.toggleExercise('${ex.id}')">${ex.done ? '↩️' : '✅'}</button>
-              <button class="apple-button apple-button-danger apple-button-sm" onclick="window.removeExercise('${ex.id}')">✕</button>
-            </div>
-          </div>
-        `).join('');
+        list.innerHTML = '<div class="empty-state">Нет упражнений на этот день</div>';
+        return;
       }
-      const hist = plan.history || [];
-      historyCount.textContent = hist.length;
-      if (hist.length === 0) {
-        historyList.innerHTML = '<div class="empty-state">Нет сохранённых планов</div>';
-      } else {
-        const recent = hist.slice(-5).reverse();
-        historyList.innerHTML = recent.map(h => `
-          <div class="list-item">
-            <div class="left"><span class="title">${formatDate(h.date)}</span><span class="sub">${h.exercises} упражнений</span></div>
-            <div class="right">${h.done ? '✅ Выполнен' : '⬜ Не выполнен'}</div>
+
+      let html = '<div id="exercise-sortable">';
+      exercises.forEach((ex) => {
+        const icon = getIconForExercise(ex.name);
+        const difficultyStars = renderStars(ex.difficulty || 3);
+        const doneClass = ex.done ? ' done' : '';
+        html += `
+          <div class="exercise-card${doneClass}" data-id="${ex.id}">
+            <div class="header" data-id="${ex.id}">
+              <div class="name">
+                <span class="icon">${icon}</span>
+                ${escapeHtml(ex.name)}
+              </div>
+              <div class="right">
+                <span class="difficulty">${difficultyStars}</span>
+                <button class="apple-button apple-button-sm" onclick="window.toggleExercise('${ex.id}')">${ex.done ? '↩️' : '✅'}</button>
+                <button class="apple-button apple-button-sm" onclick="window.removeExercise('${ex.id}')">✕</button>
+              </div>
+            </div>
+            <div class="details" data-id="${ex.id}">
+              <div class="meta">
+                ${ex.tags ? ex.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('') : ''}
+              </div>
+              <div>${ex.sets}×${ex.reps} · ${ex.weight} кг</div>
+              ${ex.video ? `<a href="${escapeHtml(ex.video)}" target="_blank" class="video-link">▶️ Смотреть видео</a>` : ''}
+              ${ex.note ? `<div class="note">${escapeHtml(ex.note)}</div>` : ''}
+            </div>
           </div>
-        `).join('');
+        `;
+      });
+      html += '</div>';
+      list.innerHTML = html;
+
+      document.querySelectorAll('.exercise-card .header').forEach(header => {
+        header.addEventListener('click', function(e) {
+          if (e.target.tagName === 'BUTTON') return;
+          const card = this.closest('.exercise-card');
+          const details = card.querySelector('.details');
+          details.classList.toggle('open');
+        });
+      });
+
+      const sortableEl = document.getElementById('exercise-sortable');
+      if (sortableEl) {
+        Sortable.create(sortableEl, {
+          animation: 150,
+          ghostClass: 'sortable-ghost',
+          dragClass: 'sortable-drag',
+          onEnd: function(evt) {
+            const items = Array.from(evt.from.children);
+            const newOrder = items.map(el => el.dataset.id);
+            const exs = plan.exercises[selectedDate];
+            if (exs) {
+              const reordered = [];
+              newOrder.forEach(id => {
+                const found = exs.find(e => e.id === id);
+                if (found) reordered.push(found);
+              });
+              plan.exercises[selectedDate] = reordered;
+              saveData('fit_plan', plan);
+            }
+          }
+        });
       }
     }
 
+    function getIconForExercise(name) {
+      const lower = name.toLowerCase();
+      if (lower.includes('бег') || lower.includes('кардио')) return '🏃';
+      if (lower.includes('жим') || lower.includes('разводка')) return '💪';
+      if (lower.includes('тяга') || lower.includes('подтягивание')) return '🏋️';
+      if (lower.includes('становая')) return '🏋️';
+      if (lower.includes('приседание')) return '🦵';
+      if (lower.includes('пресс')) return '🫀';
+      if (lower.includes('йога') || lower.includes('растяжка')) return '🧘';
+      return '💪';
+    }
+
+    function renderStars(difficulty) {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        if (i <= difficulty) stars += '⭐';
+        else stars += '<span class="star-empty">⭐</span>';
+      }
+      return `<span class="stars">${stars}</span>`;
+    }
+
     window.toggleExercise = function(id) {
-      const ex = plan.exercises.find(e => e.id === id);
-      if (ex) { ex.done = !ex.done; saveData('fit_plan', plan); renderPlan(); }
+      const exs = plan.exercises[selectedDate];
+      if (!exs) return;
+      const ex = exs.find(e => e.id === id);
+      if (ex) { ex.done = !ex.done; saveData('fit_plan', plan); renderExercises(); renderCalendar(); }
     };
     window.removeExercise = function(id) {
-      plan.exercises = plan.exercises.filter(e => e.id !== id);
-      saveData('fit_plan', plan); renderPlan();
+      const exs = plan.exercises[selectedDate];
+      if (!exs) return;
+      plan.exercises[selectedDate] = exs.filter(e => e.id !== id);
+      if (plan.exercises[selectedDate].length === 0) delete plan.exercises[selectedDate];
+      saveData('fit_plan', plan);
+      renderExercises();
+      renderCalendar();
     };
 
-    markDayDoneBtn.addEventListener('click', function() {
-      const today = getToday();
-      if (plan.exercises.length === 0) { alert('Нет упражнений в плане'); return; }
-      const existing = plan.history.find(h => h.date === today);
-      if (existing) { alert('Сегодня уже отмечен'); return; }
-      const allDone = plan.exercises.every(e => e.done);
-      plan.history.push({ date: today, exercises: plan.exercises.length, done: allDone });
-      plan.exercises.forEach(e => e.done = false);
-      saveData('fit_plan', plan);
-      renderPlan();
+    // --- Шаблоны ---
+    function renderTemplates() {
+      const container = document.getElementById('templateSelector');
+      if (!container) return;
+      let html = '';
+      templates.forEach(t => {
+        html += `<button class="template-btn" data-id="${t.id}">${escapeHtml(t.name)}</button>`;
+      });
+      html += `<button class="template-btn" id="apply-custom-template">➕ Применить свой шаблон</button>`;
+      container.innerHTML = html;
+
+      document.querySelectorAll('.template-btn[data-id]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = this.dataset.id;
+          const template = templates.find(t => t.id === id);
+          if (!template) return;
+          if (!plan.exercises[selectedDate]) plan.exercises[selectedDate] = [];
+          template.exercises.forEach(ex => {
+            plan.exercises[selectedDate].push({
+              id: generateId(),
+              name: ex.name,
+              sets: ex.sets || 3,
+              reps: ex.reps || 10,
+              weight: ex.weight || 0,
+              tags: ex.tags || [],
+              difficulty: ex.difficulty || 3,
+              video: ex.video || '',
+              note: ex.note || '',
+              done: false
+            });
+          });
+          saveData('fit_plan', plan);
+          renderExercises();
+          renderCalendar();
+        });
+      });
+
+      document.getElementById('apply-custom-template').addEventListener('click', function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            try {
+              const data = JSON.parse(ev.target.result);
+              if (data.exercises && Array.isArray(data.exercises)) {
+                const exs = data.exercises.map(ex => ({
+                  id: generateId(),
+                  name: ex.name || 'Без названия',
+                  sets: ex.sets || 3,
+                  reps: ex.reps || 10,
+                  weight: ex.weight || 0,
+                  tags: ex.tags || [],
+                  difficulty: ex.difficulty || 3,
+                  video: ex.video || '',
+                  note: ex.note || '',
+                  done: false
+                }));
+                if (!plan.exercises[selectedDate]) plan.exercises[selectedDate] = [];
+                plan.exercises[selectedDate].push(...exs);
+                saveData('fit_plan', plan);
+                renderExercises();
+                renderCalendar();
+                alert('✅ Шаблон применён!');
+              } else {
+                alert('Неверный формат файла');
+              }
+            } catch (err) {
+              alert('Ошибка чтения файла');
+            }
+          };
+          reader.readAsText(file);
+        };
+        input.click();
+      });
+    }
+
+    document.getElementById('save-template-btn').addEventListener('click', function() {
+      const exs = plan.exercises[selectedDate] || [];
+      if (exs.length === 0) { alert('Нет упражнений для сохранения'); return; }
+      const name = prompt('Введите название шаблона:');
+      if (!name) return;
+      const template = {
+        id: 't' + Date.now(),
+        name: name,
+        exercises: exs.map(ex => ({
+          name: ex.name,
+          sets: ex.sets,
+          reps: ex.reps,
+          weight: ex.weight,
+          tags: ex.tags || [],
+          difficulty: ex.difficulty || 3,
+          video: ex.video || '',
+          note: ex.note || ''
+        }))
+      };
+      templates.push(template);
+      saveData('fit_templates', templates);
+      renderTemplates();
+      alert('✅ Шаблон сохранён!');
     });
 
-    clearPlanBtn.addEventListener('click', function() {
-      if (!confirm('Удалить все упражнения из плана?')) return;
-      plan.exercises = [];
+    document.getElementById('copy-week-plan').addEventListener('click', function() {
+      const exs = plan.exercises[selectedDate] || [];
+      if (exs.length === 0) { alert('Нет упражнений для копирования'); return; }
+      const dateObj = new Date(selectedDate);
+      dateObj.setDate(dateObj.getDate() + 7);
+      const newDate = dateObj.toISOString().slice(0, 10);
+      if (!plan.exercises[newDate]) plan.exercises[newDate] = [];
+      const newExs = exs.map(ex => ({
+        id: generateId(),
+        name: ex.name,
+        sets: ex.sets,
+        reps: ex.reps,
+        weight: ex.weight,
+        tags: ex.tags || [],
+        difficulty: ex.difficulty || 3,
+        video: ex.video || '',
+        note: ex.note || '',
+        done: false
+      }));
+      plan.exercises[newDate].push(...newExs);
       saveData('fit_plan', plan);
-      renderPlan();
+      renderCalendar();
+      alert('✅ План скопирован на следующую неделю!');
     });
 
-    initDaySelector();
+    document.getElementById('clear-plan').addEventListener('click', function() {
+      if (!confirm('Удалить все упражнения на этот день?')) return;
+      delete plan.exercises[selectedDate];
+      saveData('fit_plan', plan);
+      renderExercises();
+      renderCalendar();
+    });
+
+    document.getElementById('mark-day-done').addEventListener('click', function() {
+      const exs = plan.exercises[selectedDate] || [];
+      if (exs.length === 0) { alert('Нет упражнений'); return; }
+      const allDone = exs.every(e => e.done);
+      if (!allDone) {
+        exs.forEach(e => e.done = true);
+      } else {
+        exs.forEach(e => e.done = false);
+      }
+      saveData('fit_plan', plan);
+      renderExercises();
+      renderCalendar();
+      if (!allDone) {
+        const existing = plan.history.find(h => h.date === selectedDate);
+        if (!existing) {
+          plan.history.push({ date: selectedDate, exercises: exs.length, done: true });
+          saveData('fit_plan', plan);
+          renderHistory();
+        }
+      }
+    });
+
+    function renderHistory() {
+      const hist = plan.history || [];
+      const count = document.getElementById('history-count');
+      const list = document.getElementById('history-list');
+      count.textContent = hist.length;
+      if (hist.length === 0) {
+        list.innerHTML = '<div class="empty-state">Нет сохранённых планов</div>';
+        return;
+      }
+      const recent = hist.slice(-5).reverse();
+      list.innerHTML = recent.map(h => `
+        <div class="list-item">
+          <div class="left"><span class="title">${formatDate(h.date)}</span><span class="sub">${h.exercises} упражнений</span></div>
+          <div class="right">${h.done ? '✅ Выполнен' : '⬜ Не выполнен'}</div>
+        </div>
+      `).join('');
+    }
 
     // =====================================================
-    // ПИТАНИЕ (ГИБРИДНЫЙ ПОИСК)
+    // ПИТАНИЕ (гибридный поиск)
     // =====================================================
     const mealSearch = document.getElementById('meal-search');
     const mealWeight = document.getElementById('meal-weight');
@@ -2014,7 +2586,15 @@
     renderPlan();
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
 
-    console.log('🚀 FitApp запущен!');
+    // Дополнительно рендерим тренировки при старте
+    setTimeout(() => {
+      renderCalendar();
+      renderExercises();
+      renderHistory();
+      renderTemplates();
+    }, 100);
+
+    console.log('🚀 FitApp с обновлёнными тренировками запущен!');
   })();
 </script>
 </body>
