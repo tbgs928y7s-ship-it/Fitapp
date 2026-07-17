@@ -17,7 +17,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
       background: #f2f2f7;
       color: #1c1c1e;
-      padding: 16px 16px 40px;
+      padding: 20px 16px 40px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -36,13 +36,13 @@
       background: transparent;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
     }
 
     .page {
       display: none;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
       animation: pageFadeIn 0.35s cubic-bezier(0.2, 0.8, 0.35, 1) forwards;
       will-change: transform, opacity;
     }
@@ -56,9 +56,9 @@
     /* ===== КАРТОЧКИ ===== */
     .apple-card {
       background: #ffffff;
-      border-radius: 28px;
-      padding: 24px 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.02);
+      border-radius: 32px;
+      padding: 28px 24px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.3);
       transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.35, 1), box-shadow 0.3s ease;
       animation: cardAppear 0.4s ease forwards;
@@ -78,34 +78,34 @@
     .apple-card:active { transform: scale(0.985); transition-duration: 0.06s; }
 
     .page-title {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
       letter-spacing: -0.02em;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       line-height: 1.2;
     }
     .page-subtitle {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 400;
       color: #8e8e93;
       margin-top: 2px;
       line-height: 1.4;
     }
     h3 {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
       line-height: 1.4;
       color: #1c1c1e;
     }
     .text-secondary { color: #8e8e93; }
 
-    /* ===== КНОПКИ (градиентные) ===== */
+    /* ===== КНОПКИ (БОЛЬШИЕ) ===== */
     .apple-button {
       background: transparent;
       border: none;
       border-radius: 40px;
-      padding: 14px 24px;
-      font-size: 17px;
+      padding: 18px 28px;
+      font-size: 19px;
       font-weight: 600;
       color: #007aff;
       background: rgba(0, 122, 255, 0.08);
@@ -114,10 +114,10 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       user-select: none;
-      width: fit-content;
-      min-width: 110px;
+      min-height: 60px;
+      min-width: 120px;
       touch-action: manipulation;
       -webkit-touch-callout: none;
       will-change: transform;
@@ -130,12 +130,12 @@
     .apple-button-primary {
       background: linear-gradient(135deg, #007aff, #0055cc);
       color: #fff;
-      box-shadow: 0 4px 16px rgba(0, 122, 255, 0.25);
+      box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3);
     }
     .apple-button-primary:active {
       background: linear-gradient(135deg, #0055cc, #003d99);
       transform: scale(0.94);
-      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+      box-shadow: 0 3px 10px rgba(0, 122, 255, 0.2);
     }
     .apple-button-success {
       background: rgba(52, 199, 89, 0.12);
@@ -147,18 +147,18 @@
       color: #ff3b30;
     }
     .apple-button-danger:active { background: rgba(255, 59, 48, 0.18); }
-    .apple-button-sm { padding: 8px 16px; font-size: 14px; min-width: unset; }
+    .apple-button-sm { padding: 12px 20px; font-size: 16px; min-height: 48px; min-width: 80px; }
     .apple-button-block { width: 100%; justify-content: center; }
 
     /* ===== ПОЛЯ ВВОДА ===== */
     .input-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-bottom: 18px;
+      gap: 8px;
+      margin-bottom: 22px;
     }
     .input-group label {
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 500;
       color: #1c1c1e;
       letter-spacing: -0.01em;
@@ -167,9 +167,9 @@
     .input-group input,
     .input-group select,
     .input-group textarea {
-      font-size: 17px;
-      padding: 14px 16px;
-      border-radius: 16px;
+      font-size: 18px;
+      padding: 16px 18px;
+      border-radius: 18px;
       border: 1px solid #e5e5ea;
       background: #f8f8fa;
       transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
@@ -181,26 +181,27 @@
       appearance: none;
       touch-action: manipulation;
       line-height: 1.4;
+      min-height: 60px;
     }
-    .input-group textarea { resize: vertical; min-height: 60px; }
+    .input-group textarea { resize: vertical; min-height: 80px; }
     .input-group input:focus,
     .input-group select:focus,
     .input-group textarea:focus {
       border-color: #007aff;
       background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.08);
+      box-shadow: 0 0 0 5px rgba(0, 122, 255, 0.08);
       transform: scale(1.005);
     }
     .input-group input::placeholder,
     .input-group textarea::placeholder { color: #aeaeb2; }
 
-    /* ===== ПРОГРЕСС-БАР (с градиентом) ===== */
+    /* ===== ПРОГРЕСС-БАР ===== */
     .progress-bar-container {
       background: #e5e5ea;
       border-radius: 20px;
-      height: 12px;
+      height: 16px;
       overflow: hidden;
-      margin: 8px 0 4px 0;
+      margin: 10px 0 6px 0;
     }
     .progress-bar {
       height: 100%;
@@ -212,7 +213,7 @@
     .progress-label {
       display: flex;
       justify-content: space-between;
-      font-size: 14px;
+      font-size: 16px;
       color: #8e8e93;
     }
 
@@ -220,21 +221,22 @@
     .day-checkbox-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 16px;
     }
     .day-checkbox {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 30px;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 40px;
       background: #f8f8fa;
       border: 1px solid #e5e5ea;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 14px;
+      font-size: 17px;
       user-select: none;
+      min-height: 52px;
     }
     .day-checkbox.active {
       background: #007aff;
@@ -243,18 +245,19 @@
     }
     .day-checkbox input { display: none; }
 
-    /* ===== СПИСКИ (с анимацией) ===== */
+    /* ===== СПИСКИ ===== */
     .list-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 0;
+      padding: 16px 0;
       border-bottom: 1px solid #f0f0f2;
       animation: listItemAppear 0.3s ease forwards;
       opacity: 0;
       transform: translateX(-6px);
       touch-action: manipulation;
-      gap: 12px;
+      gap: 14px;
+      min-height: 64px;
     }
     .list-item:nth-child(1) { animation-delay: 0.05s; }
     .list-item:nth-child(2) { animation-delay: 0.10s; }
@@ -274,32 +277,32 @@
     .list-item .left {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
       flex: 1;
       min-width: 0;
     }
-    .list-item .left .title { font-weight: 500; font-size: 17px; line-height: 1.3; }
-    .list-item .left .sub { font-size: 14px; color: #8e8e93; line-height: 1.4; }
-    .list-item .right { font-weight: 600; font-size: 17px; color: #1c1c1e; white-space: nowrap; line-height: 1.3; }
+    .list-item .left .title { font-weight: 500; font-size: 19px; line-height: 1.3; }
+    .list-item .left .sub { font-size: 16px; color: #8e8e93; line-height: 1.4; }
+    .list-item .right { font-weight: 600; font-size: 19px; color: #1c1c1e; white-space: nowrap; line-height: 1.3; }
     .empty-state {
       text-align: center;
       color: #8e8e93;
-      padding: 32px 0;
-      font-size: 16px;
+      padding: 40px 0;
+      font-size: 18px;
       animation: fadeIn 0.3s ease;
       line-height: 1.5;
     }
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
 
-    /* ===== СТАТИСТИКА (градиентные карточки) ===== */
+    /* ===== СТАТИСТИКА ===== */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      gap: 16px;
     }
     .stat-box {
-      border-radius: 18px;
-      padding: 16px 12px;
+      border-radius: 22px;
+      padding: 20px 14px;
       text-align: center;
       transition: transform 0.15s ease, box-shadow 0.2s ease;
       animation: statAppear 0.4s ease forwards;
@@ -307,6 +310,7 @@
       transform: scale(0.94);
       touch-action: manipulation;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      min-height: 110px;
     }
     .stat-box:nth-child(1) { animation-delay: 0.05s; background: linear-gradient(135deg, #f0f4ff, #e8f0fe); }
     .stat-box:nth-child(2) { animation-delay: 0.10s; background: linear-gradient(135deg, #ffefe7, #ffe3d6); }
@@ -318,23 +322,23 @@
       100% { opacity: 1; transform: scale(1); }
     }
     .stat-box:active { transform: scale(0.96); transition-duration: 0.04s; }
-    .stat-box .number { font-size: 28px; font-weight: 700; color: #1c1c1e; letter-spacing: -0.02em; line-height: 1.2; }
-    .stat-box .label { font-size: 13px; color: #6e6e73; margin-top: 4px; line-height: 1.3; }
-    .stat-box .emoji { font-size: 20px; display: block; margin-bottom: 4px; }
+    .stat-box .number { font-size: 32px; font-weight: 700; color: #1c1c1e; letter-spacing: -0.02em; line-height: 1.2; }
+    .stat-box .label { font-size: 15px; color: #6e6e73; margin-top: 6px; line-height: 1.3; }
+    .stat-box .emoji { font-size: 24px; display: block; margin-bottom: 4px; }
 
     /* ===== МЕНЮ ===== */
     .menu-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 12px;
-      margin-top: 6px;
+      gap: 14px;
+      margin-top: 8px;
     }
     .menu-card {
       background: #ffffff;
-      border-radius: 24px;
-      padding: 18px 8px;
+      border-radius: 28px;
+      padding: 22px 10px;
       text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
       transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.35, 1), box-shadow 0.2s ease, background 0.15s ease;
       cursor: pointer;
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -345,6 +349,7 @@
       -webkit-touch-callout: none;
       will-change: transform;
       position: relative;
+      min-height: 100px;
     }
     .menu-card:nth-child(1) { animation-delay: 0.05s; }
     .menu-card:nth-child(2) { animation-delay: 0.10s; }
@@ -355,17 +360,17 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
     .menu-card:active { transform: scale(0.95); transition-duration: 0.05s; background: #f8f8fa; }
-    .menu-card .icon { font-size: 34px; margin-bottom: 6px; transition: transform 0.2s ease; display: block; line-height: 1; }
+    .menu-card .icon { font-size: 42px; margin-bottom: 8px; transition: transform 0.2s ease; display: block; line-height: 1; }
     .menu-card:active .icon { transform: scale(0.9); }
-    .menu-card .label { font-size: 14px; font-weight: 600; color: #1c1c1e; line-height: 1.3; }
-    .menu-card .desc { font-size: 11px; color: #8e8e93; margin-top: 2px; line-height: 1.3; }
+    .menu-card .label { font-size: 16px; font-weight: 600; color: #1c1c1e; line-height: 1.3; }
+    .menu-card .desc { font-size: 13px; color: #8e8e93; margin-top: 3px; line-height: 1.3; }
     .menu-card.active-card::after {
       content: '';
       position: absolute;
-      bottom: 8px;
+      bottom: 10px;
       left: 30%;
       right: 30%;
-      height: 3px;
+      height: 4px;
       background: #007aff;
       border-radius: 6px;
     }
@@ -374,24 +379,24 @@
     .back-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 0 8px 0;
+      gap: 8px;
+      padding: 6px 0 10px 0;
       animation: fadeIn 0.25s ease;
     }
     .back-button {
       background: none;
       border: none;
-      font-size: 28px;
+      font-size: 34px;
       cursor: pointer;
       color: #007aff;
-      padding: 4px 4px 4px 0;
+      padding: 6px 6px 6px 0;
       line-height: 1;
       transition: transform 0.12s ease, color 0.15s ease;
       touch-action: manipulation;
     }
     .back-button:active { transform: scale(0.85) translateX(-4px); color: #0055cc; }
     .back-label {
-      font-size: 17px;
+      font-size: 19px;
       font-weight: 500;
       color: #007aff;
       cursor: pointer;
@@ -404,12 +409,14 @@
     /* ===== ТАБЫ ===== */
     .tab-group {
       display: flex;
-      gap: 10px;
+      gap: 14px;
     }
     .tab-group .apple-button {
       flex: 1;
       justify-content: center;
       border-radius: 40px;
+      min-height: 56px;
+      font-size: 18px;
     }
 
     /* ===== ПОДСКАЗКИ ПОИСКА ===== */
@@ -417,14 +424,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 16px;
+      padding: 16px 20px;
       background: #f8f8fa;
-      border-radius: 16px;
-      margin-bottom: 8px;
+      border-radius: 18px;
+      margin-bottom: 10px;
       cursor: pointer;
       transition: background 0.15s ease, transform 0.1s ease;
       border: 1px solid transparent;
-      min-height: 56px;
+      min-height: 64px;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
@@ -433,7 +440,7 @@
       transform: scale(0.97);
     }
     .search-result-item .name {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 500;
       color: #1c1c1e;
       line-height: 1.3;
@@ -443,79 +450,82 @@
       font-weight: 700;
     }
     .search-result-item .cal {
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 600;
       color: #8e8e93;
       white-space: nowrap;
-      padding-left: 12px;
+      padding-left: 14px;
     }
 
     /* ===== ВОДА ===== */
     .water-quick-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin: 8px 0 12px;
+      gap: 12px;
+      margin: 10px 0 16px;
     }
     .water-quick-buttons .apple-button {
       flex: 1 0 auto;
-      min-width: 60px;
+      min-width: 70px;
       justify-content: center;
+      min-height: 56px;
     }
     .water-stats {
       display: flex;
       justify-content: space-between;
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 500;
-      margin: 8px 0 4px;
+      margin: 10px 0 6px;
     }
 
     /* ===== АДАПТИВ ===== */
     @media (max-width: 500px) {
-      body { padding: 12px 12px 30px; }
-      .apple-card { padding: 18px 16px; border-radius: 24px; }
-      .page-title { font-size: 24px; }
-      .page-subtitle { font-size: 15px; }
-      .menu-grid { gap: 8px; }
-      .menu-card { padding: 14px 6px; border-radius: 20px; }
-      .menu-card .icon { font-size: 28px; }
-      .menu-card .label { font-size: 13px; }
-      .menu-card .desc { font-size: 10px; }
-      .stats-grid { gap: 10px; }
-      .stat-box .number { font-size: 22px; }
-      .apple-button { padding: 13px 18px; font-size: 16px; min-width: unset; }
-      .input-group input, .input-group select, .input-group textarea { font-size: 16px; padding: 12px 14px; border-radius: 14px; }
-      .list-item { padding: 12px 0; }
-      .list-item .left .title { font-size: 16px; }
-      .list-item .right { font-size: 16px; }
-      .back-button { font-size: 24px; }
-      .day-checkbox { padding: 6px 12px; font-size: 13px; }
-      .app-container { gap: 18px; }
-      .page { gap: 18px; }
-      .tab-group .apple-button { font-size: 15px; padding: 12px 16px; }
-      .search-result-item { padding: 12px 14px; min-height: 50px; border-radius: 14px; }
-      .search-result-item .name { font-size: 16px; }
-      .search-result-item .cal { font-size: 14px; }
-      .water-quick-buttons .apple-button { min-width: 50px; font-size: 14px; padding: 10px 14px; }
+      body { padding: 16px 12px 30px; }
+      .apple-card { padding: 24px 18px; border-radius: 28px; }
+      .page-title { font-size: 28px; }
+      .page-subtitle { font-size: 17px; }
+      .menu-grid { gap: 10px; }
+      .menu-card { padding: 18px 6px; border-radius: 24px; min-height: 90px; }
+      .menu-card .icon { font-size: 36px; }
+      .menu-card .label { font-size: 15px; }
+      .menu-card .desc { font-size: 12px; }
+      .stats-grid { gap: 12px; }
+      .stat-box .number { font-size: 28px; }
+      .apple-button { padding: 16px 22px; font-size: 18px; min-height: 56px; min-width: 100px; }
+      .apple-button-sm { padding: 10px 16px; font-size: 15px; min-height: 44px; }
+      .input-group input, .input-group select, .input-group textarea { font-size: 17px; padding: 14px 16px; min-height: 56px; }
+      .list-item { padding: 14px 0; min-height: 58px; }
+      .list-item .left .title { font-size: 18px; }
+      .list-item .right { font-size: 18px; }
+      .day-checkbox { padding: 10px 16px; font-size: 16px; min-height: 48px; }
+      .back-button { font-size: 30px; }
+      .tab-group .apple-button { font-size: 17px; min-height: 52px; }
+      .search-result-item { padding: 14px 16px; min-height: 58px; }
+      .search-result-item .name { font-size: 17px; }
+      .search-result-item .cal { font-size: 16px; }
+      .water-quick-buttons .apple-button { min-width: 60px; font-size: 16px; padding: 12px 16px; min-height: 50px; }
+      .water-stats { font-size: 17px; }
+      .progress-bar-container { height: 14px; }
     }
     @media (max-width: 380px) {
-      body { padding: 8px 8px 20px; }
-      .menu-grid { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; }
-      .menu-card { padding: 10px 4px; border-radius: 16px; }
-      .menu-card .icon { font-size: 24px; }
-      .menu-card .label { font-size: 12px; }
-      .menu-card .desc { font-size: 9px; }
-      .apple-card { padding: 14px 12px; border-radius: 20px; }
-      .page-title { font-size: 20px; }
-      .stat-box .number { font-size: 18px; }
-      .search-result-item { padding: 10px 12px; min-height: 44px; }
-      .search-result-item .name { font-size: 15px; }
-      .search-result-item .cal { font-size: 13px; }
+      body { padding: 12px 8px 20px; }
+      .menu-grid { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; }
+      .menu-card { padding: 14px 4px; border-radius: 20px; min-height: 80px; }
+      .menu-card .icon { font-size: 30px; }
+      .menu-card .label { font-size: 13px; }
+      .menu-card .desc { font-size: 10px; }
+      .apple-card { padding: 18px 14px; border-radius: 24px; }
+      .page-title { font-size: 24px; }
+      .stat-box .number { font-size: 24px; }
+      .search-result-item { padding: 12px 14px; min-height: 50px; }
+      .search-result-item .name { font-size: 16px; }
+      .search-result-item .cal { font-size: 15px; }
+      .apple-button { padding: 14px 18px; font-size: 17px; min-height: 50px; }
     }
     @supports (padding: max(0px)) {
       body {
-        padding-left: max(12px, env(safe-area-inset-left));
-        padding-right: max(12px, env(safe-area-inset-right));
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
         padding-bottom: max(30px, env(safe-area-inset-bottom));
       }
     }
@@ -565,7 +575,7 @@
       </div>
     </div>
 
-    <div style="margin-top: 20px; color: #8e8e93; font-size: 14px; text-align: center; border-top: 1px solid #e5e5ea; padding-top: 18px; animation: fadeIn 0.5s ease;">
+    <div style="margin-top: 24px; color: #8e8e93; font-size: 16px; text-align: center; border-top: 1px solid #e5e5ea; padding-top: 20px; animation: fadeIn 0.5s ease;">
       Данные сохраняются локально
     </div>
   </div>
@@ -599,7 +609,7 @@
         <input type="text" id="plan-exercise" placeholder="Например: Приседания со штангой">
       </div>
 
-      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 14px; flex-wrap: wrap;">
         <div class="input-group" style="flex:1; min-width:80px;">
           <label for="plan-sets">Подходы</label>
           <input type="number" id="plan-sets" min="1" value="3">
@@ -623,12 +633,12 @@
     </div>
 
     <div class="apple-card">
-      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-        <h3 style="font-size: 18px;">📅 Текущий план</h3>
+      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h3 style="font-size: 20px;">📅 Текущий план</h3>
         <span class="text-secondary" id="plan-exercises-count">0 упражнений</span>
       </div>
 
-      <div style="margin: 10px 0 6px 0;">
+      <div style="margin: 12px 0 8px 0;">
         <div class="progress-label">
           <span>Выполнение</span>
           <span id="progress-text">0%</span>
@@ -642,15 +652,15 @@
         <div class="empty-state">Нет упражнений в плане</div>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
         <button class="apple-button apple-button-success apple-button-sm" id="mark-day-done">✅ День готов</button>
         <button class="apple-button apple-button-danger apple-button-sm" id="clear-plan">🗑️ Очистить</button>
       </div>
     </div>
 
     <div class="apple-card">
-      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-        <h3 style="font-size: 18px;">📆 История планов</h3>
+      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h3 style="font-size: 20px;">📆 История планов</h3>
         <span class="text-secondary" id="history-count">0</span>
       </div>
       <div id="history-list">
@@ -673,7 +683,7 @@
       <div class="input-group">
         <label for="meal-search">Продукт</label>
         <input type="text" id="meal-search" placeholder="Например: гречка, курица, яблоко" autocomplete="off" />
-        <div id="search-results" style="margin-top: 6px;"></div>
+        <div id="search-results" style="margin-top: 8px;"></div>
       </div>
 
       <div class="input-group">
@@ -690,9 +700,9 @@
     </div>
 
     <div class="apple-card">
-      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-        <h3 style="font-size: 18px;">Сегодня</h3>
-        <span style="font-weight: 600;">Всего: <span id="today-food-total">0</span> ккал</span>
+      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h3 style="font-size: 20px;">Сегодня</h3>
+        <span style="font-weight: 600; font-size: 18px;">Всего: <span id="today-food-total">0</span> ккал</span>
       </div>
       <div id="today-food-list">
         <div class="empty-state">Нет записей за сегодня</div>
@@ -700,7 +710,7 @@
     </div>
 
     <div class="apple-card">
-      <h3 style="font-size: 18px;">Все записи</h3>
+      <h3 style="font-size: 20px;">Все записи</h3>
       <div id="all-food-list">
         <div class="empty-state">Нет записей</div>
       </div>
@@ -738,13 +748,13 @@
         <button class="apple-button apple-button-primary" data-add="custom">✏️ Другое</button>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
         <button class="apple-button apple-button-danger apple-button-sm" id="reset-water">🗑️ Сбросить сегодня</button>
       </div>
     </div>
 
     <div class="apple-card">
-      <h3 style="font-size: 18px;">📊 Статистика воды</h3>
+      <h3 style="font-size: 20px;">📊 Статистика воды</h3>
       <div id="water-history-list">
         <div class="empty-state">Нет записей</div>
       </div>
@@ -758,7 +768,7 @@
       <span class="back-label" data-back>Назад</span>
     </div>
 
-    <div class="apple-card" style="padding-bottom: 12px;">
+    <div class="apple-card" style="padding-bottom: 16px;">
       <div class="tab-group">
         <button class="apple-button apple-button-primary" id="tabProfile">👤 Профиль</button>
         <button class="apple-button" id="tabStats">📊 Статистика</button>
@@ -795,15 +805,15 @@
 
       <button class="apple-button apple-button-primary apple-button-block" id="save-profile">Сохранить профиль</button>
 
-      <div style="margin-top: 16px; border-top: 1px solid #e5e5ea; padding-top: 16px;">
-        <h3 style="font-size: 18px;">Текущие данные</h3>
+      <div style="margin-top: 20px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
+        <h3 style="font-size: 20px;">Текущие данные</h3>
         <div id="profile-info" class="empty-state">Профиль не заполнен</div>
       </div>
     </div>
 
     <div id="statsContent" class="apple-card" style="display: none;">
       <h2 class="page-title">📊 Моя статистика</h2>
-      <div style="display: flex; gap: 8px; margin: 10px 0 6px 0; flex-wrap: wrap;">
+      <div style="display: flex; gap: 10px; margin: 12px 0 8px 0; flex-wrap: wrap;">
         <button class="apple-button apple-button-primary" data-stat-period="day">День</button>
         <button class="apple-button" data-stat-period="week">Неделя</button>
         <button class="apple-button" data-stat-period="month">Месяц</button>
@@ -1172,7 +1182,7 @@
         const matches = startsWith.concat(contains).slice(0, 6);
 
         if (matches.length === 0) {
-          searchResults.innerHTML = '<div style="padding: 8px 0; color: #8e8e93; font-size: 14px;">Ничего не найдено</div>';
+          searchResults.innerHTML = '<div style="padding: 10px 0; color: #8e8e93; font-size: 16px;">Ничего не найдено</div>';
           return;
         }
 
@@ -1410,7 +1420,7 @@
             <div class="label">Выпито за период</div>
           </div>
         </div>
-        <div style="margin-top: 12px; text-align: center; font-size: 15px; color: #8e8e93; animation: fadeIn 0.5s ease;">
+        <div style="margin-top: 16px; text-align: center; font-size: 17px; color: #8e8e93; animation: fadeIn 0.5s ease;">
           Период: ${period === 'day' ? 'Сегодня' : period === 'week' ? 'Неделя' : 'Месяц'} · Выполнено ${doneCount} из ${trainingCount} тренировок · В среднем ${avgWater} мл/день
         </div>
       `;
@@ -1449,7 +1459,7 @@
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
     renderPlan();
 
-    console.log('🚀 Fitness Tracker с улучшенным визуалом запущен!');
+    console.log('🚀 Fitness Tracker с увеличенным интерфейсом запущен!');
   })();
 </script>
 </body>
