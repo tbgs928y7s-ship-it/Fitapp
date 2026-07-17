@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>FitApp</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     /* ===== ГЛОБАЛЬНЫЕ СТИЛИ (с поддержкой тёмной темы) ===== */
     * {
@@ -145,7 +146,60 @@
       background: linear-gradient(135deg, #0a84ff, #0055cc);
       color: #fff;
     }
+    /* Switch для тёмной темы (Apple style) */
+    .theme-switch {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: space-between;
+    }
+    .theme-switch label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 500;
+      color: #1c1c1e;
+    }
+    body.dark-theme .theme-switch label {
+      color: #f2f2f7;
+    }
+    .switch {
+      position: relative;
+      width: 51px;
+      height: 31px;
+      background: #e5e5ea;
+      border-radius: 31px;
+      transition: background 0.3s ease;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .switch.active {
+      background: #34c759;
+    }
+    .switch .slider {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 27px;
+      height: 27px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+    }
+    .switch.active .slider {
+      transform: translateX(20px);
+    }
+    body.dark-theme .switch {
+      background: #3a3a3c;
+    }
+    body.dark-theme .switch.active {
+      background: #34c759;
+    }
 
+    /* ===== ОСТАЛЬНЫЕ СТИЛИ ===== */
     .app-container {
       max-width: 700px;
       width: 100%;
@@ -642,6 +696,40 @@
       margin: 10px 0 6px;
     }
 
+    /* ===== ЭКСПОРТ ===== */
+    .export-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin: 12px 0 8px;
+    }
+    .export-options .input-group {
+      flex: 1;
+      min-width: 120px;
+      margin-bottom: 0;
+    }
+    .export-options .input-group label {
+      font-size: 15px;
+    }
+    .export-options select {
+      min-height: 50px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid #e5e5ea;
+      background: #f8f8fa;
+      font-size: 17px;
+      font-family: inherit;
+      color: #1c1c1e;
+      width: 100%;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .export-options select:focus {
+      border-color: #007aff;
+      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.08);
+    }
+
     /* ===== АДАПТИВ ===== */
     @media (max-width: 500px) {
       body { padding: 16px 12px 30px; }
@@ -672,6 +760,9 @@
       .progress-bar-container { height: 14px; }
       .stat-period-buttons { gap: 6px; }
       .stat-period-buttons .apple-button { font-size: 14px; padding: 10px 8px; min-height: 40px; }
+      .export-options { flex-direction: column; gap: 12px; }
+      .export-options .input-group { min-width: unset; }
+      .theme-switch { flex-wrap: wrap; }
     }
     @media (max-width: 400px) {
       body { padding: 12px 8px 20px; }
@@ -949,7 +1040,6 @@
       <div class="tab-group">
         <button class="apple-button apple-button-primary" id="tabProfile">👤 Профиль</button>
         <button class="apple-button" id="tabStats">📊 Статистика</button>
-        <button class="apple-button" id="tabTheme">🌙 Тема</button>
       </div>
     </div>
 
@@ -982,7 +1072,6 @@
       </div>
 
       <button class="apple-button apple-button-primary apple-button-block" id="save-profile">Сохранить профиль</button>
-      <button class="apple-button apple-button-success apple-button-block" id="export-data" style="margin-top: 12px;">📤 Экспорт данных</button>
 
       <div style="margin-top: 20px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
         <h3 style="font-size: 20px;">Текущие данные</h3>
@@ -1001,6 +1090,43 @@
         <!-- заполняется JS -->
       </div>
     </div>
+
+    <!-- ===== КАРТОЧКА НАСТРОЕК ===== -->
+    <div class="apple-card">
+      <h3 style="font-size: 20px;">⚙️ Настройки</h3>
+
+      <!-- Переключатель темы (Apple switch) -->
+      <div class="theme-switch">
+        <label for="themeToggle">🌙 Тёмная тема</label>
+        <div class="switch" id="themeToggle">
+          <div class="slider"></div>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid #e5e5ea; margin: 16px 0 12px;"></div>
+
+      <!-- Экспорт -->
+      <p class="page-subtitle" style="font-size: 16px;">Выберите период и формат для скачивания</p>
+      <div class="export-options">
+        <div class="input-group">
+          <label for="export-period">Период</label>
+          <select id="export-period">
+            <option value="day">День</option>
+            <option value="week">Неделя</option>
+            <option value="month">Месяц</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="export-format">Формат</label>
+          <select id="export-format">
+            <option value="pdf">PDF</option>
+            <option value="csv">CSV</option>
+            <option value="png">PNG</option>
+          </select>
+        </div>
+      </div>
+      <button class="apple-button apple-button-primary apple-button-block" id="export-btn">📥 Скачать</button>
+    </div>
   </div>
 
 </div>
@@ -1010,7 +1136,7 @@
     'use strict';
 
     // =====================================================
-    // БАЗА ПРОДУКТОВ (1000+) + ДОБАВЛЕНИЕ СВОИХ
+    // БАЗА ПРОДУКТОВ (1000+)
     // =====================================================
     const BASE_FOOD_DB = {
       'гречка':130,'гречневая':130,'рис':116,'рис варёный':116,'рис бурый':123,
@@ -1147,7 +1273,6 @@
       'пудинг':130,'мусс':150,'желе':80,'фруктовый салат':60,
     };
 
-    // Загружаем пользовательские продукты из localStorage
     let customFoodDB = loadData('fit_custom_foods', {});
     let FOOD_DB = { ...BASE_FOOD_DB, ...customFoodDB };
 
@@ -1365,7 +1490,7 @@
     const searchResults = document.getElementById('search-results');
     let searchTimeout;
 
-    // Добавление своего продукта
+    // Добавление продукта
     addProductBtn.addEventListener('click', function() {
       const name = prompt('Введите название продукта:');
       if (!name || name.trim() === '') return;
@@ -1379,9 +1504,57 @@
       const key = name.trim().toLowerCase();
       customFoodDB[key] = cal;
       saveData('fit_custom_foods', customFoodDB);
+      // Обновляем FOOD_DB
       FOOD_DB = { ...BASE_FOOD_DB, ...customFoodDB };
       alert(`✅ Продукт "${name}" добавлен в базу!`);
+      // Если поле поиска не пустое, перезапускаем поиск
+      const query = mealSearch.value.trim();
+      if (query.length >= 2) {
+        triggerSearch(query);
+      }
     });
+
+    // Функция для запуска поиска
+    function triggerSearch(query) {
+      const normalized = normalizeText(query);
+      const startsWith = [];
+      const contains = [];
+      Object.keys(FOOD_DB).forEach(key => {
+        const lowerKey = key.toLowerCase();
+        if (lowerKey.startsWith(normalized)) {
+          startsWith.push(key);
+        } else if (lowerKey.includes(normalized)) {
+          contains.push(key);
+        }
+      });
+      startsWith.sort((a, b) => a.length - b.length);
+      contains.sort((a, b) => a.length - b.length);
+      const matches = startsWith.concat(contains).slice(0, 6);
+      if (matches.length === 0) {
+        searchResults.innerHTML = '<div style="padding: 10px 0; color: #8e8e93; font-size: 16px;">Ничего не найдено</div>';
+        return;
+      }
+      let html = '';
+      matches.forEach(key => {
+        const cal = FOOD_DB[key];
+        const regex = new RegExp(normalized, 'i');
+        const highlighted = key.replace(regex, match => `<strong>${match}</strong>`);
+        html += `<div class="search-result-item" data-name="${escapeHtml(key)}" data-cal="${cal}">
+          <span class="name">${highlighted}</span>
+          <span class="cal">${cal} ккал/100г</span>
+        </div>`;
+      });
+      searchResults.innerHTML = html;
+      document.querySelectorAll('.search-result-item').forEach(el => {
+        el.addEventListener('click', function() {
+          const name = this.dataset.name;
+          const cal = parseFloat(this.dataset.cal);
+          mealSearch.value = name;
+          mealCalories.value = cal;
+          searchResults.innerHTML = '';
+        });
+      });
+    }
 
     mealSearch.addEventListener('input', function() {
       clearTimeout(searchTimeout);
@@ -1391,47 +1564,7 @@
         return;
       }
       searchTimeout = setTimeout(() => {
-        const normalized = normalizeText(query);
-        const startsWith = [];
-        const contains = [];
-        Object.keys(FOOD_DB).forEach(key => {
-          const lowerKey = key.toLowerCase();
-          if (lowerKey.startsWith(normalized)) {
-            startsWith.push(key);
-          } else if (lowerKey.includes(normalized)) {
-            contains.push(key);
-          }
-        });
-        startsWith.sort((a, b) => a.length - b.length);
-        contains.sort((a, b) => a.length - b.length);
-        const matches = startsWith.concat(contains).slice(0, 6);
-
-        if (matches.length === 0) {
-          searchResults.innerHTML = '<div style="padding: 10px 0; color: #8e8e93; font-size: 16px;">Ничего не найдено</div>';
-          return;
-        }
-
-        let html = '';
-        matches.forEach(key => {
-          const cal = FOOD_DB[key];
-          const regex = new RegExp(normalized, 'i');
-          const highlighted = key.replace(regex, match => `<strong>${match}</strong>`);
-          html += `<div class="search-result-item" data-name="${escapeHtml(key)}" data-cal="${cal}">
-            <span class="name">${highlighted}</span>
-            <span class="cal">${cal} ккал/100г</span>
-          </div>`;
-        });
-        searchResults.innerHTML = html;
-
-        document.querySelectorAll('.search-result-item').forEach(el => {
-          el.addEventListener('click', function() {
-            const name = this.dataset.name;
-            const cal = parseFloat(this.dataset.cal);
-            mealSearch.value = name;
-            mealCalories.value = cal;
-            searchResults.innerHTML = '';
-          });
-        });
+        triggerSearch(query);
       }, 150);
     });
 
@@ -1536,14 +1669,13 @@
     });
 
     // =====================================================
-    // ПРОФИЛЬ + ЭКСПОРТ + ТЁМНАЯ ТЕМА
+    // ПРОФИЛЬ + ТЁМНАЯ ТЕМА (SWITCH)
     // =====================================================
     const profileWeight = document.getElementById('profile-weight');
     const profileHeight = document.getElementById('profile-height');
     const profileGoal = document.getElementById('profile-goal');
     const profileWaterGoal = document.getElementById('profile-water-goal');
     const saveProfileBtn = document.getElementById('save-profile');
-    const exportBtn = document.getElementById('export-data');
     const profileInfo = document.getElementById('profile-info');
 
     function renderProfile() {
@@ -1574,41 +1706,26 @@
       alert('✅ Профиль сохранён!');
     });
 
-    // ЭКСПОРТ ДАННЫХ
-    exportBtn.addEventListener('click', function() {
-      const data = {
-        profile: profile,
-        meals: meals,
-        plan: plan,
-        waterLog: waterLog,
-        customFoods: customFoodDB,
-        exportedAt: new Date().toISOString()
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `fitapp_data_${getToday()}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      alert('✅ Данные экспортированы!');
-    });
-
-    // ТЁМНАЯ ТЕМА (переключатель)
-    const tabTheme = document.getElementById('tabTheme');
+    // === Тёмная тема (Apple Switch) ===
+    const themeSwitch = document.getElementById('themeToggle');
     let darkMode = loadData('fit_dark_mode', false);
-    if (darkMode) document.body.classList.add('dark-theme');
 
-    tabTheme.addEventListener('click', function() {
+    function applyTheme(dark) {
+      document.body.classList.toggle('dark-theme', dark);
+      themeSwitch.classList.toggle('active', dark);
+      saveData('fit_dark_mode', dark);
+    }
+
+    themeSwitch.addEventListener('click', function() {
       darkMode = !darkMode;
-      document.body.classList.toggle('dark-theme', darkMode);
-      saveData('fit_dark_mode', darkMode);
-      this.textContent = darkMode ? '☀️ Тема' : '🌙 Тема';
+      applyTheme(darkMode);
     });
-    tabTheme.textContent = darkMode ? '☀️ Тема' : '🌙 Тема';
+
+    // Применяем сохранённую тему
+    applyTheme(darkMode);
 
     // =====================================================
-    // СТАТИСТИКА
+    // СТАТИСТИКА (для вкладки)
     // =====================================================
     let statPeriod = 'day';
     const statContent = document.getElementById('stat-content');
@@ -1686,7 +1803,7 @@
     }
 
     // =====================================================
-    // ТАБЫ ПРОФИЛЬ/СТАТИСТИКА/ТЕМА
+    // ТАБЫ ПРОФИЛЬ/СТАТИСТИКА
     // =====================================================
     const tabProfile = document.getElementById('tabProfile');
     const tabStats = document.getElementById('tabStats');
@@ -1709,6 +1826,176 @@
     });
 
     // =====================================================
+    // ЭКСПОРТ ДАННЫХ (PDF, CSV, PNG)
+    // =====================================================
+    const exportBtn = document.getElementById('export-btn');
+    const exportPeriod = document.getElementById('export-period');
+    const exportFormat = document.getElementById('export-format');
+
+    exportBtn.addEventListener('click', function() {
+      const period = exportPeriod.value;
+      const format = exportFormat.value;
+      const periodLabel = period === 'day' ? 'день' : period === 'week' ? 'неделя' : 'месяц';
+      const today = getToday();
+
+      const now = new Date();
+      let startDate = new Date(now);
+      if (period === 'day') { startDate.setHours(0,0,0,0); }
+      else if (period === 'week') { startDate.setDate(now.getDate() - 6); startDate.setHours(0,0,0,0); }
+      else if (period === 'month') { startDate.setDate(now.getDate() - 29); startDate.setHours(0,0,0,0); }
+      const startStr = startDate.toISOString().slice(0,10);
+      const endStr = now.toISOString().slice(0,10);
+
+      const historyEntries = plan.history?.filter(h => h.date >= startStr && h.date <= endStr) || [];
+      const trainingCount = historyEntries.length;
+      const doneCount = historyEntries.filter(h => h.done).length;
+      const burned = trainingCount * 300;
+
+      const periodMeals = meals.filter(m => m.date >= startStr && m.date <= endStr);
+      const totalCalEaten = periodMeals.reduce((s, m) => s + m.totalCalories, 0);
+
+      let totalWater = 0;
+      let daysWithWater = 0;
+      for (const [date, amount] of Object.entries(waterLog)) {
+        if (date >= startStr && date <= endStr) {
+          totalWater += amount;
+          daysWithWater++;
+        }
+      }
+      const avgWater = daysWithWater > 0 ? Math.round(totalWater / daysWithWater) : 0;
+      const balance = burned - totalCalEaten;
+
+      const profileText = profile.weight && profile.height ?
+        `Вес: ${profile.weight} кг, Рост: ${profile.height} см, Цель: ${profile.goal}, Норма воды: ${profile.waterGoal || 2000} мл` :
+        'Профиль не заполнен';
+
+      if (format === 'pdf') {
+        const content = `
+          <div style="font-family: -apple-system, 'Helvetica Neue', sans-serif; padding: 30px; max-width: 600px; margin: 0 auto; background: #fff; color: #1c1c1e; border-radius: 20px;">
+            <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">🏋️ FitApp</h1>
+            <p style="font-size: 16px; color: #8e8e93; margin-bottom: 20px;">Отчёт за ${periodLabel} (${startStr} – ${endStr})</p>
+            <hr style="border: none; border-top: 1px solid #e5e5ea; margin-bottom: 20px;">
+            <h2 style="font-size: 20px; font-weight: 600; margin-top: 16px;">👤 Профиль</h2>
+            <p style="font-size: 16px; line-height: 1.6;">${profileText}</p>
+            <h2 style="font-size: 20px; font-weight: 600; margin-top: 24px;">🏃 Тренировки</h2>
+            <p style="font-size: 16px; line-height: 1.6;">Всего тренировок: ${trainingCount}<br>Выполнено: ${doneCount}<br>Сожжено калорий: ${burned} ккал</p>
+            <h2 style="font-size: 20px; font-weight: 600; margin-top: 24px;">🍽️ Питание</h2>
+            <p style="font-size: 16px; line-height: 1.6;">Приёмов пищи: ${periodMeals.length}<br>Потреблено калорий: ${totalCalEaten} ккал</p>
+            <h2 style="font-size: 20px; font-weight: 600; margin-top: 24px;">💧 Вода</h2>
+            <p style="font-size: 16px; line-height: 1.6;">Выпито за период: ${totalWater} мл<br>Среднее в день: ${avgWater} мл</p>
+            <h2 style="font-size: 20px; font-weight: 600; margin-top: 24px;">⚖️ Баланс</h2>
+            <p style="font-size: 16px; line-height: 1.6;">${balance} ккал</p>
+            <hr style="border: none; border-top: 1px solid #e5e5ea; margin-top: 30px;">
+            <p style="font-size: 14px; color: #8e8e93; text-align: center;">FitApp — ваш фитнес-трекер</p>
+          </div>
+        `;
+        const element = document.createElement('div');
+        element.innerHTML = content;
+        document.body.appendChild(element);
+        html2pdf()
+          .set({ margin: 0.5, filename: `FitApp_${periodLabel}_${today}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } })
+          .from(element)
+          .save()
+          .then(() => { document.body.removeChild(element); });
+      } else if (format === 'csv') {
+        const rows = [
+          ['FitApp Отчёт', periodLabel, startStr, endStr],
+          [],
+          ['Профиль'],
+          ['Параметр', 'Значение'],
+          ['Вес', profile.weight || '-'],
+          ['Рост', profile.height || '-'],
+          ['Цель', profile.goal || '-'],
+          ['Норма воды', profile.waterGoal || '-'],
+          [],
+          ['Статистика'],
+          ['Показатель', 'Значение'],
+          ['Тренировок всего', trainingCount],
+          ['Выполнено', doneCount],
+          ['Сожжено ккал', burned],
+          ['Приёмов пищи', periodMeals.length],
+          ['Потреблено ккал', totalCalEaten],
+          ['Выпито воды мл', totalWater],
+          ['Среднее воды в день', avgWater],
+          ['Баланс ккал', balance]
+        ];
+        let csvContent = rows.map(row => row.join(';')).join('\n');
+        const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `FitApp_${periodLabel}_${today}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } else if (format === 'png') {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const width = 600;
+        const height = 700;
+        canvas.width = width;
+        canvas.height = height;
+        ctx.fillStyle = '#f2f2f7';
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = '#1c1c1e';
+        ctx.font = 'bold 28px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText('🏋️ FitApp', 30, 50);
+        ctx.font = '16px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillStyle = '#8e8e93';
+        ctx.fillText(`Отчёт за ${periodLabel} (${startStr} – ${endStr})`, 30, 80);
+        ctx.strokeStyle = '#e5e5ea';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(30, 95);
+        ctx.lineTo(width - 30, 95);
+        ctx.stroke();
+        let y = 130;
+        ctx.fillStyle = '#1c1c1e';
+        ctx.font = 'bold 18px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText('👤 Профиль', 30, y);
+        y += 28;
+        ctx.font = '16px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillStyle = '#1c1c1e';
+        ctx.fillText(profileText, 30, y);
+        y += 50;
+        ctx.fillStyle = '#1c1c1e';
+        ctx.font = 'bold 18px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText('🏃 Тренировки', 30, y);
+        y += 28;
+        ctx.font = '16px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText(`Всего: ${trainingCount}  |  Выполнено: ${doneCount}  |  Сожжено: ${burned} ккал`, 30, y);
+        y += 50;
+        ctx.fillStyle = '#1c1c1e';
+        ctx.font = 'bold 18px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText('🍽️ Питание', 30, y);
+        y += 28;
+        ctx.font = '16px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText(`Приёмов: ${periodMeals.length}  |  Потреблено: ${totalCalEaten} ккал`, 30, y);
+        y += 50;
+        ctx.fillStyle = '#1c1c1e';
+        ctx.font = 'bold 18px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText('💧 Вода', 30, y);
+        y += 28;
+        ctx.font = '16px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText(`Выпито: ${totalWater} мл  |  Среднее: ${avgWater} мл/день`, 30, y);
+        y += 50;
+        ctx.fillStyle = '#1c1c1e';
+        ctx.font = 'bold 18px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText('⚖️ Баланс', 30, y);
+        y += 28;
+        ctx.font = '16px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText(`${balance} ккал`, 30, y);
+        const footerY = height - 40;
+        ctx.fillStyle = '#8e8e93';
+        ctx.font = '14px -apple-system, "Helvetica Neue", sans-serif';
+        ctx.fillText('FitApp — ваш фитнес-трекер', 30, footerY);
+        const link = document.createElement('a');
+        link.download = `FitApp_${periodLabel}_${today}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }
+    });
+
+    // =====================================================
     // ИНИЦИАЛИЗАЦИЯ
     // =====================================================
     showPage('main-menu');
@@ -1718,7 +2005,7 @@
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
     renderPlan();
 
-    console.log('🚀 FitApp с тёмной темой, экспортом и добавлением продуктов запущен!');
+    console.log('🚀 FitApp с фиксами запущен!');
   })();
 </script>
 </body>
