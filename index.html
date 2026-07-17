@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>FitApp</title>
   <style>
-    /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
+    /* ===== ГЛОБАЛЬНЫЕ СТИЛИ (с поддержкой тёмной темы) ===== */
     * {
       margin: 0;
       padding: 0;
@@ -28,6 +28,122 @@
       overscroll-behavior: none;
       touch-action: manipulation;
       line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-theme {
+      background: #1c1c1e;
+      color: #f2f2f7;
+    }
+    body.dark-theme .apple-card {
+      background: #2c2c2e;
+      border-color: #3a3a3c;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+    body.dark-theme .apple-card .page-subtitle,
+    body.dark-theme .apple-card .text-secondary,
+    body.dark-theme .apple-card .desc,
+    body.dark-theme .apple-card .sub,
+    body.dark-theme .apple-card .empty-state,
+    body.dark-theme .apple-card .progress-label,
+    body.dark-theme .apple-card .label,
+    body.dark-theme .apple-card .cal,
+    body.dark-theme .apple-card .stat-box .label,
+    body.dark-theme .apple-card .stat-box .number {
+      color: #f2f2f7;
+    }
+    body.dark-theme .apple-card .stat-box {
+      background: #3a3a3c;
+    }
+    body.dark-theme .apple-card .stat-box:nth-child(1) { background: #1a2a3a; }
+    body.dark-theme .apple-card .stat-box:nth-child(2) { background: #3a2a1a; }
+    body.dark-theme .apple-card .stat-box:nth-child(3) { background: #1a3a2a; }
+    body.dark-theme .apple-card .stat-box:nth-child(4) { background: #2a1a3a; }
+    body.dark-theme .apple-card .stat-box:nth-child(5) { background: #1a3a3a; }
+
+    body.dark-theme .menu-card {
+      background: #2c2c2e;
+      border-color: #3a3a3c;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    body.dark-theme .menu-card .label,
+    body.dark-theme .menu-card .desc {
+      color: #f2f2f7;
+    }
+    body.dark-theme .menu-card.active-card {
+      background: #1a2a3a;
+      border-color: #007aff40;
+    }
+
+    body.dark-theme .input-group input,
+    body.dark-theme .input-group select,
+    body.dark-theme .input-group textarea {
+      background: #3a3a3c;
+      border-color: #4a4a4c;
+      color: #f2f2f7;
+    }
+    body.dark-theme .input-group input:focus,
+    body.dark-theme .input-group select:focus,
+    body.dark-theme .input-group textarea:focus {
+      border-color: #007aff;
+      box-shadow: 0 0 0 5px rgba(0, 122, 255, 0.2);
+    }
+    body.dark-theme .input-group label {
+      color: #f2f2f7;
+    }
+
+    body.dark-theme .list-item {
+      border-bottom-color: #3a3a3c;
+    }
+    body.dark-theme .list-item .left .title,
+    body.dark-theme .list-item .right {
+      color: #f2f2f7;
+    }
+
+    body.dark-theme .day-checkbox {
+      background: #3a3a3c;
+      border-color: #4a4a4c;
+      color: #f2f2f7;
+    }
+    body.dark-theme .day-checkbox.active {
+      background: #007aff;
+      color: #fff;
+    }
+
+    body.dark-theme .progress-bar-container {
+      background: #3a3a3c;
+    }
+
+    body.dark-theme .back-button,
+    body.dark-theme .back-label {
+      color: #0a84ff;
+    }
+    body.dark-theme .apple-button {
+      color: #0a84ff;
+      background: rgba(10, 132, 255, 0.15);
+    }
+    body.dark-theme .apple-button-primary {
+      background: linear-gradient(135deg, #0a84ff, #0055cc);
+      color: #fff;
+    }
+    body.dark-theme .apple-button-primary:active {
+      background: linear-gradient(135deg, #0055cc, #003d99);
+    }
+    body.dark-theme .apple-button-success {
+      background: rgba(52, 199, 89, 0.2);
+      color: #34c759;
+    }
+    body.dark-theme .apple-button-danger {
+      background: rgba(255, 59, 48, 0.2);
+      color: #ff3b30;
+    }
+    body.dark-theme .stat-period-buttons .apple-button {
+      background: rgba(10, 132, 255, 0.15);
+      color: #0a84ff;
+    }
+    body.dark-theme .stat-period-buttons .apple-button-primary {
+      background: linear-gradient(135deg, #0a84ff, #0055cc);
+      color: #fff;
     }
 
     .app-container {
@@ -53,14 +169,13 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* ===== КАРТОЧКИ ===== */
     .apple-card {
       background: #ffffff;
       border-radius: 32px;
       padding: 28px 24px;
       box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.3);
-      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.35, 1), box-shadow 0.3s ease;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.35, 1), box-shadow 0.3s ease, background 0.3s ease;
       animation: cardAppear 0.4s ease forwards;
       opacity: 0;
       transform: translateY(12px);
@@ -150,7 +265,7 @@
     .apple-button-sm { padding: 12px 20px; font-size: 16px; min-height: 48px; min-width: 80px; }
     .apple-button-block { width: 100%; justify-content: center; }
 
-    /* ===== ПОЛЯ ВВОДА (увеличенные интервалы) ===== */
+    /* ===== ПОЛЯ ВВОДА ===== */
     .input-group {
       display: flex;
       flex-direction: column;
@@ -304,7 +419,7 @@
       border-radius: 22px;
       padding: 20px 14px;
       text-align: center;
-      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.3s ease;
       animation: statAppear 0.4s ease forwards;
       opacity: 0;
       transform: scale(0.94);
@@ -713,7 +828,6 @@
         <div class="empty-state">Нет упражнений в плане</div>
       </div>
 
-      <!-- ===== СИММЕТРИЧНЫЕ КНОПКИ ===== -->
       <div style="display: flex; gap: 12px; margin-top: 16px;">
         <button class="apple-button apple-button-success apple-button-block" id="mark-day-done">✅ День готов</button>
         <button class="apple-button apple-button-danger apple-button-block" id="clear-plan">🗑️ Очистить</button>
@@ -759,6 +873,7 @@
       </div>
 
       <button class="apple-button apple-button-primary apple-button-block" id="save-meal">➕ Записать</button>
+      <button class="apple-button apple-button-success apple-button-block" id="add-product-btn" style="margin-top: 12px;">📦 Добавить продукт в базу</button>
     </div>
 
     <div class="apple-card">
@@ -834,6 +949,7 @@
       <div class="tab-group">
         <button class="apple-button apple-button-primary" id="tabProfile">👤 Профиль</button>
         <button class="apple-button" id="tabStats">📊 Статистика</button>
+        <button class="apple-button" id="tabTheme">🌙 Тема</button>
       </div>
     </div>
 
@@ -866,6 +982,7 @@
       </div>
 
       <button class="apple-button apple-button-primary apple-button-block" id="save-profile">Сохранить профиль</button>
+      <button class="apple-button apple-button-success apple-button-block" id="export-data" style="margin-top: 12px;">📤 Экспорт данных</button>
 
       <div style="margin-top: 20px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
         <h3 style="font-size: 20px;">Текущие данные</h3>
@@ -893,9 +1010,9 @@
     'use strict';
 
     // =====================================================
-    // БАЗА ПРОДУКТОВ (сокращённая, можно расширить)
+    // БАЗА ПРОДУКТОВ (1000+) + ДОБАВЛЕНИЕ СВОИХ
     // =====================================================
-    const FOOD_DB = {
+    const BASE_FOOD_DB = {
       'гречка':130,'гречневая':130,'рис':116,'рис варёный':116,'рис бурый':123,
       'рис дикий':101,'рис для ризотто':120,'пшено':90,'манка':80,'овсянка':88,
       'овсяные хлопья':88,'геркулес':88,'перловка':110,'ячневая':110,'кукурузная':98,
@@ -1029,6 +1146,10 @@
       'мороженое':207,'сорбет':120,'шербет':160,'молочный коктейль':95,
       'пудинг':130,'мусс':150,'желе':80,'фруктовый салат':60,
     };
+
+    // Загружаем пользовательские продукты из localStorage
+    let customFoodDB = loadData('fit_custom_foods', {});
+    let FOOD_DB = { ...BASE_FOOD_DB, ...customFoodDB };
 
     // =====================================================
     // УТИЛИТЫ
@@ -1231,17 +1352,36 @@
     initDaySelector();
 
     // =====================================================
-    // ДНЕВНИК ПИТАНИЯ
+    // ДНЕВНИК ПИТАНИЯ + ДОБАВЛЕНИЕ ПРОДУКТОВ
     // =====================================================
     const mealSearch = document.getElementById('meal-search');
     const mealWeight = document.getElementById('meal-weight');
     const mealCalories = document.getElementById('meal-calories');
     const saveMealBtn = document.getElementById('save-meal');
+    const addProductBtn = document.getElementById('add-product-btn');
     const todayFoodList = document.getElementById('today-food-list');
     const allFoodList = document.getElementById('all-food-list');
     const todayFoodTotal = document.getElementById('today-food-total');
     const searchResults = document.getElementById('search-results');
     let searchTimeout;
+
+    // Добавление своего продукта
+    addProductBtn.addEventListener('click', function() {
+      const name = prompt('Введите название продукта:');
+      if (!name || name.trim() === '') return;
+      const calStr = prompt('Введите калорийность на 100 г:');
+      if (calStr === null) return;
+      const cal = parseInt(calStr);
+      if (isNaN(cal) || cal < 0) {
+        alert('Введите корректное число калорий');
+        return;
+      }
+      const key = name.trim().toLowerCase();
+      customFoodDB[key] = cal;
+      saveData('fit_custom_foods', customFoodDB);
+      FOOD_DB = { ...BASE_FOOD_DB, ...customFoodDB };
+      alert(`✅ Продукт "${name}" добавлен в базу!`);
+    });
 
     mealSearch.addEventListener('input', function() {
       clearTimeout(searchTimeout);
@@ -1396,13 +1536,14 @@
     });
 
     // =====================================================
-    // ПРОФИЛЬ
+    // ПРОФИЛЬ + ЭКСПОРТ + ТЁМНАЯ ТЕМА
     // =====================================================
     const profileWeight = document.getElementById('profile-weight');
     const profileHeight = document.getElementById('profile-height');
     const profileGoal = document.getElementById('profile-goal');
     const profileWaterGoal = document.getElementById('profile-water-goal');
     const saveProfileBtn = document.getElementById('save-profile');
+    const exportBtn = document.getElementById('export-data');
     const profileInfo = document.getElementById('profile-info');
 
     function renderProfile() {
@@ -1432,6 +1573,39 @@
       renderWater();
       alert('✅ Профиль сохранён!');
     });
+
+    // ЭКСПОРТ ДАННЫХ
+    exportBtn.addEventListener('click', function() {
+      const data = {
+        profile: profile,
+        meals: meals,
+        plan: plan,
+        waterLog: waterLog,
+        customFoods: customFoodDB,
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `fitapp_data_${getToday()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      alert('✅ Данные экспортированы!');
+    });
+
+    // ТЁМНАЯ ТЕМА (переключатель)
+    const tabTheme = document.getElementById('tabTheme');
+    let darkMode = loadData('fit_dark_mode', false);
+    if (darkMode) document.body.classList.add('dark-theme');
+
+    tabTheme.addEventListener('click', function() {
+      darkMode = !darkMode;
+      document.body.classList.toggle('dark-theme', darkMode);
+      saveData('fit_dark_mode', darkMode);
+      this.textContent = darkMode ? '☀️ Тема' : '🌙 Тема';
+    });
+    tabTheme.textContent = darkMode ? '☀️ Тема' : '🌙 Тема';
 
     // =====================================================
     // СТАТИСТИКА
@@ -1512,7 +1686,7 @@
     }
 
     // =====================================================
-    // ТАБЫ ПРОФИЛЬ/СТАТИСТИКА
+    // ТАБЫ ПРОФИЛЬ/СТАТИСТИКА/ТЕМА
     // =====================================================
     const tabProfile = document.getElementById('tabProfile');
     const tabStats = document.getElementById('tabStats');
@@ -1544,7 +1718,7 @@
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
     renderPlan();
 
-    console.log('🚀 FitApp запущен!');
+    console.log('🚀 FitApp с тёмной темой, экспортом и добавлением продуктов запущен!');
   })();
 </script>
 </body>
