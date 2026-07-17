@@ -7,14 +7,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
-    /* ===== ГЛОБАЛЬНЫЕ СТИЛИ (с поддержкой тёмной темы) ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
       background: #f2f2f7;
@@ -32,7 +26,6 @@
       line-height: 1.6;
       transition: background 0.3s ease, color 0.3s ease;
     }
-
     body.dark-theme {
       background: #1c1c1e;
       color: #f2f2f7;
@@ -62,7 +55,6 @@
     body.dark-theme .apple-card .stat-box:nth-child(3) { background: #1a3a2a; }
     body.dark-theme .apple-card .stat-box:nth-child(4) { background: #2a1a3a; }
     body.dark-theme .apple-card .stat-box:nth-child(5) { background: #1a3a3a; }
-
     body.dark-theme .menu-card {
       background: #2c2c2e;
       border-color: #3a3a3c;
@@ -76,7 +68,6 @@
       background: #1a2a3a;
       border-color: #007aff40;
     }
-
     body.dark-theme .input-group input,
     body.dark-theme .input-group select,
     body.dark-theme .input-group textarea {
@@ -93,7 +84,6 @@
     body.dark-theme .input-group label {
       color: #f2f2f7;
     }
-
     body.dark-theme .list-item {
       border-bottom-color: #3a3a3c;
     }
@@ -101,7 +91,6 @@
     body.dark-theme .list-item .right {
       color: #f2f2f7;
     }
-
     body.dark-theme .day-checkbox {
       background: #3a3a3c;
       border-color: #4a4a4c;
@@ -111,11 +100,9 @@
       background: #007aff;
       color: #fff;
     }
-
     body.dark-theme .progress-bar-container {
       background: #3a3a3c;
     }
-
     body.dark-theme .back-button,
     body.dark-theme .back-label {
       color: #0a84ff;
@@ -147,8 +134,6 @@
       background: linear-gradient(135deg, #0a84ff, #0055cc);
       color: #fff;
     }
-
-    /* Switch для тёмной темы (Apple style) */
     .theme-switch {
       display: flex;
       align-items: center;
@@ -201,7 +186,6 @@
       background: #34c759;
     }
 
-    /* ===== ОСТАЛЬНЫЕ СТИЛИ ===== */
     .app-container {
       max-width: 700px;
       width: 100%;
@@ -210,7 +194,6 @@
       flex-direction: column;
       gap: 28px;
     }
-
     .page {
       display: none;
       flex-direction: column;
@@ -219,12 +202,10 @@
       will-change: transform, opacity;
     }
     .page.active { display: flex; }
-
     @keyframes pageFadeIn {
       0% { opacity: 0; transform: translateY(16px) scale(0.97); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-
     .apple-card {
       background: #ffffff;
       border-radius: 32px;
@@ -247,30 +228,11 @@
       100% { opacity: 1; transform: translateY(0); }
     }
     .apple-card:active { transform: scale(0.985); transition-duration: 0.06s; }
-
-    .page-title {
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-      line-height: 1.2;
-    }
-    .page-subtitle {
-      font-size: 18px;
-      font-weight: 400;
-      color: #8e8e93;
-      margin-top: 2px;
-      line-height: 1.4;
-    }
-    h3 {
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1.4;
-      color: #1c1c1e;
-    }
+    .page-title { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; line-height: 1.2; }
+    .page-subtitle { font-size: 18px; font-weight: 400; color: #8e8e93; margin-top: 2px; line-height: 1.4; }
+    h3 { font-size: 20px; font-weight: 600; line-height: 1.4; color: #1c1c1e; }
     .text-secondary { color: #8e8e93; }
 
-    /* ===== КНОПКИ ===== */
     .apple-button {
       background: transparent;
       border: none;
@@ -294,10 +256,7 @@
       will-change: transform;
       line-height: 1.2;
     }
-    .apple-button:active {
-      transform: scale(0.94);
-      background: rgba(0, 122, 255, 0.15);
-    }
+    .apple-button:active { transform: scale(0.94); background: rgba(0, 122, 255, 0.15); }
     .apple-button-primary {
       background: linear-gradient(135deg, #007aff, #0055cc);
       color: #fff;
@@ -321,7 +280,6 @@
     .apple-button-sm { padding: 12px 20px; font-size: 16px; min-height: 48px; min-width: 80px; }
     .apple-button-block { width: 100%; justify-content: center; }
 
-    /* ===== ПОЛЯ ВВОДА ===== */
     .input-group {
       display: flex;
       flex-direction: column;
@@ -366,7 +324,6 @@
     .input-group input::placeholder,
     .input-group textarea::placeholder { color: #aeaeb2; }
 
-    /* ===== ПРОГРЕСС-БАР ===== */
     .progress-bar-container {
       background: #e5e5ea;
       border-radius: 20px;
@@ -388,7 +345,6 @@
       color: #8e8e93;
     }
 
-    /* ===== ДНИ ===== */
     .day-checkbox-group {
       display: flex;
       flex-wrap: wrap;
@@ -416,7 +372,6 @@
     }
     .day-checkbox input { display: none; }
 
-    /* ===== СПИСКИ ===== */
     .list-item {
       display: flex;
       justify-content: space-between;
@@ -465,7 +420,6 @@
     }
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
 
-    /* ===== СТАТИСТИКА ===== */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -497,7 +451,6 @@
     .stat-box .label { font-size: 15px; color: #6e6e73; margin-top: 6px; line-height: 1.3; }
     .stat-box .emoji { font-size: 24px; display: block; margin-bottom: 4px; }
 
-    /* ===== КНОПКИ СТАТИСТИКИ (в ряд) ===== */
     .stat-period-buttons {
       display: flex;
       gap: 8px;
@@ -515,7 +468,6 @@
       white-space: nowrap;
     }
 
-    /* ===== МЕНЮ 2×2 ===== */
     .menu-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -560,26 +512,10 @@
       transition-duration: 0.05s;
       background: #f8f8fa;
     }
-    .menu-card .icon {
-      font-size: 48px;
-      margin-bottom: 10px;
-      transition: transform 0.2s ease;
-      display: block;
-      line-height: 1;
-    }
+    .menu-card .icon { font-size: 48px; margin-bottom: 10px; transition: transform 0.2s ease; display: block; line-height: 1; }
     .menu-card:active .icon { transform: scale(0.9); }
-    .menu-card .label {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1c1c1e;
-      line-height: 1.3;
-    }
-    .menu-card .desc {
-      font-size: 14px;
-      color: #8e8e93;
-      margin-top: 3px;
-      line-height: 1.3;
-    }
+    .menu-card .label { font-size: 18px; font-weight: 600; color: #1c1c1e; line-height: 1.3; }
+    .menu-card .desc { font-size: 14px; color: #8e8e93; margin-top: 3px; line-height: 1.3; }
     .menu-card.active-card {
       background: #f0f8ff;
       border-color: #007aff20;
@@ -595,7 +531,6 @@
       border-radius: 6px;
     }
 
-    /* ===== НАЗАД ===== */
     .back-row {
       display: flex;
       align-items: center;
@@ -626,7 +561,6 @@
     }
     .back-label:active { transform: scale(0.95); color: #0055cc; }
 
-    /* ===== ТАБЫ ===== */
     .tab-group {
       display: flex;
       gap: 10px;
@@ -641,7 +575,6 @@
       min-width: 80px;
     }
 
-    /* ===== ПОДСКАЗКИ ПОИСКА ===== */
     .search-result-item {
       display: flex;
       justify-content: space-between;
@@ -678,8 +611,19 @@
       white-space: nowrap;
       padding-left: 14px;
     }
+    .search-result-item .api-badge {
+      font-size: 13px;
+      background: rgba(0, 122, 255, 0.08);
+      color: #007aff;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin-left: 8px;
+    }
+    body.dark-theme .search-result-item .api-badge {
+      background: rgba(10, 132, 255, 0.2);
+      color: #0a84ff;
+    }
 
-    /* ===== ВОДА ===== */
     .water-quick-buttons {
       display: flex;
       flex-wrap: wrap;
@@ -700,7 +644,6 @@
       margin: 10px 0 6px;
     }
 
-    /* ===== ЭКСПОРТ ===== */
     .export-options {
       display: flex;
       flex-wrap: wrap;
@@ -734,7 +677,6 @@
       box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.08);
     }
 
-    /* ===== ГРАФИКИ (адаптация контейнеров) ===== */
     .chart-container {
       margin: 16px 0 8px;
       position: relative;
@@ -754,7 +696,6 @@
       color: #f2f2f7;
     }
 
-    /* ===== АДАПТИВ ===== */
     @media (max-width: 500px) {
       body { padding: 16px 12px 30px; }
       .apple-card { padding: 24px 18px; border-radius: 28px; }
@@ -845,46 +786,23 @@
       <h1 class="page-title">🏋️ FitApp</h1>
       <p class="page-subtitle">Тренируйся, питайся, достигай</p>
     </div>
-
     <div class="menu-grid">
-      <button class="menu-card" data-page="training">
-        <span class="icon">🏋️</span>
-        <span class="label">Тренировки</span>
-        <span class="desc">План</span>
-      </button>
-      <button class="menu-card" data-page="food">
-        <span class="icon">🥗</span>
-        <span class="label">Питание</span>
-        <span class="desc">Дневник</span>
-      </button>
-      <button class="menu-card" data-page="water">
-        <span class="icon">💧</span>
-        <span class="label">Вода</span>
-        <span class="desc">Трекер</span>
-      </button>
-      <button class="menu-card" data-page="profile">
-        <span class="icon">📊</span>
-        <span class="label">Профиль</span>
-        <span class="desc">Статистика</span>
-      </button>
+      <button class="menu-card" data-page="training"><span class="icon">🏋️</span><span class="label">Тренировки</span><span class="desc">План</span></button>
+      <button class="menu-card" data-page="food"><span class="icon">🥗</span><span class="label">Питание</span><span class="desc">Дневник</span></button>
+      <button class="menu-card" data-page="water"><span class="icon">💧</span><span class="label">Вода</span><span class="desc">Трекер</span></button>
+      <button class="menu-card" data-page="profile"><span class="icon">📊</span><span class="label">Профиль</span><span class="desc">Статистика</span></button>
     </div>
-
     <div style="margin-top: 24px; color: #8e8e93; font-size: 16px; text-align: center; border-top: 1px solid #e5e5ea; padding-top: 20px; animation: fadeIn 0.5s ease;">
       Данные сохраняются локально
     </div>
   </div>
 
-  <!-- ==================== ПЛАН ТРЕНИРОВОК ==================== -->
+  <!-- ==================== ТРЕНИРОВКИ ==================== -->
   <div id="training" class="page">
-    <div class="back-row">
-      <button class="back-button" data-back>‹</button>
-      <span class="back-label" data-back>Назад</span>
-    </div>
-
+    <div class="back-row"><button class="back-button" data-back>‹</button><span class="back-label" data-back>Назад</span></div>
     <div class="apple-card">
       <h2 class="page-title">📋 План тренировок</h2>
       <p class="page-subtitle">Выбери дни и добавь упражнения</p>
-
       <div class="input-group">
         <label>Дни тренировок</label>
         <div class="day-checkbox-group" id="daySelector">
@@ -897,12 +815,10 @@
           <label class="day-checkbox" data-day="0">Вс</label>
         </div>
       </div>
-
       <div class="input-group">
         <label for="plan-exercise">Упражнение</label>
         <input type="text" id="plan-exercise" placeholder="Например: Приседания со штангой">
       </div>
-
       <div style="display: flex; gap: 14px; flex-wrap: wrap;">
         <div class="input-group" style="flex:1; min-width:80px;">
           <label for="plan-sets">Подходы</label>
@@ -917,151 +833,102 @@
           <input type="number" id="plan-weight" min="0" value="0" step="2.5">
         </div>
       </div>
-
       <div class="input-group">
         <label for="plan-note">Заметка (опционально)</label>
         <textarea id="plan-note" placeholder="Техника, советы, ссылка на видео..." rows="2"></textarea>
       </div>
-
       <button class="apple-button apple-button-primary apple-button-block" id="add-plan-exercise">➕ Добавить в план</button>
     </div>
-
     <div class="apple-card">
       <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <h3 style="font-size: 20px;">📅 Текущий план</h3>
         <span class="text-secondary" id="plan-exercises-count">0 упражнений</span>
       </div>
-
       <div style="margin: 12px 0 8px 0;">
-        <div class="progress-label">
-          <span>Выполнение</span>
-          <span id="progress-text">0%</span>
-        </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
-        </div>
+        <div class="progress-label"><span>Выполнение</span><span id="progress-text">0%</span></div>
+        <div class="progress-bar-container"><div class="progress-bar" id="progress-bar" style="width: 0%;"></div></div>
       </div>
-
-      <div id="plan-list">
-        <div class="empty-state">Нет упражнений в плане</div>
-      </div>
-
+      <div id="plan-list"><div class="empty-state">Нет упражнений в плане</div></div>
       <div style="display: flex; gap: 12px; margin-top: 16px;">
         <button class="apple-button apple-button-success apple-button-block" id="mark-day-done">✅ День готов</button>
         <button class="apple-button apple-button-danger apple-button-block" id="clear-plan">🗑️ Очистить</button>
       </div>
     </div>
-
     <div class="apple-card">
       <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <h3 style="font-size: 20px;">📆 История планов</h3>
         <span class="text-secondary" id="history-count">0</span>
       </div>
-      <div id="history-list">
-        <div class="empty-state">Нет сохранённых планов</div>
-      </div>
+      <div id="history-list"><div class="empty-state">Нет сохранённых планов</div></div>
     </div>
   </div>
 
-  <!-- ==================== ДНЕВНИК ПИТАНИЯ ==================== -->
+  <!-- ==================== ПИТАНИЕ (ГИБРИДНЫЙ ПОИСК) ==================== -->
   <div id="food" class="page">
-    <div class="back-row">
-      <button class="back-button" data-back>‹</button>
-      <span class="back-label" data-back>Назад</span>
-    </div>
-
+    <div class="back-row"><button class="back-button" data-back>‹</button><span class="back-label" data-back>Назад</span></div>
     <div class="apple-card">
       <h2 class="page-title">🍽️ Дневник питания</h2>
-      <p class="page-subtitle">🔍 Введи 2 буквы — появятся подсказки</p>
-
+      <p class="page-subtitle">🔍 Введи 2 буквы — поиск в локальной базе и интернете</p>
       <div class="input-group">
         <label for="meal-search">Продукт</label>
         <input type="text" id="meal-search" placeholder="Например: гречка, курица, яблоко" autocomplete="off" />
         <div id="search-results" style="margin-top: 8px;"></div>
       </div>
-
       <div class="input-group">
         <label for="meal-weight">Сколько грамм?</label>
         <input type="number" id="meal-weight" min="1" placeholder="200" step="1">
       </div>
-
       <div class="input-group">
         <label for="meal-calories">Общая калорийность (ккал)</label>
         <input type="number" id="meal-calories" min="0" placeholder="автозаполнится" step="1">
       </div>
-
       <button class="apple-button apple-button-primary apple-button-block" id="save-meal">➕ Записать</button>
       <button class="apple-button apple-button-success apple-button-block" id="add-product-btn" style="margin-top: 12px;">📦 Добавить продукт в базу</button>
     </div>
-
     <div class="apple-card">
       <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <h3 style="font-size: 20px;">Сегодня</h3>
         <span style="font-weight: 600; font-size: 18px;">Всего: <span id="today-food-total">0</span> ккал</span>
       </div>
-      <div id="today-food-list">
-        <div class="empty-state">Нет записей за сегодня</div>
-      </div>
+      <div id="today-food-list"><div class="empty-state">Нет записей за сегодня</div></div>
     </div>
-
     <div class="apple-card">
       <h3 style="font-size: 20px;">Все записи</h3>
-      <div id="all-food-list">
-        <div class="empty-state">Нет записей</div>
-      </div>
+      <div id="all-food-list"><div class="empty-state">Нет записей</div></div>
     </div>
   </div>
 
-  <!-- ==================== ТРЕКЕР ВОДЫ ==================== -->
+  <!-- ==================== ВОДА ==================== -->
   <div id="water" class="page">
-    <div class="back-row">
-      <button class="back-button" data-back>‹</button>
-      <span class="back-label" data-back>Назад</span>
-    </div>
-
+    <div class="back-row"><button class="back-button" data-back>‹</button><span class="back-label" data-back>Назад</span></div>
     <div class="apple-card">
       <h2 class="page-title">💧 Вода</h2>
       <p class="page-subtitle">Отслеживай потребление воды</p>
-
       <div class="water-stats">
         <span>Выпито: <strong id="water-today">0</strong> мл</span>
         <span>Цель: <strong id="water-goal-display">2000</strong> мл</span>
       </div>
-
-      <div class="progress-label">
-        <span>Прогресс</span>
-        <span id="water-percent">0%</span>
-      </div>
-      <div class="progress-bar-container">
-        <div class="progress-bar" id="water-progress-bar" style="width: 0%;"></div>
-      </div>
-
+      <div class="progress-label"><span>Прогресс</span><span id="water-percent">0%</span></div>
+      <div class="progress-bar-container"><div class="progress-bar" id="water-progress-bar" style="width: 0%;"></div></div>
       <div class="water-quick-buttons">
         <button class="apple-button apple-button-primary" data-add="100">+100 мл</button>
         <button class="apple-button apple-button-primary" data-add="200">+200 мл</button>
         <button class="apple-button apple-button-primary" data-add="500">+500 мл</button>
         <button class="apple-button apple-button-primary" data-add="custom">✏️ Другое</button>
       </div>
-
       <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
         <button class="apple-button apple-button-danger apple-button-sm" id="reset-water">🗑️ Сбросить сегодня</button>
       </div>
     </div>
-
     <div class="apple-card">
       <h3 style="font-size: 20px;">📊 Статистика воды</h3>
-      <div id="water-history-list">
-        <div class="empty-state">Нет записей</div>
-      </div>
+      <div id="water-history-list"><div class="empty-state">Нет записей</div></div>
     </div>
   </div>
 
-  <!-- ==================== ПРОФИЛЬ + СТАТИСТИКА + ГРАФИКИ (в одной вкладке) ==================== -->
+  <!-- ==================== ПРОФИЛЬ + СТАТИСТИКА ==================== -->
   <div id="profile" class="page">
-    <div class="back-row">
-      <button class="back-button" data-back>‹</button>
-      <span class="back-label" data-back>Назад</span>
-    </div>
+    <div class="back-row"><button class="back-button" data-back>‹</button><span class="back-label" data-back>Назад</span></div>
 
     <div class="apple-card" style="padding-bottom: 16px;">
       <div class="tab-group">
@@ -1070,21 +937,17 @@
       </div>
     </div>
 
-    <!-- Профиль -->
     <div id="profileContent" class="apple-card">
       <h2 class="page-title">👤 Мой профиль</h2>
       <p class="page-subtitle">Вес, рост, цель, норма воды</p>
-
       <div class="input-group">
         <label for="profile-weight">Вес (кг)</label>
         <input type="number" id="profile-weight" min="1" step="0.1" placeholder="70">
       </div>
-
       <div class="input-group">
         <label for="profile-height">Рост (см)</label>
         <input type="number" id="profile-height" min="1" step="1" placeholder="175">
       </div>
-
       <div class="input-group">
         <label for="profile-goal">Цель</label>
         <select id="profile-goal">
@@ -1093,15 +956,12 @@
           <option value="Набрать массу">Набрать массу</option>
         </select>
       </div>
-
       <div class="input-group">
         <label for="profile-water-goal">Норма воды (мл)</label>
         <input type="number" id="profile-water-goal" min="500" step="100" placeholder="2000">
       </div>
-
       <button class="apple-button apple-button-primary apple-button-block" id="save-profile">Сохранить профиль</button>
 
-      <!-- Запись веса -->
       <div style="margin-top: 20px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
         <h3 style="font-size: 18px;">⚖️ Запись веса</h3>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
@@ -1115,9 +975,7 @@
           </div>
         </div>
         <button class="apple-button apple-button-success apple-button-block" id="save-weight-btn" style="margin-top: 12px;">📝 Записать вес</button>
-        <div id="weight-log-list" style="margin-top: 12px;">
-          <div class="empty-state">Нет записей веса</div>
-        </div>
+        <div id="weight-log-list" style="margin-top: 12px;"><div class="empty-state">Нет записей веса</div></div>
       </div>
 
       <div style="margin-top: 20px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
@@ -1126,7 +984,6 @@
       </div>
     </div>
 
-    <!-- Статистика + Графики -->
     <div id="statsContent" class="apple-card" style="display: none;">
       <h2 class="page-title">📊 Моя статистика</h2>
       <div class="stat-period-buttons">
@@ -1134,36 +991,23 @@
         <button class="apple-button" data-stat-period="week">Неделя</button>
         <button class="apple-button" data-stat-period="month">Месяц</button>
       </div>
-      <div id="stat-content">
-        <!-- заполняется JS -->
-      </div>
-
-      <!-- Графики -->
+      <div id="stat-content"></div>
       <div style="margin-top: 24px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
         <h3 style="font-size: 20px;">📈 Графики прогресса</h3>
         <div class="chart-title">🏃 Тренировки (за 30 дней)</div>
-        <div class="chart-container">
-          <canvas id="trainingChart"></canvas>
-        </div>
+        <div class="chart-container"><canvas id="trainingChart"></canvas></div>
         <div class="chart-title">⚖️ Вес</div>
-        <div class="chart-container">
-          <canvas id="weightChart"></canvas>
-        </div>
+        <div class="chart-container"><canvas id="weightChart"></canvas></div>
         <div class="chart-title">🍽️ Питание (калории за 30 дней)</div>
-        <div class="chart-container">
-          <canvas id="caloriesChart"></canvas>
-        </div>
+        <div class="chart-container"><canvas id="caloriesChart"></canvas></div>
       </div>
     </div>
 
-    <!-- Настройки (тёмная тема, экспорт) -->
     <div class="apple-card">
       <h3 style="font-size: 20px;">⚙️ Настройки</h3>
       <div class="theme-switch">
         <label for="themeToggle">🌙 Тёмная тема</label>
-        <div class="switch" id="themeToggle">
-          <div class="slider"></div>
-        </div>
+        <div class="switch" id="themeToggle"><div class="slider"></div></div>
       </div>
       <div style="border-top: 1px solid #e5e5ea; margin: 16px 0 12px;"></div>
       <p class="page-subtitle" style="font-size: 16px;">Выберите период и формат для скачивания</p>
@@ -1188,7 +1032,6 @@
       <button class="apple-button apple-button-primary apple-button-block" id="export-btn">📥 Скачать</button>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -1397,7 +1240,7 @@
     });
 
     // =====================================================
-    // ПЛАН ТРЕНИРОВОК
+    // ТРЕНИРОВКИ
     // =====================================================
     const daySelector = document.getElementById('daySelector');
     const planExercise = document.getElementById('plan-exercise');
@@ -1444,16 +1287,7 @@
       if (!name) { alert('Введите название упражнения'); return; }
       if (sets < 1 || reps < 1) { alert('Укажите подходы и повторения'); return; }
       if (plan.days.length === 0) { alert('Выберите хотя бы один день для тренировок'); return; }
-
-      plan.exercises.push({
-        id: generateId(),
-        name: name,
-        sets: sets,
-        reps: reps,
-        weight: weight,
-        note: note,
-        done: false
-      });
+      plan.exercises.push({ id: generateId(), name, sets, reps, weight, note, done: false });
       saveData('fit_plan', plan);
       renderPlan();
       planExercise.value = '';
@@ -1470,7 +1304,6 @@
       progressBar.style.width = percent + '%';
       progressText.textContent = percent + '%';
       planExercisesCount.textContent = total + ' упражнений';
-
       if (total === 0) {
         planList.innerHTML = '<div class="empty-state">Нет упражнений в плане</div>';
       } else {
@@ -1487,7 +1320,6 @@
           </div>
         `).join('');
       }
-
       const hist = plan.history || [];
       historyCount.textContent = hist.length;
       if (hist.length === 0) {
@@ -1496,10 +1328,7 @@
         const recent = hist.slice(-5).reverse();
         historyList.innerHTML = recent.map(h => `
           <div class="list-item">
-            <div class="left">
-              <span class="title">${formatDate(h.date)}</span>
-              <span class="sub">${h.exercises} упражнений</span>
-            </div>
+            <div class="left"><span class="title">${formatDate(h.date)}</span><span class="sub">${h.exercises} упражнений</span></div>
             <div class="right">${h.done ? '✅ Выполнен' : '⬜ Не выполнен'}</div>
           </div>
         `).join('');
@@ -1538,7 +1367,7 @@
     initDaySelector();
 
     // =====================================================
-    // ДНЕВНИК ПИТАНИЯ + ДОБАВЛЕНИЕ ПРОДУКТОВ
+    // ПИТАНИЕ (ГИБРИДНЫЙ ПОИСК)
     // =====================================================
     const mealSearch = document.getElementById('meal-search');
     const mealWeight = document.getElementById('meal-weight');
@@ -1550,6 +1379,135 @@
     const todayFoodTotal = document.getElementById('today-food-total');
     const searchResults = document.getElementById('search-results');
     let searchTimeout;
+    let apiCache = loadData('fit_api_cache', {});
+
+    async function fetchFromOpenFoodFacts(query) {
+      try {
+        const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=5&fields=product_name,product_name_ru,nutriments,image_front_small_url`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('API error');
+        const data = await response.json();
+        if (!data.products || data.products.length === 0) return [];
+        const results = [];
+        data.products.forEach(product => {
+          const name = product.product_name_ru || product.product_name || '';
+          if (!name) return;
+          let calories = 0;
+          if (product.nutriments) {
+            calories = product.nutriments['energy-kcal_100g'] || product.nutriments['energy_100g'] || 0;
+            if (calories > 1000 && calories < 5000) calories = Math.round(calories / 4.184);
+          }
+          calories = Math.round(calories);
+          if (calories > 0) {
+            results.push({ name, cal: calories, source: 'api' });
+          }
+        });
+        return results;
+      } catch (error) {
+        console.error('API error:', error);
+        return [];
+      }
+    }
+
+    async function triggerSearch(query) {
+      const normalized = normalizeText(query);
+      const localResults = [];
+      Object.keys(FOOD_DB).forEach(key => {
+        const lowerKey = key.toLowerCase();
+        if (lowerKey.startsWith(normalized)) {
+          localResults.push({ name: key, cal: FOOD_DB[key], source: 'local' });
+        } else if (lowerKey.includes(normalized)) {
+          localResults.push({ name: key, cal: FOOD_DB[key], source: 'local' });
+        }
+      });
+      localResults.sort((a, b) => {
+        const aStarts = a.name.toLowerCase().startsWith(normalized);
+        const bStarts = b.name.toLowerCase().startsWith(normalized);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+        return a.name.length - b.name.length;
+      });
+      const topLocal = localResults.slice(0, 6);
+
+      let apiData = [];
+      if (topLocal.length < 6) {
+        searchResults.innerHTML = '<div style="padding: 10px 0; color: #8e8e93; font-size: 16px;">⏳ Поиск в интернете...</div>';
+        apiData = await fetchFromOpenFoodFacts(query);
+        apiData.forEach(item => {
+          const key = item.name.toLowerCase();
+          if (!apiCache[key]) {
+            apiCache[key] = { name: item.name, cal: item.cal };
+          }
+        });
+        saveData('fit_api_cache', apiCache);
+        Object.keys(apiCache).forEach(key => {
+          if (!FOOD_DB[key]) {
+            FOOD_DB[key] = apiCache[key].cal;
+          }
+        });
+      }
+
+      const combined = [...topLocal];
+      apiData.forEach(item => {
+        const exists = combined.some(l => l.name.toLowerCase() === item.name.toLowerCase());
+        if (!exists) {
+          combined.push({ ...item, source: 'api' });
+        }
+      });
+      const finalResults = combined.slice(0, 10);
+
+      if (finalResults.length === 0) {
+        searchResults.innerHTML = '<div style="padding: 10px 0; color: #8e8e93; font-size: 16px;">Ничего не найдено</div>';
+        return;
+      }
+
+      let html = '';
+      finalResults.forEach(item => {
+        const name = item.name;
+        const cal = item.cal;
+        const regex = new RegExp(normalized, 'i');
+        const highlighted = name.replace(regex, match => `<strong>${match}</strong>`);
+        const apiBadge = item.source === 'api' ? `<span class="api-badge">🌐 API</span>` : '';
+        html += `<div class="search-result-item" data-name="${escapeHtml(name)}" data-cal="${cal}" data-source="${item.source || 'local'}">
+          <span class="name">${highlighted} ${apiBadge}</span>
+          <span class="cal">${cal} ккал/100г</span>
+        </div>`;
+      });
+      searchResults.innerHTML = html;
+
+      document.querySelectorAll('.search-result-item').forEach(el => {
+        el.addEventListener('click', function() {
+          const name = this.dataset.name;
+          const cal = parseFloat(this.dataset.cal);
+          const source = this.dataset.source;
+          mealSearch.value = name;
+          mealCalories.value = cal;
+          if (source === 'api') {
+            const key = name.toLowerCase();
+            if (!customFoodDB[key]) {
+              customFoodDB[key] = cal;
+              saveData('fit_custom_foods', customFoodDB);
+              FOOD_DB = { ...BASE_FOOD_DB, ...customFoodDB };
+              apiCache[key] = { name, cal };
+              saveData('fit_api_cache', apiCache);
+            }
+          }
+          searchResults.innerHTML = '';
+        });
+      });
+    }
+
+    mealSearch.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      const query = this.value.trim();
+      if (query.length < 2) {
+        searchResults.innerHTML = '';
+        return;
+      }
+      searchTimeout = setTimeout(() => {
+        triggerSearch(query);
+      }, 300);
+    });
 
     addProductBtn.addEventListener('click', function() {
       const name = prompt('Введите название продукта:');
@@ -1570,59 +1528,6 @@
       if (query.length >= 2) {
         triggerSearch(query);
       }
-    });
-
-    function triggerSearch(query) {
-      const normalized = normalizeText(query);
-      const startsWith = [];
-      const contains = [];
-      Object.keys(FOOD_DB).forEach(key => {
-        const lowerKey = key.toLowerCase();
-        if (lowerKey.startsWith(normalized)) {
-          startsWith.push(key);
-        } else if (lowerKey.includes(normalized)) {
-          contains.push(key);
-        }
-      });
-      startsWith.sort((a, b) => a.length - b.length);
-      contains.sort((a, b) => a.length - b.length);
-      const matches = startsWith.concat(contains).slice(0, 6);
-      if (matches.length === 0) {
-        searchResults.innerHTML = '<div style="padding: 10px 0; color: #8e8e93; font-size: 16px;">Ничего не найдено</div>';
-        return;
-      }
-      let html = '';
-      matches.forEach(key => {
-        const cal = FOOD_DB[key];
-        const regex = new RegExp(normalized, 'i');
-        const highlighted = key.replace(regex, match => `<strong>${match}</strong>`);
-        html += `<div class="search-result-item" data-name="${escapeHtml(key)}" data-cal="${cal}">
-          <span class="name">${highlighted}</span>
-          <span class="cal">${cal} ккал/100г</span>
-        </div>`;
-      });
-      searchResults.innerHTML = html;
-      document.querySelectorAll('.search-result-item').forEach(el => {
-        el.addEventListener('click', function() {
-          const name = this.dataset.name;
-          const cal = parseFloat(this.dataset.cal);
-          mealSearch.value = name;
-          mealCalories.value = cal;
-          searchResults.innerHTML = '';
-        });
-      });
-    }
-
-    mealSearch.addEventListener('input', function() {
-      clearTimeout(searchTimeout);
-      const query = this.value.trim();
-      if (query.length < 2) {
-        searchResults.innerHTML = '';
-        return;
-      }
-      searchTimeout = setTimeout(() => {
-        triggerSearch(query);
-      }, 150);
     });
 
     saveMealBtn.addEventListener('click', function() {
@@ -1662,7 +1567,7 @@
     }
 
     // =====================================================
-    // ТРЕКЕР ВОДЫ
+    // ВОДА
     // =====================================================
     const waterTodaySpan = document.getElementById('water-today');
     const waterGoalDisplay = document.getElementById('water-goal-display');
@@ -1676,12 +1581,10 @@
       const goal = profile.waterGoal || 2000;
       const todayAmount = waterLog[today] || 0;
       const percent = Math.min(Math.round((todayAmount / goal) * 100), 100);
-
       waterTodaySpan.textContent = todayAmount;
       waterGoalDisplay.textContent = goal;
       waterPercent.textContent = percent + '%';
       waterProgressBar.style.width = percent + '%';
-
       const days = [];
       for (let i = 6; i >= 0; i--) {
         const d = new Date();
@@ -1690,10 +1593,7 @@
         days.push({ date: key, amount: waterLog[key] || 0 });
       }
       waterHistoryList.innerHTML = days.map(d => `
-        <div class="list-item">
-          <div class="left"><span class="title">${formatDate(d.date)}</span></div>
-          <div class="right">${d.amount} мл</div>
-        </div>
+        <div class="list-item"><div class="left"><span class="title">${formatDate(d.date)}</span></div><div class="right">${d.amount} мл</div></div>
       `).join('');
     }
 
@@ -1726,7 +1626,7 @@
     });
 
     // =====================================================
-    // ПРОФИЛЬ + ВЕС + ТЁМНАЯ ТЕМА
+    // ПРОФИЛЬ + ВЕС
     // =====================================================
     const profileWeight = document.getElementById('profile-weight');
     const profileHeight = document.getElementById('profile-height');
@@ -1734,7 +1634,6 @@
     const profileWaterGoal = document.getElementById('profile-water-goal');
     const saveProfileBtn = document.getElementById('save-profile');
     const profileInfo = document.getElementById('profile-info');
-
     const weightInput = document.getElementById('weight-input');
     const weightDate = document.getElementById('weight-date');
     const saveWeightBtn = document.getElementById('save-weight-btn');
@@ -1762,9 +1661,7 @@
       }
       const sorted = weightLog.slice().sort((a,b) => a.date.localeCompare(b.date)).slice(-5).reverse();
       weightLogList.innerHTML = sorted.map(w => `
-        <div class="list-item">
-          <div class="left"><span class="title">${w.weight} кг</span><span class="sub">${formatDate(w.date)}</span></div>
-        </div>
+        <div class="list-item"><div class="left"><span class="title">${w.weight} кг</span><span class="sub">${formatDate(w.date)}</span></div></div>
       `).join('');
     }
 
@@ -1794,16 +1691,16 @@
       alert('✅ Вес записан!');
     });
 
-    // === Тёмная тема (Apple Switch) ===
+    // =====================================================
+    // ТЁМНАЯ ТЕМА
+    // =====================================================
     const themeSwitch = document.getElementById('themeToggle');
     let darkMode = loadData('fit_dark_mode', false);
-
     function applyTheme(dark) {
       document.body.classList.toggle('dark-theme', dark);
       themeSwitch.classList.toggle('active', dark);
       saveData('fit_dark_mode', dark);
     }
-
     themeSwitch.addEventListener('click', function() {
       darkMode = !darkMode;
       applyTheme(darkMode);
@@ -1815,11 +1712,7 @@
     // =====================================================
     let statPeriod = 'day';
     const statContent = document.getElementById('stat-content');
-
-    // Переменные для графиков
-    let trainingChartInstance = null;
-    let weightChartInstance = null;
-    let caloriesChartInstance = null;
+    let trainingChartInstance = null, weightChartInstance = null, caloriesChartInstance = null;
 
     document.querySelectorAll('[data-stat-period]').forEach(btn => {
       btn.addEventListener('click', function() {
@@ -1827,7 +1720,7 @@
         this.classList.add('apple-button-primary');
         statPeriod = this.dataset.statPeriod;
         renderStatistics(statPeriod);
-        renderCharts(); // обновляем графики при смене периода (хотя графики не зависят от периода, но для единообразия)
+        renderCharts();
       });
     });
 
@@ -1857,73 +1750,38 @@
         }
       }
       const avgWater = daysWithWater > 0 ? Math.round(totalWater / daysWithWater) : 0;
-
       const waterGoal = profile.waterGoal || 2000;
       const daysInPeriod = Math.ceil((new Date(todayStr) - new Date(startStr)) / (1000*60*60*24)) + 1;
       const totalWaterGoal = waterGoal * daysInPeriod;
       const waterPercent = Math.min(Math.round((totalWater / totalWaterGoal) * 100), 100);
-
       const balance = burned - totalCalEaten;
       const trainPercent = trainingCount > 0 ? Math.round((doneCount / trainingCount) * 100) : 0;
 
-      let html = `
+      statContent.innerHTML = `
         <div class="stats-grid">
-          <div class="stat-box">
-            <span class="emoji">🏋️</span>
-            <div class="number">${trainingCount}</div>
-            <div class="label">Тренировок</div>
-          </div>
-          <div class="stat-box">
-            <span class="emoji">🔥</span>
-            <div class="number">${burned}</div>
-            <div class="label">Сожжено</div>
-          </div>
-          <div class="stat-box">
-            <span class="emoji">🍽️</span>
-            <div class="number">${totalCalEaten}</div>
-            <div class="label">Потреблено</div>
-          </div>
+          <div class="stat-box"><span class="emoji">🏋️</span><div class="number">${trainingCount}</div><div class="label">Тренировок</div></div>
+          <div class="stat-box"><span class="emoji">🔥</span><div class="number">${burned}</div><div class="label">Сожжено</div></div>
+          <div class="stat-box"><span class="emoji">🍽️</span><div class="number">${totalCalEaten}</div><div class="label">Потреблено</div></div>
           <div class="stat-box" style="background: ${balance >= 0 ? 'linear-gradient(135deg, #e8f5e9, #d4edda)' : 'linear-gradient(135deg, #ffebee, #f8d7da)'};">
-            <span class="emoji">⚖️</span>
-            <div class="number" style="color: ${balance >= 0 ? '#2e7d32' : '#c62828'}">${balance}</div>
-            <div class="label">Баланс</div>
+            <span class="emoji">⚖️</span><div class="number" style="color: ${balance >= 0 ? '#2e7d32' : '#c62828'}">${balance}</div><div class="label">Баланс</div>
           </div>
-          <div class="stat-box">
-            <span class="emoji">💧</span>
-            <div class="number">${totalWater} мл</div>
-            <div class="label">Выпито за период</div>
-          </div>
+          <div class="stat-box"><span class="emoji">💧</span><div class="number">${totalWater} мл</div><div class="label">Выпито за период</div></div>
         </div>
         <div style="margin-top: 20px;">
-          <div class="progress-label">
-            <span>🏃 Выполнение тренировок</span>
-            <span>${trainPercent}%</span>
-          </div>
-          <div class="progress-bar-container">
-            <div class="progress-bar" style="width: ${trainPercent}%;"></div>
-          </div>
+          <div class="progress-label"><span>🏃 Выполнение тренировок</span><span>${trainPercent}%</span></div>
+          <div class="progress-bar-container"><div class="progress-bar" style="width: ${trainPercent}%;"></div></div>
         </div>
         <div style="margin-top: 16px;">
-          <div class="progress-label">
-            <span>💧 Выполнение нормы воды</span>
-            <span>${waterPercent}%</span>
-          </div>
-          <div class="progress-bar-container">
-            <div class="progress-bar" style="width: ${waterPercent}%; background: linear-gradient(90deg, #007aff, #0055cc);"></div>
-          </div>
+          <div class="progress-label"><span>💧 Выполнение нормы воды</span><span>${waterPercent}%</span></div>
+          <div class="progress-bar-container"><div class="progress-bar" style="width: ${waterPercent}%; background: linear-gradient(90deg, #007aff, #0055cc);"></div></div>
         </div>
         <div style="margin-top: 16px; text-align: center; font-size: 17px; color: #8e8e93; animation: fadeIn 0.5s ease;">
           Период: ${period === 'day' ? 'Сегодня' : period === 'week' ? 'Неделя' : 'Месяц'} · Выполнено ${doneCount} из ${trainingCount} тренировок · В среднем ${avgWater} мл/день
         </div>
       `;
-      statContent.innerHTML = html;
     }
 
-    // =====================================================
-    // ГРАФИКИ (рендеринг)
-    // =====================================================
     function renderCharts() {
-      // 1. Тренировки (за последние 30 дней)
       const days = 30;
       const labels = [];
       const trainData = [];
@@ -1936,63 +1794,26 @@
         const count = plan.history?.filter(h => h.date === dateStr).length || 0;
         trainData.push(count);
       }
-
       const trainingCtx = document.getElementById('trainingChart').getContext('2d');
       if (trainingChartInstance) trainingChartInstance.destroy();
       trainingChartInstance = new Chart(trainingCtx, {
         type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Тренировки',
-            data: trainData,
-            backgroundColor: 'rgba(52, 199, 89, 0.6)',
-            borderColor: '#34c759',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-        }
+        data: { labels, datasets: [{ label: 'Тренировки', data: trainData, backgroundColor: 'rgba(52, 199, 89, 0.6)', borderColor: '#34c759', borderWidth: 1 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
       });
 
-      // 2. Вес
       const weightLabels = [];
       const weightData = [];
       const sortedWeight = weightLog.slice().sort((a,b) => a.date.localeCompare(b.date));
-      sortedWeight.forEach(w => {
-        weightLabels.push(formatDate(w.date));
-        weightData.push(w.weight);
-      });
-
+      sortedWeight.forEach(w => { weightLabels.push(formatDate(w.date)); weightData.push(w.weight); });
       const weightCtx = document.getElementById('weightChart').getContext('2d');
       if (weightChartInstance) weightChartInstance.destroy();
       weightChartInstance = new Chart(weightCtx, {
         type: 'line',
-        data: {
-          labels: weightLabels,
-          datasets: [{
-            label: 'Вес (кг)',
-            data: weightData,
-            borderColor: '#007aff',
-            backgroundColor: 'rgba(0, 122, 255, 0.1)',
-            fill: true,
-            tension: 0.3,
-            pointBackgroundColor: '#007aff'
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: false } }
-        }
+        data: { labels: weightLabels, datasets: [{ label: 'Вес (кг)', data: weightData, borderColor: '#007aff', backgroundColor: 'rgba(0, 122, 255, 0.1)', fill: true, tension: 0.3, pointBackgroundColor: '#007aff' }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false } } }
       });
 
-      // 3. Питание (калории за 30 дней)
       const calLabels = [];
       const calData = [];
       for (let i = days - 1; i >= 0; i--) {
@@ -2003,27 +1824,12 @@
         const total = meals.filter(m => m.date === dateStr).reduce((s, m) => s + m.totalCalories, 0);
         calData.push(total);
       }
-
       const calCtx = document.getElementById('caloriesChart').getContext('2d');
       if (caloriesChartInstance) caloriesChartInstance.destroy();
       caloriesChartInstance = new Chart(calCtx, {
         type: 'bar',
-        data: {
-          labels: calLabels,
-          datasets: [{
-            label: 'Калории',
-            data: calData,
-            backgroundColor: 'rgba(255, 149, 0, 0.6)',
-            borderColor: '#ff9500',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true } }
-        }
+        data: { labels: calLabels, datasets: [{ label: 'Калории', data: calData, backgroundColor: 'rgba(255, 149, 0, 0.6)', borderColor: '#ff9500', borderWidth: 1 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
       });
     }
 
@@ -2048,11 +1854,11 @@
       profileContent.style.display = 'none';
       statsContent.style.display = 'block';
       renderStatistics(statPeriod);
-      renderCharts(); // рисуем графики при переключении на вкладку
+      renderCharts();
     });
 
     // =====================================================
-    // ЭКСПОРТ ДАННЫХ (PDF, CSV, PNG)
+    // ЭКСПОРТ
     // =====================================================
     const exportBtn = document.getElementById('export-btn');
     const exportPeriod = document.getElementById('export-period');
@@ -2063,7 +1869,6 @@
       const format = exportFormat.value;
       const periodLabel = period === 'day' ? 'день' : period === 'week' ? 'неделя' : 'месяц';
       const today = getToday();
-
       const now = new Date();
       let startDate = new Date(now);
       if (period === 'day') { startDate.setHours(0,0,0,0); }
@@ -2076,10 +1881,8 @@
       const trainingCount = historyEntries.length;
       const doneCount = historyEntries.filter(h => h.done).length;
       const burned = trainingCount * 300;
-
       const periodMeals = meals.filter(m => m.date >= startStr && m.date <= endStr);
       const totalCalEaten = periodMeals.reduce((s, m) => s + m.totalCalories, 0);
-
       let totalWater = 0;
       let daysWithWater = 0;
       for (const [date, amount] of Object.entries(waterLog)) {
@@ -2090,7 +1893,6 @@
       }
       const avgWater = daysWithWater > 0 ? Math.round(totalWater / daysWithWater) : 0;
       const balance = burned - totalCalEaten;
-
       const profileText = profile.weight && profile.height ?
         `Вес: ${profile.weight} кг, Рост: ${profile.height} см, Цель: ${profile.goal}, Норма воды: ${profile.waterGoal || 2000} мл` :
         'Профиль не заполнен';
@@ -2231,10 +2033,7 @@
     renderPlan();
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
 
-    // При первом открытии профиля, если статистика ещё не показана, графики не рисуются.
-    // При переключении на вкладку статистики они отрисуются.
-
-    console.log('🚀 FitApp с графиками внутри статистики запущен!');
+    console.log('🚀 FitApp с гибридным поиском запущен!');
   })();
 </script>
 </body>
