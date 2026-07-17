@@ -172,7 +172,7 @@
       background: rgba(10, 132, 255, 0.2) !important;
       color: #0a84ff !important;
     }
-    /* Стили для календаря */
+    /* Стили для календаря (увеличенные) */
     .calendar-container {
       display: flex;
       align-items: center;
@@ -203,21 +203,22 @@
     .calendar-days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      gap: 6px; /* увеличено с 4px */
     }
     .calendar-day {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px 0;
+      padding: 14px 0; /* увеличено с 8px */
       border-radius: 30px;
-      font-size: 16px;
+      font-size: 18px; /* увеличено с 16px */
       background: transparent;
       border: none;
       cursor: pointer;
       color: #1c1c1e;
       transition: background 0.2s;
       touch-action: manipulation;
+      min-height: 50px; /* добавлено для удобства нажатия */
     }
     .calendar-day.selected {
       background: #007aff;
@@ -984,7 +985,15 @@
       .export-options .input-group { min-width: unset; }
       .theme-switch { flex-wrap: wrap; }
       .chart-container { height: 160px; }
-      .calendar-day { padding: 6px 0; font-size: 14px; }
+      /* Увеличенный календарь на маленьких экранах */
+      .calendar-day {
+        padding: 12px 0;
+        font-size: 17px;
+        min-height: 46px;
+      }
+      .calendar-days {
+        gap: 5px;
+      }
     }
     @media (max-width: 400px) {
       body { padding: 12px 8px 20px; }
@@ -1004,7 +1013,14 @@
       .stat-period-buttons .apple-button { font-size: 13px; padding: 8px 6px; min-height: 36px; border-radius: 24px; }
       .tab-group .apple-button { font-size: 14px; min-height: 42px; padding: 8px 10px; }
       .chart-container { height: 140px; }
-      .calendar-day { padding: 4px 0; font-size: 13px; }
+      .calendar-day {
+        padding: 10px 0;
+        font-size: 16px;
+        min-height: 42px;
+      }
+      .calendar-days {
+        gap: 4px;
+      }
     }
     @media (max-width: 360px) {
       .menu-grid { gap: 10px; }
@@ -1013,6 +1029,11 @@
       .menu-card .label { font-size: 14px; }
       .menu-card .desc { font-size: 11px; }
       .stat-period-buttons .apple-button { font-size: 12px; padding: 6px 4px; min-height: 32px; border-radius: 20px; }
+      .calendar-day {
+        padding: 8px 0;
+        font-size: 15px;
+        min-height: 38px;
+      }
     }
     @supports (padding: max(0px)) {
       body {
@@ -2586,7 +2607,6 @@
     renderPlan();
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
 
-    // Дополнительно рендерим тренировки при старте
     setTimeout(() => {
       renderCalendar();
       renderExercises();
@@ -2594,7 +2614,7 @@
       renderTemplates();
     }, 100);
 
-    console.log('🚀 FitApp с обновлёнными тренировками запущен!');
+    console.log('🚀 FitApp с увеличенным календарём запущен!');
   })();
 </script>
 </body>
