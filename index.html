@@ -39,7 +39,6 @@
       gap: 24px;
     }
 
-    /* ===== СТРАНИЦЫ ===== */
     .page {
       display: none;
       flex-direction: column;
@@ -47,17 +46,13 @@
       animation: pageFadeInMobile 0.28s cubic-bezier(0.2, 0.8, 0.35, 1) forwards;
       will-change: transform, opacity;
     }
-
-    .page.active {
-      display: flex;
-    }
+    .page.active { display: flex; }
 
     @keyframes pageFadeInMobile {
       0% { opacity: 0; transform: translateY(16px) scale(0.97); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* ===== КАРТОЧКИ ===== */
     .apple-card {
       background: #ffffff;
       border-radius: 24px;
@@ -70,45 +65,20 @@
       transform: translateY(10px) scale(0.98);
       will-change: transform, opacity;
     }
-
     .apple-card:nth-child(1) { animation-delay: 0.03s; }
     .apple-card:nth-child(2) { animation-delay: 0.06s; }
     .apple-card:nth-child(3) { animation-delay: 0.09s; }
     .apple-card:nth-child(4) { animation-delay: 0.12s; }
     .apple-card:nth-child(5) { animation-delay: 0.15s; }
-
     @keyframes cardAppearMobile {
       0% { opacity: 0; transform: translateY(10px) scale(0.98); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
+    .apple-card:active { transform: scale(0.985); transition-duration: 0.06s; }
 
-    .apple-card:active {
-      transform: scale(0.985);
-      transition-duration: 0.06s;
-    }
-
-    /* ===== ЗАГОЛОВКИ ===== */
-    .page-title {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
-      line-height: 1.2;
-    }
-
-    .page-subtitle {
-      font-size: 16px;
-      font-weight: 400;
-      color: #6e6e73;
-      margin-top: 2px;
-      line-height: 1.4;
-    }
-
-    h3 {
-      font-size: 18px;
-      font-weight: 600;
-      line-height: 1.4;
-    }
+    .page-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; line-height: 1.2; }
+    .page-subtitle { font-size: 16px; font-weight: 400; color: #6e6e73; margin-top: 2px; line-height: 1.4; }
+    h3 { font-size: 18px; font-weight: 600; line-height: 1.4; }
 
     /* ===== КНОПКИ ===== */
     .apple-button {
@@ -135,41 +105,35 @@
       will-change: transform;
       line-height: 1.2;
     }
-
     .apple-button:active {
       transform: scale(0.94);
       transition-duration: 0.04s;
       background: rgba(0, 122, 255, 0.12);
     }
-
     .apple-button-primary {
       background: #007aff;
       border: 1px solid #007aff;
       color: #fff;
       box-shadow: 0 2px 12px rgba(0, 122, 255, 0.2);
     }
-
     .apple-button-primary:active {
       background: #0066d9;
       transform: scale(0.94);
     }
-
+    .apple-button-success {
+      border-color: rgba(52, 199, 89, 0.2);
+      color: #34c759;
+      background: rgba(52, 199, 89, 0.04);
+    }
+    .apple-button-success:active { background: rgba(52, 199, 89, 0.12); }
     .apple-button-danger {
       border-color: rgba(255, 59, 48, 0.2);
       color: #ff3b30;
       background: rgba(255, 59, 48, 0.04);
     }
-
-    .apple-button-danger:active {
-      background: rgba(255, 59, 48, 0.12);
-    }
-
-    .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 6px;
-    }
+    .apple-button-danger:active { background: rgba(255, 59, 48, 0.12); }
+    .apple-button-sm { padding: 8px 16px; font-size: 14px; min-width: unset; }
+    .apple-button-block { width: 100%; justify-content: center; }
 
     /* ===== ПОЛЯ ВВОДА ===== */
     .input-group {
@@ -178,7 +142,6 @@
       gap: 6px;
       margin-bottom: 18px;
     }
-
     .input-group label {
       font-size: 15px;
       font-weight: 500;
@@ -186,9 +149,9 @@
       letter-spacing: -0.01em;
       line-height: 1.3;
     }
-
     .input-group input,
-    .input-group select {
+    .input-group select,
+    .input-group textarea {
       font-size: 17px;
       padding: 14px 16px;
       border-radius: 14px;
@@ -204,30 +167,66 @@
       touch-action: manipulation;
       line-height: 1.4;
     }
-
+    .input-group textarea { resize: vertical; min-height: 60px; }
     .input-group input:focus,
-    .input-group select:focus {
+    .input-group select:focus,
+    .input-group textarea:focus {
       border-color: #007aff;
       background: #ffffff;
       box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.08);
       transform: scale(1.005);
     }
+    .input-group input::placeholder,
+    .input-group textarea::placeholder { color: #aeaeb2; }
 
-    .input-group input::placeholder {
-      color: #aeaeb2;
+    /* ===== ПРОГРЕСС-БАР ===== */
+    .progress-bar-container {
+      background: #e5e5ea;
+      border-radius: 20px;
+      height: 8px;
+      overflow: hidden;
+      margin: 8px 0 4px 0;
+    }
+    .progress-bar {
+      background: #34c759;
+      height: 100%;
+      border-radius: 20px;
+      transition: width 0.5s cubic-bezier(0.2, 0.8, 0.35, 1);
+      width: 0%;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #6e6e73;
     }
 
-    .input-group input.flash-green {
-      border-color: #34c759 !important;
-      box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.12) !important;
-      animation: flashGreenMobile 0.5s ease;
+    /* ===== ДНИ ===== */
+    .day-checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
     }
-
-    @keyframes flashGreenMobile {
-      0% { border-color: #34c759; box-shadow: 0 0 0 6px rgba(52, 199, 89, 0.2); }
-      50% { border-color: #34c759; box-shadow: 0 0 0 2px rgba(52, 199, 89, 0.05); }
-      100% { border-color: #34c759; box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.12); }
+    .day-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 30px;
+      background: #f8f8fa;
+      border: 1px solid #e5e5ea;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      user-select: none;
     }
+    .day-checkbox.active {
+      background: #007aff;
+      border-color: #007aff;
+      color: #fff;
+    }
+    .day-checkbox input { display: none; }
 
     /* ===== СПИСКИ ===== */
     .list-item {
@@ -242,7 +241,6 @@
       touch-action: manipulation;
       gap: 12px;
     }
-
     .list-item:nth-child(1) { animation-delay: 0.03s; }
     .list-item:nth-child(2) { animation-delay: 0.06s; }
     .list-item:nth-child(3) { animation-delay: 0.09s; }
@@ -253,16 +251,11 @@
     .list-item:nth-child(8) { animation-delay: 0.24s; }
     .list-item:nth-child(9) { animation-delay: 0.27s; }
     .list-item:nth-child(10) { animation-delay: 0.30s; }
-
     @keyframes listItemAppearMobile {
       0% { opacity: 0; transform: translateX(-6px); }
       100% { opacity: 1; transform: translateX(0); }
     }
-
-    .list-item:last-child {
-      border-bottom: none;
-    }
-
+    .list-item:last-child { border-bottom: none; }
     .list-item .left {
       display: flex;
       flex-direction: column;
@@ -270,27 +263,9 @@
       flex: 1;
       min-width: 0;
     }
-
-    .list-item .left .title {
-      font-weight: 500;
-      font-size: 17px;
-      line-height: 1.3;
-    }
-
-    .list-item .left .sub {
-      font-size: 14px;
-      color: #6e6e73;
-      line-height: 1.4;
-    }
-
-    .list-item .right {
-      font-weight: 600;
-      font-size: 17px;
-      color: #1c1c1e;
-      white-space: nowrap;
-      line-height: 1.3;
-    }
-
+    .list-item .left .title { font-weight: 500; font-size: 17px; line-height: 1.3; }
+    .list-item .left .sub { font-size: 14px; color: #6e6e73; line-height: 1.4; }
+    .list-item .right { font-weight: 600; font-size: 17px; color: #1c1c1e; white-space: nowrap; line-height: 1.3; }
     .empty-state {
       text-align: center;
       color: #8e8e93;
@@ -299,11 +274,7 @@
       animation: fadeInMobile 0.3s ease;
       line-height: 1.5;
     }
-
-    @keyframes fadeInMobile {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
+    @keyframes fadeInMobile { 0% { opacity: 0; } 100% { opacity: 1; } }
 
     /* ===== СТАТИСТИКА ===== */
     .stats-grid {
@@ -311,7 +282,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
-
     .stat-box {
       background: #f8f8fa;
       border-radius: 16px;
@@ -323,45 +293,25 @@
       transform: scale(0.94);
       touch-action: manipulation;
     }
-
     .stat-box:nth-child(1) { animation-delay: 0.04s; }
     .stat-box:nth-child(2) { animation-delay: 0.08s; }
     .stat-box:nth-child(3) { animation-delay: 0.12s; }
     .stat-box:nth-child(4) { animation-delay: 0.16s; }
-
     @keyframes statAppearMobile {
       0% { opacity: 0; transform: scale(0.94); }
       100% { opacity: 1; transform: scale(1); }
     }
+    .stat-box:active { transform: scale(0.96); transition-duration: 0.04s; }
+    .stat-box .number { font-size: 28px; font-weight: 700; color: #1c1c1e; letter-spacing: -0.02em; line-height: 1.2; }
+    .stat-box .label { font-size: 13px; color: #6e6e73; margin-top: 4px; line-height: 1.3; }
 
-    .stat-box:active {
-      transform: scale(0.96);
-      transition-duration: 0.04s;
-    }
-
-    .stat-box .number {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1c1c1e;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-
-    .stat-box .label {
-      font-size: 13px;
-      color: #6e6e73;
-      margin-top: 4px;
-      line-height: 1.3;
-    }
-
-    /* ===== ГЛАВНОЕ МЕНЮ ===== */
+    /* ===== МЕНЮ ===== */
     .menu-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 14px;
       margin-top: 6px;
     }
-
     .menu-card {
       background: #ffffff;
       border-radius: 20px;
@@ -378,50 +328,20 @@
       -webkit-touch-callout: none;
       will-change: transform;
     }
-
     .menu-card:nth-child(1) { animation-delay: 0.04s; }
     .menu-card:nth-child(2) { animation-delay: 0.08s; }
     .menu-card:nth-child(3) { animation-delay: 0.12s; }
-    .menu-card:nth-child(4) { animation-delay: 0.16s; }
-
     @keyframes menuCardAppearMobile {
       0% { opacity: 0; transform: translateY(10px) scale(0.97); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
+    .menu-card:active { transform: scale(0.95); transition-duration: 0.05s; background: #f8f8fa; }
+    .menu-card .icon { font-size: 38px; margin-bottom: 10px; transition: transform 0.2s ease; display: block; line-height: 1; }
+    .menu-card:active .icon { transform: scale(0.9); }
+    .menu-card .label { font-size: 17px; font-weight: 600; color: #1c1c1e; line-height: 1.3; }
+    .menu-card .desc { font-size: 13px; color: #6e6e73; margin-top: 4px; line-height: 1.3; }
 
-    .menu-card:active {
-      transform: scale(0.95);
-      transition-duration: 0.05s;
-      background: #f8f8fa;
-    }
-
-    .menu-card .icon {
-      font-size: 38px;
-      margin-bottom: 10px;
-      transition: transform 0.2s ease;
-      display: block;
-      line-height: 1;
-    }
-
-    .menu-card:active .icon {
-      transform: scale(0.9);
-    }
-
-    .menu-card .label {
-      font-size: 17px;
-      font-weight: 600;
-      color: #1c1c1e;
-      line-height: 1.3;
-    }
-
-    .menu-card .desc {
-      font-size: 13px;
-      color: #6e6e73;
-      margin-top: 4px;
-      line-height: 1.3;
-    }
-
-    /* ===== КНОПКА НАЗАД ===== */
+    /* ===== НАЗАД ===== */
     .back-row {
       display: flex;
       align-items: center;
@@ -429,7 +349,6 @@
       padding: 4px 0 8px 0;
       animation: fadeInMobile 0.25s ease;
     }
-
     .back-button {
       background: none;
       border: none;
@@ -441,12 +360,7 @@
       transition: transform 0.12s ease, color 0.15s ease;
       touch-action: manipulation;
     }
-
-    .back-button:active {
-      transform: scale(0.85) translateX(-4px);
-      color: #0055cc;
-    }
-
+    .back-button:active { transform: scale(0.85) translateX(-4px); color: #0055cc; }
     .back-label {
       font-size: 17px;
       font-weight: 500;
@@ -456,220 +370,54 @@
       touch-action: manipulation;
       line-height: 1.3;
     }
+    .back-label:active { transform: scale(0.95); color: #0055cc; }
 
-    .back-label:active {
-      transform: scale(0.95);
-      color: #0055cc;
-    }
-
-    /* ===== РЕЗУЛЬТАТЫ ПОИСКА ===== */
-    .search-result-item {
+    /* ===== ТАБЫ НА ВСЮ ШИРИНУ ===== */
+    .tab-group {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      background: #f8f8fa;
-      border-radius: 14px;
-      margin-bottom: 6px;
-      cursor: pointer;
-      transition: background 0.15s ease, transform 0.1s ease;
-      border: 1px solid transparent;
-      animation: listItemAppearMobile 0.2s ease forwards;
-      opacity: 0;
-      transform: translateX(-4px);
-      touch-action: manipulation;
-      gap: 12px;
+      gap: 10px;
     }
-
-    .search-result-item:active {
-      background: #d2d2d7;
-      transform: scale(0.97);
-      transition-duration: 0.04s;
-    }
-
-    .search-result-item .name {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 1.3;
-    }
-
-    .search-result-item .cal {
-      font-weight: 600;
-      font-size: 15px;
-      color: #007aff;
-      white-space: nowrap;
-      line-height: 1.3;
-    }
-
-    /* ===== УТИЛИТЫ ===== */
-    .flex-between {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .w-full { width: 100%; }
-    .text-secondary { color: #6e6e73; }
-    .text-center { text-align: center; }
-    .mt-8 { margin-top: 8px; }
-    .mt-16 { margin-top: 16px; }
-    .mb-8 { margin-bottom: 8px; }
-    .gap-8 { gap: 8px; }
-    .gap-16 { gap: 16px; }
-
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input[type="number"] {
-      -moz-appearance: textfield;
+    .tab-group .apple-button {
+      flex: 1;
+      justify-content: center;
+      border-radius: 40px;
     }
 
     /* ===== АДАПТИВ ===== */
     @media (max-width: 500px) {
-      body {
-        padding: 12px 12px 30px;
-      }
-
-      .apple-card {
-        padding: 18px 16px;
-        border-radius: 20px;
-      }
-
-      .page-title {
-        font-size: 22px;
-      }
-
-      .page-subtitle {
-        font-size: 15px;
-      }
-
-      .menu-grid {
-        gap: 10px;
-      }
-
-      .menu-card {
-        padding: 16px 10px;
-        border-radius: 18px;
-      }
-
-      .menu-card .icon {
-        font-size: 30px;
-      }
-
-      .menu-card .label {
-        font-size: 15px;
-      }
-
-      .menu-card .desc {
-        font-size: 12px;
-      }
-
-      .stats-grid {
-        gap: 10px;
-      }
-
-      .stat-box .number {
-        font-size: 22px;
-      }
-
-      .apple-button {
-        width: 100%;
-        justify-content: center;
-        padding: 13px 18px;
-        font-size: 16px;
-        min-width: unset;
-      }
-
-      .input-group input,
-      .input-group select {
-        font-size: 16px;
-        padding: 12px 14px;
-        border-radius: 12px;
-      }
-
-      .list-item {
-        padding: 12px 0;
-      }
-
-      .list-item .left .title {
-        font-size: 16px;
-      }
-
-      .list-item .right {
-        font-size: 16px;
-      }
-
-      .back-button {
-        font-size: 24px;
-      }
-
-      .search-result-item {
-        padding: 10px 12px;
-        border-radius: 12px;
-      }
-
-      .search-result-item .name {
-        font-size: 15px;
-      }
-
-      .search-result-item .cal {
-        font-size: 14px;
-      }
-
-      .app-container {
-        gap: 18px;
-      }
-
-      .page {
-        gap: 18px;
-      }
+      body { padding: 12px 12px 30px; }
+      .apple-card { padding: 18px 16px; border-radius: 20px; }
+      .page-title { font-size: 22px; }
+      .page-subtitle { font-size: 15px; }
+      .menu-grid { gap: 10px; }
+      .menu-card { padding: 16px 10px; border-radius: 18px; }
+      .menu-card .icon { font-size: 30px; }
+      .menu-card .label { font-size: 15px; }
+      .menu-card .desc { font-size: 12px; }
+      .stats-grid { gap: 10px; }
+      .stat-box .number { font-size: 22px; }
+      .apple-button { padding: 13px 18px; font-size: 16px; min-width: unset; }
+      .input-group input, .input-group select, .input-group textarea { font-size: 16px; padding: 12px 14px; border-radius: 12px; }
+      .list-item { padding: 12px 0; }
+      .list-item .left .title { font-size: 16px; }
+      .list-item .right { font-size: 16px; }
+      .back-button { font-size: 24px; }
+      .day-checkbox { padding: 6px 12px; font-size: 13px; }
+      .app-container { gap: 18px; }
+      .page { gap: 18px; }
+      .tab-group .apple-button { font-size: 15px; padding: 12px 16px; }
     }
-
     @media (max-width: 380px) {
-      body {
-        padding: 8px 8px 20px;
-      }
-
-      .menu-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-      }
-
-      .menu-card {
-        padding: 12px 8px;
-        border-radius: 16px;
-      }
-
-      .menu-card .icon {
-        font-size: 26px;
-      }
-
-      .menu-card .label {
-        font-size: 14px;
-      }
-
-      .menu-card .desc {
-        font-size: 11px;
-      }
-
-      .apple-card {
-        padding: 14px 12px;
-        border-radius: 16px;
-      }
-
-      .page-title {
-        font-size: 20px;
-      }
-
-      .stat-box .number {
-        font-size: 18px;
-      }
+      body { padding: 8px 8px 20px; }
+      .menu-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+      .menu-card { padding: 12px 6px; border-radius: 16px; }
+      .menu-card .icon { font-size: 24px; }
+      .menu-card .label { font-size: 13px; }
+      .menu-card .desc { font-size: 11px; }
+      .apple-card { padding: 14px 12px; border-radius: 16px; }
+      .page-title { font-size: 20px; }
+      .stat-box .number { font-size: 18px; }
     }
-
     @supports (padding: max(0px)) {
       body {
         padding-left: max(12px, env(safe-area-inset-left));
@@ -677,20 +425,17 @@
         padding-bottom: max(30px, env(safe-area-inset-bottom));
       }
     }
-
-    .page {
-      scroll-behavior: smooth;
-    }
-
-    .menu-card,
-    .apple-button,
-    .search-result-item,
-    .list-item,
-    .back-button,
-    .back-label {
+    .page { scroll-behavior: smooth; }
+    .menu-card, .apple-button, .list-item, .back-button, .back-label, .day-checkbox {
       -webkit-user-select: none;
       user-select: none;
     }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] { -moz-appearance: textfield; }
   </style>
 </head>
 <body>
@@ -705,14 +450,9 @@
 
     <div class="menu-grid">
       <div class="menu-card" data-page="training">
-        <span class="icon">🏃</span>
-        <div class="label">Тренировка</div>
-        <div class="desc">Добавить упражнение</div>
-      </div>
-      <div class="menu-card" data-page="statistics">
-        <span class="icon">📊</span>
-        <div class="label">Статистика</div>
-        <div class="desc">День / Неделя / Месяц</div>
+        <span class="icon">📋</span>
+        <div class="label">План тренировок</div>
+        <div class="desc">Составь план на неделю</div>
       </div>
       <div class="menu-card" data-page="food">
         <span class="icon">🍽️</span>
@@ -722,7 +462,7 @@
       <div class="menu-card" data-page="profile">
         <span class="icon">👤</span>
         <div class="label">Мой профиль</div>
-        <div class="desc">Вес, рост, цель</div>
+        <div class="desc">Вес, рост, статистика</div>
       </div>
     </div>
 
@@ -731,89 +471,92 @@
     </div>
   </div>
 
-  <!-- ==================== ТРЕНИРОВКИ ==================== -->
+  <!-- ==================== ПЛАН ТРЕНИРОВОК ==================== -->
   <div id="training" class="page">
     <div class="back-row">
       <button class="back-button" data-back>‹</button>
       <span class="back-label" data-back>Назад</span>
     </div>
+
     <div class="apple-card">
-      <h2 class="page-title">🏃 Добавить тренировку</h2>
-      <p class="page-subtitle">Выбери упражнение и укажи длительность</p>
+      <h2 class="page-title">📋 План тренировок</h2>
+      <p class="page-subtitle">Выбери дни и добавь упражнения</p>
 
       <div class="input-group">
-        <label for="exercise-select">Упражнение</label>
-        <select id="exercise-select">
-          <option value="Бег">Бег</option>
-          <option value="Пресс">Пресс</option>
-          <option value="Йога">Йога</option>
-          <option value="Своё">Своё (введите название)</option>
-        </select>
-      </div>
-
-      <div class="input-group" id="custom-exercise-group" style="display: none;">
-        <label for="custom-exercise">Название упражнения</label>
-        <input type="text" id="custom-exercise" placeholder="Например: Приседания">
+        <label>Дни тренировок</label>
+        <div class="day-checkbox-group" id="daySelector">
+          <label class="day-checkbox" data-day="1">Пн</label>
+          <label class="day-checkbox" data-day="2">Вт</label>
+          <label class="day-checkbox" data-day="3">Ср</label>
+          <label class="day-checkbox" data-day="4">Чт</label>
+          <label class="day-checkbox" data-day="5">Пт</label>
+          <label class="day-checkbox" data-day="6">Сб</label>
+          <label class="day-checkbox" data-day="0">Вс</label>
+        </div>
       </div>
 
       <div class="input-group">
-        <label for="duration">Длительность (минуты)</label>
-        <input type="number" id="duration" min="1" value="10" step="1">
+        <label for="plan-exercise">Упражнение</label>
+        <input type="text" id="plan-exercise" placeholder="Например: Приседания со штангой">
       </div>
 
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px 0;">
-        <button class="apple-button apple-button-primary" data-duration-preset="5">5 мин</button>
-        <button class="apple-button apple-button-primary" data-duration-preset="10">10 мин</button>
-        <button class="apple-button apple-button-primary" data-duration-preset="20">20 мин</button>
-        <button class="apple-button apple-button-primary" data-duration-preset="30">30 мин</button>
-        <button class="apple-button apple-button-primary" data-duration-preset="45">45 мин</button>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="input-group" style="flex:1; min-width:80px;">
+          <label for="plan-sets">Подходы</label>
+          <input type="number" id="plan-sets" min="1" value="3">
+        </div>
+        <div class="input-group" style="flex:1; min-width:80px;">
+          <label for="plan-reps">Повторения</label>
+          <input type="number" id="plan-reps" min="1" value="10">
+        </div>
+        <div class="input-group" style="flex:1; min-width:80px;">
+          <label for="plan-weight">Вес (кг)</label>
+          <input type="number" id="plan-weight" min="0" value="0" step="2.5">
+        </div>
       </div>
 
-      <div class="flex-between">
-        <span style="font-weight: 500;">🔥 Сожжёте ≈ <span id="calories-preview">0</span> ккал</span>
-        <button class="apple-button apple-button-primary" id="save-training">Сохранить</button>
+      <div class="input-group">
+        <label for="plan-note">Заметка (опционально)</label>
+        <textarea id="plan-note" placeholder="Техника, советы, ссылка на видео..." rows="2"></textarea>
+      </div>
+
+      <button class="apple-button apple-button-primary apple-button-block" id="add-plan-exercise">➕ Добавить в план</button>
+    </div>
+
+    <div class="apple-card">
+      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <h3 style="font-size: 18px;">📅 Текущий план</h3>
+        <span class="text-secondary" id="plan-exercises-count">0 упражнений</span>
+      </div>
+
+      <div style="margin: 10px 0 6px 0;">
+        <div class="progress-label">
+          <span>Выполнение</span>
+          <span id="progress-text">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div id="plan-list">
+        <div class="empty-state">Нет упражнений в плане</div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;">
+        <button class="apple-button apple-button-success apple-button-sm" id="mark-day-done">✅ День готов</button>
+        <button class="apple-button apple-button-danger apple-button-sm" id="clear-plan">🗑️ Очистить</button>
       </div>
     </div>
 
     <div class="apple-card">
-      <div class="flex-between">
-        <h3 style="font-size: 18px;">📋 Сегодняшние тренировки</h3>
-        <span class="text-secondary" id="today-training-count">0</span>
+      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <h3 style="font-size: 18px;">📆 История планов</h3>
+        <span class="text-secondary" id="history-count">0</span>
       </div>
-      <div id="today-training-list">
-        <div class="empty-state">Нет тренировок за сегодня</div>
+      <div id="history-list">
+        <div class="empty-state">Нет сохранённых планов</div>
       </div>
-    </div>
-
-    <div class="apple-card">
-      <div class="flex-between">
-        <h3 style="font-size: 18px;">📅 Все тренировки</h3>
-        <span class="text-secondary" id="total-training-count">0</span>
-      </div>
-      <div id="all-training-list">
-        <div class="empty-state">Нет сохранённых тренировок</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== СТАТИСТИКА ==================== -->
-  <div id="statistics" class="page">
-    <div class="back-row">
-      <button class="back-button" data-back>‹</button>
-      <span class="back-label" data-back>Назад</span>
-    </div>
-
-    <div class="apple-card">
-      <h2 class="page-title">📊 Моя статистика</h2>
-      <div style="display: flex; gap: 8px; margin: 10px 0 6px 0; flex-wrap: wrap;">
-        <button class="apple-button apple-button-primary" data-stat-period="day">День</button>
-        <button class="apple-button" data-stat-period="week">Неделя</button>
-        <button class="apple-button" data-stat-period="month">Месяц</button>
-      </div>
-    </div>
-
-    <div id="stat-content">
-      <!-- заполняется JS -->
     </div>
   </div>
 
@@ -844,11 +587,11 @@
         <input type="number" id="meal-calories" min="0" placeholder="автозаполнится" step="1">
       </div>
 
-      <button class="apple-button apple-button-primary w-full" id="save-meal">➕ Записать</button>
+      <button class="apple-button apple-button-primary apple-button-block" id="save-meal">➕ Записать</button>
     </div>
 
     <div class="apple-card">
-      <div class="flex-between">
+      <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
         <h3 style="font-size: 18px;">Сегодня</h3>
         <span style="font-weight: 600;">Всего: <span id="today-food-total">0</span> ккал</span>
       </div>
@@ -865,14 +608,23 @@
     </div>
   </div>
 
-  <!-- ==================== ПРОФИЛЬ ==================== -->
+  <!-- ==================== ПРОФИЛЬ + СТАТИСТИКА ==================== -->
   <div id="profile" class="page">
     <div class="back-row">
       <button class="back-button" data-back>‹</button>
       <span class="back-label" data-back>Назад</span>
     </div>
 
-    <div class="apple-card">
+    <!-- Табы на всю ширину -->
+    <div class="apple-card" style="padding-bottom: 12px;">
+      <div class="tab-group">
+        <button class="apple-button apple-button-primary" id="tabProfile">👤 Профиль</button>
+        <button class="apple-button" id="tabStats">📊 Статистика</button>
+      </div>
+    </div>
+
+    <!-- Блок профиля -->
+    <div id="profileContent" class="apple-card">
       <h2 class="page-title">👤 Мой профиль</h2>
       <p class="page-subtitle">Вес, рост, цель</p>
 
@@ -895,12 +647,25 @@
         </select>
       </div>
 
-      <button class="apple-button apple-button-primary w-full" id="save-profile">Сохранить профиль</button>
+      <button class="apple-button apple-button-primary apple-button-block" id="save-profile">Сохранить профиль</button>
+
+      <div style="margin-top: 16px; border-top: 1px solid #e5e5ea; padding-top: 16px;">
+        <h3 style="font-size: 18px;">Текущие данные</h3>
+        <div id="profile-info" class="empty-state">Профиль не заполнен</div>
+      </div>
     </div>
 
-    <div class="apple-card" id="profile-display">
-      <h3 style="font-size: 18px;">Текущие данные</h3>
-      <div id="profile-info" class="empty-state">Профиль не заполнен</div>
+    <!-- Блок статистики (изначально скрыт) -->
+    <div id="statsContent" class="apple-card" style="display: none;">
+      <h2 class="page-title">📊 Моя статистика</h2>
+      <div style="display: flex; gap: 8px; margin: 10px 0 6px 0; flex-wrap: wrap;">
+        <button class="apple-button apple-button-primary" data-stat-period="day">День</button>
+        <button class="apple-button" data-stat-period="week">Неделя</button>
+        <button class="apple-button" data-stat-period="month">Месяц</button>
+      </div>
+      <div id="stat-content">
+        <!-- заполняется JS -->
+      </div>
     </div>
   </div>
 
@@ -911,109 +676,163 @@
     'use strict';
 
     // =====================================================
-    // 1. БАЗА ПРОДУКТОВ
+    // БАЗА ПРОДУКТОВ (560+)
     // =====================================================
     const FOOD_DB = {
-      'гречка': 130, 'гречневая': 130, 'рис': 116, 'рис варёный': 116,
-      'овсянка': 88, 'овсяная': 88, 'пшено': 90, 'манка': 80,
-      'булгур': 83, 'киноа': 120, 'макароны': 131, 'макароны варёные': 131,
-      'спагетти': 131, 'картофель': 77, 'картошка': 77, 'пюре': 85,
-      'курица': 165, 'куриная грудка': 165, 'куриное филе': 165, 'индейка': 135,
-      'говядина': 187, 'свинина': 242, 'баранина': 209, 'кролик': 156,
-      'лосось': 208, 'семга': 208, 'форель': 148, 'тунец': 144,
-      'треска': 78, 'минтай': 72, 'креветки': 99, 'кальмар': 92,
-      'яйцо': 155, 'яйца': 155, 'молоко': 42, 'кефир': 41,
-      'творог': 121, 'творог обезжиренный': 71, 'сметана': 206, 'йогурт': 60,
-      'сыр': 350, 'пармезан': 431, 'огурец': 15, 'огурцы': 15,
-      'помидор': 20, 'томат': 20, 'капуста': 25, 'капуста белокочанная': 25,
-      'брокколи': 34, 'цветная капуста': 25, 'морковь': 32, 'свекла': 40,
-      'лук': 41, 'чеснок': 149, 'перец болгарский': 26, 'кабачок': 24,
-      'баклажан': 24, 'яблоко': 52, 'банан': 89, 'апельсин': 47,
-      'груша': 57, 'виноград': 69, 'арбуз': 30, 'дыня': 34,
-      'клубника': 32, 'малина': 52, 'черника': 44, 'голубика': 44,
-      'персик': 39, 'киви': 61, 'лимон': 34, 'грейпфрут': 42,
-      'грецкий орех': 654, 'миндаль': 579, 'фундук': 628, 'кешью': 553,
-      'арахис': 567, 'фисташки': 556, 'изюм': 299, 'курага': 241,
-      'финики': 282, 'чернослив': 240, 'хлеб': 265, 'хлеб белый': 265,
-      'хлеб ржаной': 210, 'бородинский': 210, 'батон': 264, 'лаваш': 275,
-      'сухари': 335, 'масло сливочное': 748, 'масло растительное': 884,
-      'оливковое масло': 884, 'подсолнечное масло': 884, 'майонез': 624,
-      'кетчуп': 101, 'мед': 304, 'джем': 250, 'варенье': 250,
-      'чай': 1, 'кофе': 2, 'сок яблочный': 46, 'сок апельсиновый': 45,
-      'сок томатный': 17, 'кола': 42, 'лимонад': 40, 'суп': 40,
-      'борщ': 45, 'щи': 35, 'каша': 90, 'омлет': 154,
-      'блины': 189, 'пельмени': 220, 'вареники': 200, 'котлета': 260,
-      'шницель': 250, 'стейк': 270, 'шашлык': 250, 'пицца': 266,
-      'бургер': 295, 'картошка фри': 312, 'салат': 50, 'винегрет': 80,
-      'оливье': 95, 'сельдь под шубой': 120, 'торт': 350, 'пирожное': 300,
-      'шоколад': 546, 'шоколад молочный': 546, 'шоколад темный': 540,
-      'конфеты': 450, 'мороженое': 207, 'йогурт фруктовый': 90,
-      'творожная масса': 150, 'сырники': 220, 'запеканка': 150,
+      // КРУПЫ, МАКАРОНЫ
+      'гречка':130,'гречневая':130,'рис':116,'рис варёный':116,'рис бурый':123,
+      'рис дикий':101,'пшено':90,'манка':80,'овсянка':88,'овсяные хлопья':88,
+      'геркулес':88,'перловка':110,'ячневая':110,'кукурузная':98,'булгур':83,
+      'киноа':120,'чечевица':116,'чечевица красная':100,'горох':81,'нут':139,
+      'фасоль':132,'фасоль белая':132,'макароны':131,'макароны варёные':131,
+      'спагетти':131,'лапша':138,'вермишель':138,'кускус':112,'полба':127,
+      'сорго':139,'амарант':102,'тефф':101,
+      // МЯСО, ПТИЦА, СУБПРОДУКТЫ
+      'курица':165,'куриная грудка':165,'куриное филе':165,'куриное бедро':185,
+      'куриный окорок':195,'куриная голень':175,'индейка':135,'индейка грудка':135,
+      'говядина':187,'говядина постная':158,'говяжий фарш':250,'свинина':242,
+      'свинина постная':190,'свиной фарш':280,'баранина':209,'баранина постная':165,
+      'кролик':156,'конина':143,'оленина':155,'утка':308,'гусь':371,
+      'печень говяжья':125,'печень куриная':136,'почки говяжьи':112,
+      'сердце говяжье':112,'язык говяжий':173,'мозги говяжьи':124,
+      'рулька свиная':290,'грудинка свиная':318,'бекон':540,'ветчина':145,
+      'колбаса варёная':250,'колбаса копчёная':380,'сосиски':250,'сардельки':270,
+      // РЫБА, МОРЕПРОДУКТЫ
+      'лосось':208,'семга':208,'форель':148,'тунец':144,'тунец консервированный':120,
+      'горбуша':140,'кета':140,'кижуч':150,'нерка':165,'чавыча':180,
+      'треска':78,'пикша':82,'минтай':72,'путассу':70,'морской окунь':110,
+      'судак':84,'щука':82,'сом':126,'сельдь':161,'скумбрия':205,
+      'сайда':90,'камбала':88,'палтус':100,'макрель':200,'угорь':184,
+      'креветки':99,'кальмар':92,'осьминог':82,'мидии':86,'устрицы':70,
+      'краб':87,'крабовые палочки':88,'икра красная':250,'икра чёрная':260,
+      // ЯЙЦА, МОЛОЧНЫЕ
+      'яйцо':155,'яйца':155,'яйцо варёное':155,'молоко':42,'молоко 1,5%':44,
+      'молоко 3,2%':58,'кефир':41,'кефир 1%':36,'кефир 2,5%':50,
+      'творог':121,'творог обезжиренный':71,'творог 5%':112,'творог 9%':159,
+      'сметана':206,'сметана 15%':158,'сливки 10%':118,'сливки 35%':337,
+      'йогурт':60,'йогурт 1,5%':51,'йогурт фруктовый':90,'ряженка':54,
+      'простокваша':40,'сыр':350,'сыр твёрдый':350,'сыр плавленый':300,
+      'пармезан':431,'моцарелла':280,'фета':264,'бри':334,'камамбер':300,
+      'маскарпоне':412,'рикотта':174,'творожный сыр':250,'сгущёнка':320,
+      // ОВОЩИ
+      'огурец':15,'огурцы':15,'помидор':20,'томат':20,'капуста':25,
+      'капуста белокочанная':25,'капуста краснокочанная':26,'капуста цветная':25,
+      'брокколи':34,'капуста брюссельская':43,'капуста кольраби':27,
+      'морковь':32,'свекла':40,'лук':41,'лук репчатый':41,'лук зелёный':19,
+      'чеснок':149,'перец болгарский':26,'перец сладкий':26,'перец чили':40,
+      'кабачок':24,'баклажан':24,'тыква':22,'патиссон':19,'редис':16,
+      'репа':28,'редька':34,'хрен':48,'сельдерей':14,'сельдерей корневой':34,
+      'петрушка':47,'укроп':40,'салат':15,'шпинат':23,'щавель':22,
+      'рукола':25,'базилик':44,'кинза':23,'мята':44,'картофель':77,
+      'картошка':77,'батат':86,'топинамбур':61,'кукуруза':86,'горошек зелёный':73,
+      'фасоль стручковая':31,'спаржа':20,'артишок':47,'авокадо':160,
+      // ФРУКТЫ, ЯГОДЫ, СУХОФРУКТЫ
+      'яблоко':52,'банан':89,'апельсин':47,'груша':57,'персик':39,
+      'нектарин':44,'абрикос':44,'виноград':69,'арбуз':30,'дыня':34,
+      'клубника':32,'земляника':30,'малина':52,'ежевика':43,'черника':44,
+      'голубика':44,'брусника':46,'клюква':46,'смородина красная':43,
+      'смородина чёрная':56,'крыжовник':43,'вишня':52,'черешня':50,
+      'слива':42,'алыча':38,'киви':61,'лимон':34,'лайм':30,
+      'грейпфрут':42,'помело':32,'мандарин':38,'гранат':83,'хурма':67,
+      'инжир':74,'финики':282,'изюм':299,'курага':241,'чернослив':240,
+      'яблоки сушёные':245,'груши сушёные':250,'бананы сушёные':346,
+      // ОРЕХИ, СЕМЕНА
+      'грецкий орех':654,'миндаль':579,'фундук':628,'кешью':553,
+      'арахис':567,'фисташки':556,'пекан':691,'бразильский орех':659,
+      'кедровый орех':673,'мускатный орех':525,'семена подсолнечника':584,
+      'семена тыквы':559,'семена льна':534,'кунжут':573,'мак':525,
+      'чиа':486,'конопля':553,
+      // ХЛЕБ, ВЫПЕЧКА
+      'хлеб':265,'хлеб белый':265,'хлеб ржаной':210,'хлеб бородинский':210,
+      'хлеб цельнозерновой':220,'батон':264,'булка':275,'лаваш':275,
+      'сухари':335,'баранки':280,'сушки':340,'печенье':430,'пряники':350,
+      'пирожок':290,'блины':189,'оладьи':200,'пончики':360,'кекс':350,
+      'маффин':340,'круассан':406,'сдоба':360,'торт':350,'пирожное':300,
+      // МАСЛА, ЖИРЫ
+      'масло сливочное':748,'масло топлёное':885,'масло растительное':884,
+      'оливковое масло':884,'подсолнечное масло':884,'кукурузное масло':884,
+      'льняное масло':884,'горчичное масло':884,'пальмовое масло':884,
+      'маргарин':743,'спред':700,'сало':780,'шпик':780,
+      // СОУСЫ, ПРИПРАВЫ
+      'майонез':624,'кетчуп':101,'горчица':66,'хрен столовый':48,
+      'соус соевый':60,'уксус':18,'лимонный сок':22,'аджика':50,
+      'песто':490,'табаско':20,'варенье':250,'джем':250,'мед':304,
+      'шоколад':546,'шоколад молочный':546,'шоколад тёмный':540,
+      'шоколад белый':550,'какао-порошок':380,'паста шоколадная':540,
+      'нутелла':540,'сгущёнка':320,'сироп':290,'патока':290,
+      // НАПИТКИ
+      'вода':0,'чай':1,'кофе':2,'какао':380,'сок яблочный':46,
+      'сок апельсиновый':45,'сок томатный':17,'сок мультифрукт':48,
+      'компот':36,'морс':32,'квас':27,'лимонад':40,'кола':42,
+      'пепси':42,'фанта':48,'спрайт':45,'энергетик':55,
+      'пиво':43,'вино':85,'шампанское':85,'водка':235,'коньяк':240,
+      'ром':230,'виски':250,'джин':220,'текила':210,
+      // ГОТОВЫЕ БЛЮДА
+      'суп':40,'борщ':45,'щи':35,'солянка':55,'рассольник':42,
+      'каша':90,'омлет':154,'яичница':150,'блины':189,'оладьи':200,
+      'пельмени':220,'вареники':200,'котлета':260,'бифштекс':250,
+      'шницель':250,'стейк':270,'шашлык':250,'плов':220,'паэлья':180,
+      'картофель фри':312,'картофель запечённый':80,'рагу':120,
+      'салат':50,'винегрет':80,'оливье':95,'сельдь под шубой':120,
+      'гриль':200,'барбекю':250,'пицца':266,'бургер':295,
+      'хот-дог':280,'сэндвич':220,'тост':180,'гранола':450,
+      'мюсли':370,'хлопья кукурузные':360,'хлопья овсяные':350,
+      // ДЕСЕРТЫ, СЛАДОСТИ
+      'торт':350,'пирожное':300,'кекс':340,'рулет':320,'пряник':350,
+      'печенье':430,'вафли':540,'конфеты':450,'карамель':400,
+      'леденец':380,'зефир':310,'пастила':310,'мармелад':290,
+      'халва':523,'козинак':520,'нуга':420,'марципан':460,
+      'тирамису':380,'панна-котта':250,'чизкейк':320,'крем-брюле':300,
+      'мороженое':207,'сорбет':120,'шербет':160,
+      // АЗИАТСКАЯ КУХНЯ
+      'соба':120,'удон':140,'рамен':150,'суши':170,'сашими':140,
+      'роллы':180,'темпура':220,'стрипс':250,'курица карри':180,
+      'рис с овощами':140,'том ям':80,'фо-бо':90,
+      // ВЕГЕТАРИАНСКИЕ
+      'тофу':76,'темпе':193,'сейтан':120,'нут варёный':120,
+      'чечевица варёная':105,'киноа варёная':120,'овсяное молоко':47,
+      'соевое молоко':54,'миндальное молоко':29,'кокосовое молоко':230,
+      'сметана соевая':150,'йогурт соевый':60,'сыр тофу':76,
+      // СПЕЦИИ
+      'сахар':398,'соль':0,'перец чёрный':251,'перец красный':318,
+      'корица':247,'имбирь':80,'гвоздика':274,'кумин':375,
+      'кардамон':300,'мускатный орех':525,'орегано':260,'розмарин':280,
+      'тимьян':276,'шалфей':315,'лавровый лист':313,
+      // КОНСЕРВЫ
+      'горошек консервированный':73,'кукуруза консервированная':86,
+      'фасоль консервированная':90,'тушёнка':220,'паштет':300,
+      'икра кабачковая':70,'лечо':50,'огурцы маринованные':11,
+      'помидоры маринованные':20,'грибы маринованные':20,
     };
 
     // =====================================================
-    // 2. УТИЛИТЫ
+    // УТИЛИТЫ
     // =====================================================
-    function getToday() {
-      return new Date().toISOString().slice(0, 10);
-    }
-
-    function formatDate(dateStr) {
-      const d = new Date(dateStr + 'T00:00:00');
-      return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
-    }
-
-    function escapeHtml(text) {
-      if (!text) return '';
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function normalizeText(text) {
-      return text.toLowerCase().trim().replace(/ё/g, 'е');
-    }
-
-    function generateId() {
-      return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-    }
+    function getToday() { return new Date().toISOString().slice(0, 10); }
+    function formatDate(d) { return d.slice(5, 10).replace('-', '.'); }
+    function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+    function normalizeText(text) { return text.toLowerCase().trim().replace(/ё/g, 'е'); }
+    function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 
     // =====================================================
-    // 3. LOCALSTORAGE
+    // LOCALSTORAGE
     // =====================================================
-    function loadData(key, defaultVal) {
-      try {
-        const raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : defaultVal;
-      } catch {
-        return defaultVal;
-      }
-    }
-
-    function saveData(key, data) {
-      localStorage.setItem(key, JSON.stringify(data));
-    }
+    function loadData(key, def) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : def; } catch { return def; } }
+    function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
     // =====================================================
-    // 4. ДАННЫЕ
+    // ДАННЫЕ
     // =====================================================
     let profile = loadData('fit_profile', { weight: '', height: '', goal: 'Поддерживать' });
-    let trainings = loadData('fit_trainings', []);
     let meals = loadData('fit_meals', []);
-
-    const CAL_PER_MIN = {
-      'Бег': 10,
-      'Пресс': 5,
-      'Йога': 3,
-    };
+    let plan = loadData('fit_plan', { days: [], exercises: [], history: [] }); // { days: [0..6], exercises: [{id, name, sets, reps, weight, note, done}], history: [{date, exercises, done}] }
 
     // =====================================================
-    // 5. НАВИГАЦИЯ
+    // НАВИГАЦИЯ
     // =====================================================
     const pages = {
       'main-menu': document.getElementById('main-menu'),
       'training': document.getElementById('training'),
-      'statistics': document.getElementById('statistics'),
       'food': document.getElementById('food'),
       'profile': document.getElementById('profile'),
     };
@@ -1024,309 +843,301 @@
       });
       document.querySelectorAll('.apple-card').forEach(card => {
         card.style.animation = 'none';
-        requestAnimationFrame(() => {
-          card.style.animation = '';
-        });
+        requestAnimationFrame(() => { card.style.animation = ''; });
       });
-      if (pageId === 'training') renderTraining();
-      if (pageId === 'statistics') renderStatistics('day');
+      if (pageId === 'training') renderPlan();
       if (pageId === 'food') renderFood();
-      if (pageId === 'profile') renderProfile();
+      if (pageId === 'profile') { renderProfile(); renderStatistics('day'); }
     }
 
     document.querySelectorAll('.menu-card[data-page]').forEach(el => {
-      el.addEventListener('click', function() {
-        showPage(this.dataset.page);
-      });
+      el.addEventListener('click', function() { showPage(this.dataset.page); });
     });
-
     document.querySelectorAll('[data-back]').forEach(el => {
-      el.addEventListener('click', function() {
-        showPage('main-menu');
-      });
+      el.addEventListener('click', function() { showPage('main-menu'); });
     });
 
     // =====================================================
-    // 6. ТРЕНИРОВКИ
+    // ПЛАН ТРЕНИРОВОК
     // =====================================================
-    const exerciseSelect = document.getElementById('exercise-select');
-    const customGroup = document.getElementById('custom-exercise-group');
-    const customInput = document.getElementById('custom-exercise');
-    const durationInput = document.getElementById('duration');
-    const caloriesPreview = document.getElementById('calories-preview');
+    const daySelector = document.getElementById('daySelector');
+    const planExercise = document.getElementById('plan-exercise');
+    const planSets = document.getElementById('plan-sets');
+    const planReps = document.getElementById('plan-reps');
+    const planWeight = document.getElementById('plan-weight');
+    const planNote = document.getElementById('plan-note');
+    const addBtn = document.getElementById('add-plan-exercise');
+    const planList = document.getElementById('plan-list');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const planExercisesCount = document.getElementById('plan-exercises-count');
+    const markDayDoneBtn = document.getElementById('mark-day-done');
+    const clearPlanBtn = document.getElementById('clear-plan');
+    const historyList = document.getElementById('history-list');
+    const historyCount = document.getElementById('history-count');
 
-    function getExerciseName() {
-      if (exerciseSelect.value === 'Своё') {
-        return customInput.value.trim() || 'Своё';
-      }
-      return exerciseSelect.value;
-    }
-
-    function calcCalories(exercise, duration) {
-      const base = CAL_PER_MIN[exercise] || 6;
-      return Math.round(base * duration);
-    }
-
-    function updateCaloriesPreview() {
-      const duration = parseInt(durationInput.value) || 0;
-      const exercise = getExerciseName();
-      const cal = calcCalories(exercise, duration);
-      caloriesPreview.textContent = cal;
-    }
-
-    exerciseSelect.addEventListener('change', function() {
-      customGroup.style.display = this.value === 'Своё' ? 'block' : 'none';
-      updateCaloriesPreview();
-    });
-
-    customInput.addEventListener('input', updateCaloriesPreview);
-    durationInput.addEventListener('input', updateCaloriesPreview);
-
-    document.querySelectorAll('[data-duration-preset]').forEach(btn => {
-      btn.addEventListener('click', function() {
-        durationInput.value = this.dataset.durationPreset;
-        updateCaloriesPreview();
+    // Инициализация выбора дней
+    function initDaySelector() {
+      const checkboxes = daySelector.querySelectorAll('.day-checkbox');
+      checkboxes.forEach(el => {
+        const day = parseInt(el.dataset.day);
+        if (plan.days.includes(day)) el.classList.add('active');
+        el.addEventListener('click', function() {
+          const dayNum = parseInt(this.dataset.day);
+          const idx = plan.days.indexOf(dayNum);
+          if (idx > -1) {
+            plan.days.splice(idx, 1);
+            this.classList.remove('active');
+          } else {
+            plan.days.push(dayNum);
+            this.classList.add('active');
+          }
+          saveData('fit_plan', plan);
+        });
       });
-    });
+    }
 
-    document.getElementById('save-training').addEventListener('click', function() {
-      const exercise = getExerciseName();
-      const duration = parseInt(durationInput.value);
-      if (!duration || duration < 1) {
-        alert('Укажите длительность (минимум 1 минута)');
-        return;
-      }
-      if (!exercise) {
-        alert('Введите название упражнения');
-        return;
-      }
-      const calories = calcCalories(exercise, duration);
-      const today = getToday();
-      trainings.push({
+    // Добавление упражнения в план
+    addBtn.addEventListener('click', function() {
+      const name = planExercise.value.trim();
+      const sets = parseInt(planSets.value) || 0;
+      const reps = parseInt(planReps.value) || 0;
+      const weight = parseFloat(planWeight.value) || 0;
+      const note = planNote.value.trim();
+      if (!name) { alert('Введите название упражнения'); return; }
+      if (sets < 1 || reps < 1) { alert('Укажите подходы и повторения'); return; }
+      if (plan.days.length === 0) { alert('Выберите хотя бы один день для тренировок'); return; }
+
+      plan.exercises.push({
         id: generateId(),
-        date: today,
-        exercise: exercise,
-        duration: duration,
-        calories: calories,
+        name: name,
+        sets: sets,
+        reps: reps,
+        weight: weight,
+        note: note,
         done: false
       });
-      saveData('fit_trainings', trainings);
-      renderTraining();
-      durationInput.value = 10;
-      updateCaloriesPreview();
-      customInput.value = '';
+      saveData('fit_plan', plan);
+      renderPlan();
+      planExercise.value = '';
+      planSets.value = '3';
+      planReps.value = '10';
+      planWeight.value = '0';
+      planNote.value = '';
     });
 
-    function renderTraining() {
-      const today = getToday();
-      const todayTrainings = trainings.filter(t => t.date === today);
-      const allTrainings = trainings.slice().sort((a, b) => a.date.localeCompare(b.date));
+    // Рендер плана
+    function renderPlan() {
+      // Прогресс
+      const total = plan.exercises.length;
+      const done = plan.exercises.filter(e => e.done).length;
+      const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+      progressBar.style.width = percent + '%';
+      progressText.textContent = percent + '%';
+      planExercisesCount.textContent = total + ' упражнений';
 
-      const todayList = document.getElementById('today-training-list');
-      const todayCount = document.getElementById('today-training-count');
-      todayCount.textContent = todayTrainings.length;
-      if (todayTrainings.length === 0) {
-        todayList.innerHTML = '<div class="empty-state">Нет тренировок за сегодня</div>';
+      // Список упражнений
+      if (total === 0) {
+        planList.innerHTML = '<div class="empty-state">Нет упражнений в плане</div>';
       } else {
-        todayList.innerHTML = todayTrainings.map(t => `
-          <div class="list-item">
+        planList.innerHTML = plan.exercises.map((ex, idx) => `
+          <div class="list-item" data-id="${ex.id}">
             <div class="left">
-              <span class="title">${escapeHtml(t.exercise)}</span>
-              <span class="sub">${t.duration} мин ${t.done ? '✅' : ''}</span>
+              <span class="title">${ex.done ? '✅' : '⬜'} ${escapeHtml(ex.name)}</span>
+              <span class="sub">${ex.sets}×${ex.reps} · ${ex.weight} кг ${ex.note ? '📎 ' + escapeHtml(ex.note) : ''}</span>
             </div>
-            <div class="right">🔥 ${t.calories} ккал</div>
+            <div style="display:flex; gap:8px;">
+              <button class="apple-button apple-button-success apple-button-sm" onclick="window.toggleExercise('${ex.id}')">${ex.done ? '↩️' : '✅'}</button>
+              <button class="apple-button apple-button-danger apple-button-sm" onclick="window.removeExercise('${ex.id}')">✕</button>
+            </div>
           </div>
         `).join('');
       }
 
-      const allList = document.getElementById('all-training-list');
-      const totalCount = document.getElementById('total-training-count');
-      totalCount.textContent = allTrainings.length;
-      if (allTrainings.length === 0) {
-        allList.innerHTML = '<div class="empty-state">Нет сохранённых тренировок</div>';
+      // История
+      const hist = plan.history || [];
+      historyCount.textContent = hist.length;
+      if (hist.length === 0) {
+        historyList.innerHTML = '<div class="empty-state">Нет сохранённых планов</div>';
       } else {
-        const recent = allTrainings.slice(-10).reverse();
-        allList.innerHTML = recent.map(t => `
+        const recent = hist.slice(-5).reverse();
+        historyList.innerHTML = recent.map(h => `
           <div class="list-item">
             <div class="left">
-              <span class="title">${escapeHtml(t.exercise)}</span>
-              <span class="sub">${formatDate(t.date)} · ${t.duration} мин</span>
+              <span class="title">${formatDate(h.date)}</span>
+              <span class="sub">${h.exercises} упражнений</span>
             </div>
-            <div class="right">🔥 ${t.calories} ккал</div>
+            <div class="right">${h.done ? '✅ Выполнен' : '⬜ Не выполнен'}</div>
           </div>
         `).join('');
-        if (allTrainings.length > 10) {
-          allList.innerHTML += `<div class="text-center text-secondary" style="padding: 8px 0;">... и ещё ${allTrainings.length - 10} записей</div>`;
-        }
       }
-      updateCaloriesPreview();
     }
 
+    // Глобальные функции для кнопок
+    window.toggleExercise = function(id) {
+      const ex = plan.exercises.find(e => e.id === id);
+      if (ex) { ex.done = !ex.done; saveData('fit_plan', plan); renderPlan(); }
+    };
+    window.removeExercise = function(id) {
+      plan.exercises = plan.exercises.filter(e => e.id !== id);
+      saveData('fit_plan', plan);
+      renderPlan();
+    };
+
+    // Отметить день выполненным
+    markDayDoneBtn.addEventListener('click', function() {
+      const today = getToday();
+      if (plan.exercises.length === 0) { alert('Нет упражнений в плане'); return; }
+      // Проверяем, не был ли уже сегодня сохранён
+      const existing = plan.history.find(h => h.date === today);
+      if (existing) { alert('Сегодня уже отмечен'); return; }
+
+      const allDone = plan.exercises.every(e => e.done);
+      plan.history.push({
+        date: today,
+        exercises: plan.exercises.length,
+        done: allDone
+      });
+      // Сбрасываем done для упражнений на следующий день
+      plan.exercises.forEach(e => e.done = false);
+      saveData('fit_plan', plan);
+      renderPlan();
+    });
+
+    // Очистить план
+    clearPlanBtn.addEventListener('click', function() {
+      if (!confirm('Удалить все упражнения из плана?')) return;
+      plan.exercises = [];
+      saveData('fit_plan', plan);
+      renderPlan();
+    });
+
+    // Инициализация выбора дней
+    initDaySelector();
+
     // =====================================================
-    // 7. ДНЕВНИК ПИТАНИЯ
+    // ДНЕВНИК ПИТАНИЯ
     // =====================================================
-    const searchInput = document.getElementById('meal-search');
-    const resultsContainer = document.getElementById('search-results');
-    const mealWeightInput = document.getElementById('meal-weight');
-    const mealCaloriesInput = document.getElementById('meal-calories');
-    let selectedProduct = null;
+    const mealSearch = document.getElementById('meal-search');
+    const mealWeight = document.getElementById('meal-weight');
+    const mealCalories = document.getElementById('meal-calories');
+    const saveMealBtn = document.getElementById('save-meal');
+    const todayFoodList = document.getElementById('today-food-list');
+    const allFoodList = document.getElementById('all-food-list');
+    const todayFoodTotal = document.getElementById('today-food-total');
+    const searchResults = document.getElementById('search-results');
     let searchTimeout;
 
-    function searchInDB(query) {
-      const normalized = normalizeText(query);
-      const results = [];
-
-      for (const [key, cal] of Object.entries(FOOD_DB)) {
-        if (normalized.includes(key) || key.includes(normalized)) {
-          results.push({ name: key, cal: cal, score: key.length });
-        }
-      }
-
-      results.sort((a, b) => a.score - b.score);
-      return results.slice(0, 6);
-    }
-
-    searchInput.addEventListener('input', function() {
+    // Поиск по базе продуктов
+    mealSearch.addEventListener('input', function() {
       clearTimeout(searchTimeout);
       const query = this.value.trim();
-      if (query.length < 1) {
-        resultsContainer.innerHTML = '';
-        selectedProduct = null;
+      if (query.length < 2) {
+        searchResults.innerHTML = '';
         return;
       }
-
       searchTimeout = setTimeout(() => {
-        const results = searchInDB(query);
-        if (results.length === 0) {
-          resultsContainer.innerHTML = `
-            <div style="padding: 10px 0; color: #6e6e73; font-size: 15px; animation: fadeInMobile 0.3s ease;">
-              🤷 Не найдено. Введите калории вручную.
-            </div>
-          `;
+        const normalized = normalizeText(query);
+        const matches = Object.keys(FOOD_DB).filter(key => key.includes(normalized)).slice(0, 8);
+        if (matches.length === 0) {
+          searchResults.innerHTML = '<div style="padding: 8px 0; color: #8e8e93; font-size: 14px;">Ничего не найдено</div>';
           return;
         }
-
         let html = '';
-        results.forEach(item => {
-          html += `
-            <div class="search-result-item" data-name="${escapeHtml(item.name)}" data-cal="${item.cal}">
-              <span class="name">${escapeHtml(item.name)}</span>
-              <span class="cal">${item.cal} ккал / 100г</span>
-            </div>
-          `;
+        matches.forEach(key => {
+          const cal = FOOD_DB[key];
+          html += `<div class="search-result-item" data-name="${escapeHtml(key)}" data-cal="${cal}">
+            <span class="name">${escapeHtml(key)}</span>
+            <span class="cal">${cal} ккал/100г</span>
+          </div>`;
         });
-
-        resultsContainer.innerHTML = html;
-
+        searchResults.innerHTML = html;
         document.querySelectorAll('.search-result-item').forEach(el => {
           el.addEventListener('click', function() {
             const name = this.dataset.name;
-            const cal = parseFloat(this.dataset.cal) || 0;
-            searchInput.value = name;
-            mealCaloriesInput.value = cal;
-            selectedProduct = { name, cal };
-            resultsContainer.innerHTML = '';
-            searchInput.classList.add('flash-green');
-            setTimeout(() => {
-              searchInput.classList.remove('flash-green');
-            }, 600);
+            const cal = parseFloat(this.dataset.cal);
+            mealSearch.value = name;
+            mealCalories.value = cal;
+            searchResults.innerHTML = '';
           });
         });
       }, 300);
     });
 
-    document.getElementById('save-meal').addEventListener('click', function() {
-      const name = searchInput.value.trim();
-      const weight = parseInt(mealWeightInput.value);
-      let totalCal = parseInt(mealCaloriesInput.value);
-
+    // Сохранение приёма пищи
+    saveMealBtn.addEventListener('click', function() {
+      const name = mealSearch.value.trim();
+      const weight = parseInt(mealWeight.value);
+      const cal = parseInt(mealCalories.value);
       if (!name) { alert('Введите название блюда'); return; }
-      if (!weight || weight < 1) { alert('Введите вес в граммах'); return; }
-
-      if (isNaN(totalCal) || totalCal < 0) {
-        if (selectedProduct && selectedProduct.cal > 0) {
-          totalCal = Math.round((weight / 100) * selectedProduct.cal);
-          mealCaloriesInput.value = totalCal;
-        } else {
-          alert('Введите калорийность вручную');
-          return;
-        }
-      }
-
+      if (!weight || weight < 1) { alert('Введите вес'); return; }
+      if (isNaN(cal) || cal < 0) { alert('Введите калорийность'); return; }
       const today = getToday();
-      meals.push({
-        id: generateId(),
-        date: today,
-        name: name,
-        weight: weight,
-        totalCalories: totalCal
-      });
+      meals.push({ id: generateId(), date: today, name, weight, totalCalories: cal });
       saveData('fit_meals', meals);
       renderFood();
-
-      searchInput.value = '';
-      mealWeightInput.value = '';
-      mealCaloriesInput.value = '';
-      selectedProduct = null;
-      resultsContainer.innerHTML = '';
-    });
-
-    mealWeightInput.addEventListener('input', function() {
-      const weight = parseInt(this.value) || 0;
-      if (selectedProduct && selectedProduct.cal > 0 && weight > 0) {
-        const total = Math.round((weight / 100) * selectedProduct.cal);
-        mealCaloriesInput.value = total;
-      }
+      mealSearch.value = '';
+      mealWeight.value = '';
+      mealCalories.value = '';
+      searchResults.innerHTML = '';
     });
 
     function renderFood() {
       const today = getToday();
       const todayMeals = meals.filter(m => m.date === today);
-      const allMeals = meals.slice().sort((a, b) => a.date.localeCompare(b.date));
-
-      const todayList = document.getElementById('today-food-list');
-      const todayTotal = document.getElementById('today-food-total');
-      const sumToday = todayMeals.reduce((acc, m) => acc + m.totalCalories, 0);
-      todayTotal.textContent = sumToday;
-
-      if (todayMeals.length === 0) {
-        todayList.innerHTML = '<div class="empty-state">Нет записей за сегодня</div>';
-      } else {
-        todayList.innerHTML = todayMeals.map(m => `
-          <div class="list-item">
-            <div class="left">
-              <span class="title">${escapeHtml(m.name)}</span>
-              <span class="sub">${m.weight} г</span>
-            </div>
-            <div class="right">${m.totalCalories} ккал</div>
-          </div>
-        `).join('');
-      }
-
-      const allList = document.getElementById('all-food-list');
-      if (allMeals.length === 0) {
-        allList.innerHTML = '<div class="empty-state">Нет записей</div>';
-      } else {
-        const recent = allMeals.slice(-10).reverse();
-        allList.innerHTML = recent.map(m => `
-          <div class="list-item">
-            <div class="left">
-              <span class="title">${escapeHtml(m.name)}</span>
-              <span class="sub">${formatDate(m.date)} · ${m.weight} г</span>
-            </div>
-            <div class="right">${m.totalCalories} ккал</div>
-          </div>
-        `).join('');
-        if (allMeals.length > 10) {
-          allList.innerHTML += `<div class="text-center text-secondary" style="padding: 8px 0;">... и ещё ${allMeals.length - 10} записей</div>`;
-        }
-      }
+      const allMeals = meals.slice().sort((a,b) => a.date.localeCompare(b.date));
+      todayFoodTotal.textContent = todayMeals.reduce((s, m) => s + m.totalCalories, 0);
+      todayFoodList.innerHTML = todayMeals.length ? todayMeals.map(m => `
+        <div class="list-item">
+          <div class="left"><span class="title">${escapeHtml(m.name)}</span><span class="sub">${m.weight} г</span></div>
+          <div class="right">${m.totalCalories} ккал</div>
+        </div>
+      `).join('') : '<div class="empty-state">Нет записей за сегодня</div>';
+      allFoodList.innerHTML = allMeals.length ? allMeals.slice(-10).reverse().map(m => `
+        <div class="list-item">
+          <div class="left"><span class="title">${escapeHtml(m.name)}</span><span class="sub">${formatDate(m.date)} · ${m.weight} г</span></div>
+          <div class="right">${m.totalCalories} ккал</div>
+        </div>
+      `).join('') : '<div class="empty-state">Нет записей</div>';
     }
 
     // =====================================================
-    // 8. СТАТИСТИКА
+    // ПРОФИЛЬ
+    // =====================================================
+    const profileWeight = document.getElementById('profile-weight');
+    const profileHeight = document.getElementById('profile-height');
+    const profileGoal = document.getElementById('profile-goal');
+    const saveProfileBtn = document.getElementById('save-profile');
+    const profileInfo = document.getElementById('profile-info');
+
+    function renderProfile() {
+      profileWeight.value = profile.weight || '';
+      profileHeight.value = profile.height || '';
+      profileGoal.value = profile.goal || 'Поддерживать';
+      profileInfo.innerHTML = (profile.weight && profile.height) ?
+        `<div class="list-item"><span>Вес</span> <span>${profile.weight} кг</span></div>
+         <div class="list-item"><span>Рост</span> <span>${profile.height} см</span></div>
+         <div class="list-item"><span>Цель</span> <span>${profile.goal}</span></div>` :
+        '<div class="empty-state">Профиль не заполнен</div>';
+    }
+
+    saveProfileBtn.addEventListener('click', function() {
+      const w = parseFloat(profileWeight.value);
+      const h = parseFloat(profileHeight.value);
+      const g = profileGoal.value;
+      if (!w || w < 1) { alert('Введите корректный вес'); return; }
+      if (!h || h < 1) { alert('Введите корректный рост'); return; }
+      profile = { weight: w, height: h, goal: g };
+      saveData('fit_profile', profile);
+      renderProfile();
+      alert('✅ Профиль сохранён!');
+    });
+
+    // =====================================================
+    // СТАТИСТИКА (для вкладки)
     // =====================================================
     let statPeriod = 'day';
+    const statContent = document.getElementById('stat-content');
 
     document.querySelectorAll('[data-stat-period]').forEach(btn => {
       btn.addEventListener('click', function() {
@@ -1338,102 +1149,85 @@
     });
 
     function renderStatistics(period) {
-      const container = document.getElementById('stat-content');
       const today = new Date();
       let startDate = new Date(today);
+      if (period === 'day') { startDate.setHours(0,0,0,0); }
+      else if (period === 'week') { startDate.setDate(today.getDate() - 6); startDate.setHours(0,0,0,0); }
+      else if (period === 'month') { startDate.setDate(today.getDate() - 29); startDate.setHours(0,0,0,0); }
+      const startStr = startDate.toISOString().slice(0,10);
+      const todayStr = today.toISOString().slice(0,10);
 
-      if (period === 'day') {
-        startDate = new Date(today);
-        startDate.setHours(0, 0, 0, 0);
-      } else if (period === 'week') {
-        startDate = new Date(today);
-        startDate.setDate(today.getDate() - 6);
-        startDate.setHours(0, 0, 0, 0);
-      } else if (period === 'month') {
-        startDate = new Date(today);
-        startDate.setDate(today.getDate() - 29);
-        startDate.setHours(0, 0, 0, 0);
-      }
+      // Тренировки: считаем из истории плана (количество записей за период)
+      const historyEntries = plan.history?.filter(h => h.date >= startStr && h.date <= todayStr) || [];
+      const trainingCount = historyEntries.length;
+      const doneCount = historyEntries.filter(h => h.done).length;
+      // Для сожжённых калорий возьмём приблизительно 300 ккал за тренировку
+      const burned = trainingCount * 300;
 
-      const startStr = startDate.toISOString().slice(0, 10);
-      const todayStr = today.toISOString().slice(0, 10);
-
-      const filteredTrainings = trainings.filter(t => t.date >= startStr && t.date <= todayStr);
-      const trainingCount = filteredTrainings.length;
-      const totalCalBurned = filteredTrainings.reduce((acc, t) => acc + t.calories, 0);
-
+      // Питание
       const filteredMeals = meals.filter(m => m.date >= startStr && m.date <= todayStr);
-      const totalCalEaten = filteredMeals.reduce((acc, m) => acc + m.totalCalories, 0);
+      const totalCalEaten = filteredMeals.reduce((s, m) => s + m.totalCalories, 0);
 
-      const balance = totalCalBurned - totalCalEaten;
+      const balance = burned - totalCalEaten;
 
-      container.innerHTML = `
-        <div class="apple-card" style="animation: cardAppearMobile 0.3s ease forwards; opacity: 0; transform: translateY(10px) scale(0.98);">
-          <div class="stats-grid">
-            <div class="stat-box">
-              <div class="number">${trainingCount}</div>
-              <div class="label">Тренировок</div>
-            </div>
-            <div class="stat-box">
-              <div class="number">${totalCalBurned}</div>
-              <div class="label">🔥 Сожжено (ккал)</div>
-            </div>
-            <div class="stat-box">
-              <div class="number">${totalCalEaten}</div>
-              <div class="label">🍽️ Потреблено (ккал)</div>
-            </div>
-            <div class="stat-box" style="background: ${balance >= 0 ? '#e8f5e9' : '#ffebee'}">
-              <div class="number" style="color: ${balance >= 0 ? '#2e7d32' : '#c62828'}">${balance}</div>
-              <div class="label">⚖️ Баланс</div>
-            </div>
+      statContent.innerHTML = `
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="number">${trainingCount}</div>
+            <div class="label">Тренировок</div>
           </div>
-          <div style="margin-top: 12px; text-align: center; font-size: 15px; color: #6e6e73; animation: fadeInMobile 0.5s ease;">
-            Период: ${period === 'day' ? 'Сегодня' : period === 'week' ? 'Неделя' : 'Месяц'}
+          <div class="stat-box">
+            <div class="number">${burned}</div>
+            <div class="label">🔥 Сожжено (ккал)</div>
           </div>
+          <div class="stat-box">
+            <div class="number">${totalCalEaten}</div>
+            <div class="label">🍽️ Потреблено (ккал)</div>
+          </div>
+          <div class="stat-box" style="background: ${balance >= 0 ? '#e8f5e9' : '#ffebee'}">
+            <div class="number" style="color: ${balance >= 0 ? '#2e7d32' : '#c62828'}">${balance}</div>
+            <div class="label">⚖️ Баланс</div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; text-align: center; font-size: 15px; color: #6e6e73; animation: fadeInMobile 0.5s ease;">
+          Период: ${period === 'day' ? 'Сегодня' : period === 'week' ? 'Неделя' : 'Месяц'} · Выполнено ${doneCount} из ${trainingCount}
         </div>
       `;
     }
 
     // =====================================================
-    // 9. ПРОФИЛЬ
+    // ТАБЫ ПРОФИЛЬ/СТАТИСТИКА
     // =====================================================
-    function renderProfile() {
-      const info = document.getElementById('profile-info');
-      if (profile.weight && profile.height) {
-        info.innerHTML = `
-          <div class="list-item"><span>Вес</span> <span>${profile.weight} кг</span></div>
-          <div class="list-item"><span>Рост</span> <span>${profile.height} см</span></div>
-          <div class="list-item"><span>Цель</span> <span>${profile.goal}</span></div>
-        `;
-      } else {
-        info.innerHTML = '<div class="empty-state">Профиль не заполнен</div>';
-      }
-      document.getElementById('profile-weight').value = profile.weight || '';
-      document.getElementById('profile-height').value = profile.height || '';
-      document.getElementById('profile-goal').value = profile.goal || 'Поддерживать';
-    }
+    const tabProfile = document.getElementById('tabProfile');
+    const tabStats = document.getElementById('tabStats');
+    const profileContent = document.getElementById('profileContent');
+    const statsContent = document.getElementById('statsContent');
 
-    document.getElementById('save-profile').addEventListener('click', function() {
-      const weight = parseFloat(document.getElementById('profile-weight').value);
-      const height = parseFloat(document.getElementById('profile-height').value);
-      const goal = document.getElementById('profile-goal').value;
+    tabProfile.addEventListener('click', function() {
+      this.classList.add('apple-button-primary');
+      tabStats.classList.remove('apple-button-primary');
+      profileContent.style.display = 'block';
+      statsContent.style.display = 'none';
+    });
 
-      if (!weight || weight < 1) { alert('Введите корректный вес'); return; }
-      if (!height || height < 1) { alert('Введите корректный рост'); return; }
-
-      profile = { weight, height, goal };
-      saveData('fit_profile', profile);
-      renderProfile();
-      alert('✅ Профиль сохранён!');
+    tabStats.addEventListener('click', function() {
+      this.classList.add('apple-button-primary');
+      tabProfile.classList.remove('apple-button-primary');
+      profileContent.style.display = 'none';
+      statsContent.style.display = 'block';
+      renderStatistics(statPeriod);
     });
 
     // =====================================================
-    // 10. ИНИЦИАЛИЗАЦИЯ
+    // ИНИЦИАЛИЗАЦИЯ
     // =====================================================
     showPage('main-menu');
     renderProfile();
-    updateCaloriesPreview();
+    renderStatistics('day');
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
+
+    // Если при загрузке есть план, показываем его
+    renderPlan();
 
     console.log('🚀 Fitness Tracker запущен!');
 
