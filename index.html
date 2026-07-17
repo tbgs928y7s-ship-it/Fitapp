@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>FitApp</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     /* ===== ГЛОБАЛЬНЫЕ СТИЛИ (с поддержкой тёмной темы) ===== */
@@ -146,6 +147,7 @@
       background: linear-gradient(135deg, #0a84ff, #0055cc);
       color: #fff;
     }
+
     /* Switch для тёмной темы (Apple style) */
     .theme-switch {
       display: flex;
@@ -627,7 +629,7 @@
     /* ===== ТАБЫ ===== */
     .tab-group {
       display: flex;
-      gap: 14px;
+      gap: 10px;
     }
     .tab-group .apple-button {
       flex: 1;
@@ -635,6 +637,8 @@
       border-radius: 40px;
       min-height: 56px;
       font-size: 18px;
+      padding: 12px 16px;
+      min-width: 80px;
     }
 
     /* ===== ПОДСКАЗКИ ПОИСКА ===== */
@@ -730,6 +734,26 @@
       box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.08);
     }
 
+    /* ===== ГРАФИКИ (адаптация контейнеров) ===== */
+    .chart-container {
+      margin: 16px 0 8px;
+      position: relative;
+      height: 200px;
+    }
+    .chart-container canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .chart-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #1c1c1e;
+    }
+    body.dark-theme .chart-title {
+      color: #f2f2f7;
+    }
+
     /* ===== АДАПТИВ ===== */
     @media (max-width: 500px) {
       body { padding: 16px 12px 30px; }
@@ -751,7 +775,7 @@
       .list-item .right { font-size: 18px; }
       .day-checkbox { padding: 10px 16px; font-size: 16px; min-height: 48px; }
       .back-button { font-size: 30px; }
-      .tab-group .apple-button { font-size: 17px; min-height: 52px; }
+      .tab-group .apple-button { font-size: 16px; min-height: 48px; padding: 10px 12px; }
       .search-result-item { padding: 14px 16px; min-height: 58px; }
       .search-result-item .name { font-size: 17px; }
       .search-result-item .cal { font-size: 16px; }
@@ -763,6 +787,7 @@
       .export-options { flex-direction: column; gap: 12px; }
       .export-options .input-group { min-width: unset; }
       .theme-switch { flex-wrap: wrap; }
+      .chart-container { height: 160px; }
     }
     @media (max-width: 400px) {
       body { padding: 12px 8px 20px; }
@@ -780,6 +805,8 @@
       .apple-button { padding: 14px 18px; font-size: 17px; min-height: 50px; }
       .stat-period-buttons { gap: 4px; }
       .stat-period-buttons .apple-button { font-size: 13px; padding: 8px 6px; min-height: 36px; border-radius: 24px; }
+      .tab-group .apple-button { font-size: 14px; min-height: 42px; padding: 8px 10px; }
+      .chart-container { height: 140px; }
     }
     @media (max-width: 360px) {
       .menu-grid { gap: 10px; }
@@ -1029,7 +1056,7 @@
     </div>
   </div>
 
-  <!-- ==================== ПРОФИЛЬ + СТАТИСТИКА ==================== -->
+  <!-- ==================== ПРОФИЛЬ + СТАТИСТИКА + ГРАФИКИ (в одной вкладке) ==================== -->
   <div id="profile" class="page">
     <div class="back-row">
       <button class="back-button" data-back>‹</button>
@@ -1043,6 +1070,7 @@
       </div>
     </div>
 
+    <!-- Профиль -->
     <div id="profileContent" class="apple-card">
       <h2 class="page-title">👤 Мой профиль</h2>
       <p class="page-subtitle">Вес, рост, цель, норма воды</p>
@@ -1073,12 +1101,32 @@
 
       <button class="apple-button apple-button-primary apple-button-block" id="save-profile">Сохранить профиль</button>
 
+      <!-- Запись веса -->
+      <div style="margin-top: 20px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
+        <h3 style="font-size: 18px;">⚖️ Запись веса</h3>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <div class="input-group" style="flex:2; min-width:120px; margin-bottom:0;">
+            <label for="weight-input">Вес (кг)</label>
+            <input type="number" id="weight-input" min="1" step="0.1" placeholder="70">
+          </div>
+          <div class="input-group" style="flex:1; min-width:80px; margin-bottom:0;">
+            <label for="weight-date">Дата</label>
+            <input type="date" id="weight-date">
+          </div>
+        </div>
+        <button class="apple-button apple-button-success apple-button-block" id="save-weight-btn" style="margin-top: 12px;">📝 Записать вес</button>
+        <div id="weight-log-list" style="margin-top: 12px;">
+          <div class="empty-state">Нет записей веса</div>
+        </div>
+      </div>
+
       <div style="margin-top: 20px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
         <h3 style="font-size: 20px;">Текущие данные</h3>
         <div id="profile-info" class="empty-state">Профиль не заполнен</div>
       </div>
     </div>
 
+    <!-- Статистика + Графики -->
     <div id="statsContent" class="apple-card" style="display: none;">
       <h2 class="page-title">📊 Моя статистика</h2>
       <div class="stat-period-buttons">
@@ -1089,23 +1137,35 @@
       <div id="stat-content">
         <!-- заполняется JS -->
       </div>
+
+      <!-- Графики -->
+      <div style="margin-top: 24px; border-top: 1px solid #e5e5ea; padding-top: 20px;">
+        <h3 style="font-size: 20px;">📈 Графики прогресса</h3>
+        <div class="chart-title">🏃 Тренировки (за 30 дней)</div>
+        <div class="chart-container">
+          <canvas id="trainingChart"></canvas>
+        </div>
+        <div class="chart-title">⚖️ Вес</div>
+        <div class="chart-container">
+          <canvas id="weightChart"></canvas>
+        </div>
+        <div class="chart-title">🍽️ Питание (калории за 30 дней)</div>
+        <div class="chart-container">
+          <canvas id="caloriesChart"></canvas>
+        </div>
+      </div>
     </div>
 
-    <!-- ===== КАРТОЧКА НАСТРОЕК ===== -->
+    <!-- Настройки (тёмная тема, экспорт) -->
     <div class="apple-card">
       <h3 style="font-size: 20px;">⚙️ Настройки</h3>
-
-      <!-- Переключатель темы (Apple switch) -->
       <div class="theme-switch">
         <label for="themeToggle">🌙 Тёмная тема</label>
         <div class="switch" id="themeToggle">
           <div class="slider"></div>
         </div>
       </div>
-
       <div style="border-top: 1px solid #e5e5ea; margin: 16px 0 12px;"></div>
-
-      <!-- Экспорт -->
       <p class="page-subtitle" style="font-size: 16px;">Выберите период и формат для скачивания</p>
       <div class="export-options">
         <div class="input-group">
@@ -1136,7 +1196,7 @@
     'use strict';
 
     // =====================================================
-    // БАЗА ПРОДУКТОВ (1000+)
+    // БАЗА ПРОДУКТОВ (сокращённая, но можно расширить)
     // =====================================================
     const BASE_FOOD_DB = {
       'гречка':130,'гречневая':130,'рис':116,'рис варёный':116,'рис бурый':123,
@@ -1298,6 +1358,7 @@
     let meals = loadData('fit_meals', []);
     let plan = loadData('fit_plan', { days: [], exercises: [], history: [] });
     let waterLog = loadData('fit_water', {});
+    let weightLog = loadData('fit_weight_log', []);
 
     // =====================================================
     // НАВИГАЦИЯ
@@ -1490,7 +1551,6 @@
     const searchResults = document.getElementById('search-results');
     let searchTimeout;
 
-    // Добавление продукта
     addProductBtn.addEventListener('click', function() {
       const name = prompt('Введите название продукта:');
       if (!name || name.trim() === '') return;
@@ -1504,17 +1564,14 @@
       const key = name.trim().toLowerCase();
       customFoodDB[key] = cal;
       saveData('fit_custom_foods', customFoodDB);
-      // Обновляем FOOD_DB
       FOOD_DB = { ...BASE_FOOD_DB, ...customFoodDB };
       alert(`✅ Продукт "${name}" добавлен в базу!`);
-      // Если поле поиска не пустое, перезапускаем поиск
       const query = mealSearch.value.trim();
       if (query.length >= 2) {
         triggerSearch(query);
       }
     });
 
-    // Функция для запуска поиска
     function triggerSearch(query) {
       const normalized = normalizeText(query);
       const startsWith = [];
@@ -1669,7 +1726,7 @@
     });
 
     // =====================================================
-    // ПРОФИЛЬ + ТЁМНАЯ ТЕМА (SWITCH)
+    // ПРОФИЛЬ + ВЕС + ТЁМНАЯ ТЕМА
     // =====================================================
     const profileWeight = document.getElementById('profile-weight');
     const profileHeight = document.getElementById('profile-height');
@@ -1677,6 +1734,11 @@
     const profileWaterGoal = document.getElementById('profile-water-goal');
     const saveProfileBtn = document.getElementById('save-profile');
     const profileInfo = document.getElementById('profile-info');
+
+    const weightInput = document.getElementById('weight-input');
+    const weightDate = document.getElementById('weight-date');
+    const saveWeightBtn = document.getElementById('save-weight-btn');
+    const weightLogList = document.getElementById('weight-log-list');
 
     function renderProfile() {
       profileWeight.value = profile.weight || '';
@@ -1689,6 +1751,21 @@
          <div class="list-item"><span>Цель</span> <span>${profile.goal}</span></div>
          <div class="list-item"><span>Норма воды</span> <span>${profile.waterGoal || 2000} мл</span></div>` :
         '<div class="empty-state">Профиль не заполнен</div>';
+      weightDate.value = getToday();
+      renderWeightLog();
+    }
+
+    function renderWeightLog() {
+      if (weightLog.length === 0) {
+        weightLogList.innerHTML = '<div class="empty-state">Нет записей веса</div>';
+        return;
+      }
+      const sorted = weightLog.slice().sort((a,b) => a.date.localeCompare(b.date)).slice(-5).reverse();
+      weightLogList.innerHTML = sorted.map(w => `
+        <div class="list-item">
+          <div class="left"><span class="title">${w.weight} кг</span><span class="sub">${formatDate(w.date)}</span></div>
+        </div>
+      `).join('');
     }
 
     saveProfileBtn.addEventListener('click', function() {
@@ -1706,6 +1783,17 @@
       alert('✅ Профиль сохранён!');
     });
 
+    saveWeightBtn.addEventListener('click', function() {
+      const weight = parseFloat(weightInput.value);
+      const date = weightDate.value || getToday();
+      if (!weight || weight < 1) { alert('Введите корректный вес'); return; }
+      weightLog.push({ date, weight });
+      saveData('fit_weight_log', weightLog);
+      renderWeightLog();
+      weightInput.value = '';
+      alert('✅ Вес записан!');
+    });
+
     // === Тёмная тема (Apple Switch) ===
     const themeSwitch = document.getElementById('themeToggle');
     let darkMode = loadData('fit_dark_mode', false);
@@ -1720,15 +1808,18 @@
       darkMode = !darkMode;
       applyTheme(darkMode);
     });
-
-    // Применяем сохранённую тему
     applyTheme(darkMode);
 
     // =====================================================
-    // СТАТИСТИКА (для вкладки)
+    // СТАТИСТИКА (с графиками)
     // =====================================================
     let statPeriod = 'day';
     const statContent = document.getElementById('stat-content');
+
+    // Переменные для графиков
+    let trainingChartInstance = null;
+    let weightChartInstance = null;
+    let caloriesChartInstance = null;
 
     document.querySelectorAll('[data-stat-period]').forEach(btn => {
       btn.addEventListener('click', function() {
@@ -1736,6 +1827,7 @@
         this.classList.add('apple-button-primary');
         statPeriod = this.dataset.statPeriod;
         renderStatistics(statPeriod);
+        renderCharts(); // обновляем графики при смене периода (хотя графики не зависят от периода, но для единообразия)
       });
     });
 
@@ -1766,9 +1858,15 @@
       }
       const avgWater = daysWithWater > 0 ? Math.round(totalWater / daysWithWater) : 0;
 
-      const balance = burned - totalCalEaten;
+      const waterGoal = profile.waterGoal || 2000;
+      const daysInPeriod = Math.ceil((new Date(todayStr) - new Date(startStr)) / (1000*60*60*24)) + 1;
+      const totalWaterGoal = waterGoal * daysInPeriod;
+      const waterPercent = Math.min(Math.round((totalWater / totalWaterGoal) * 100), 100);
 
-      statContent.innerHTML = `
+      const balance = burned - totalCalEaten;
+      const trainPercent = trainingCount > 0 ? Math.round((doneCount / trainingCount) * 100) : 0;
+
+      let html = `
         <div class="stats-grid">
           <div class="stat-box">
             <span class="emoji">🏋️</span>
@@ -1796,10 +1894,137 @@
             <div class="label">Выпито за период</div>
           </div>
         </div>
+        <div style="margin-top: 20px;">
+          <div class="progress-label">
+            <span>🏃 Выполнение тренировок</span>
+            <span>${trainPercent}%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: ${trainPercent}%;"></div>
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
+          <div class="progress-label">
+            <span>💧 Выполнение нормы воды</span>
+            <span>${waterPercent}%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: ${waterPercent}%; background: linear-gradient(90deg, #007aff, #0055cc);"></div>
+          </div>
+        </div>
         <div style="margin-top: 16px; text-align: center; font-size: 17px; color: #8e8e93; animation: fadeIn 0.5s ease;">
           Период: ${period === 'day' ? 'Сегодня' : period === 'week' ? 'Неделя' : 'Месяц'} · Выполнено ${doneCount} из ${trainingCount} тренировок · В среднем ${avgWater} мл/день
         </div>
       `;
+      statContent.innerHTML = html;
+    }
+
+    // =====================================================
+    // ГРАФИКИ (рендеринг)
+    // =====================================================
+    function renderCharts() {
+      // 1. Тренировки (за последние 30 дней)
+      const days = 30;
+      const labels = [];
+      const trainData = [];
+      const today = new Date();
+      for (let i = days - 1; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().slice(0, 10);
+        labels.push(formatDate(dateStr));
+        const count = plan.history?.filter(h => h.date === dateStr).length || 0;
+        trainData.push(count);
+      }
+
+      const trainingCtx = document.getElementById('trainingChart').getContext('2d');
+      if (trainingChartInstance) trainingChartInstance.destroy();
+      trainingChartInstance = new Chart(trainingCtx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Тренировки',
+            data: trainData,
+            backgroundColor: 'rgba(52, 199, 89, 0.6)',
+            borderColor: '#34c759',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+
+      // 2. Вес
+      const weightLabels = [];
+      const weightData = [];
+      const sortedWeight = weightLog.slice().sort((a,b) => a.date.localeCompare(b.date));
+      sortedWeight.forEach(w => {
+        weightLabels.push(formatDate(w.date));
+        weightData.push(w.weight);
+      });
+
+      const weightCtx = document.getElementById('weightChart').getContext('2d');
+      if (weightChartInstance) weightChartInstance.destroy();
+      weightChartInstance = new Chart(weightCtx, {
+        type: 'line',
+        data: {
+          labels: weightLabels,
+          datasets: [{
+            label: 'Вес (кг)',
+            data: weightData,
+            borderColor: '#007aff',
+            backgroundColor: 'rgba(0, 122, 255, 0.1)',
+            fill: true,
+            tension: 0.3,
+            pointBackgroundColor: '#007aff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: false } }
+        }
+      });
+
+      // 3. Питание (калории за 30 дней)
+      const calLabels = [];
+      const calData = [];
+      for (let i = days - 1; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().slice(0, 10);
+        calLabels.push(formatDate(dateStr));
+        const total = meals.filter(m => m.date === dateStr).reduce((s, m) => s + m.totalCalories, 0);
+        calData.push(total);
+      }
+
+      const calCtx = document.getElementById('caloriesChart').getContext('2d');
+      if (caloriesChartInstance) caloriesChartInstance.destroy();
+      caloriesChartInstance = new Chart(calCtx, {
+        type: 'bar',
+        data: {
+          labels: calLabels,
+          datasets: [{
+            label: 'Калории',
+            data: calData,
+            backgroundColor: 'rgba(255, 149, 0, 0.6)',
+            borderColor: '#ff9500',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
     }
 
     // =====================================================
@@ -1823,6 +2048,7 @@
       profileContent.style.display = 'none';
       statsContent.style.display = 'block';
       renderStatistics(statPeriod);
+      renderCharts(); // рисуем графики при переключении на вкладку
     });
 
     // =====================================================
@@ -2002,10 +2228,13 @@
     renderProfile();
     renderStatistics('day');
     renderWater();
-    document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
     renderPlan();
+    document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
 
-    console.log('🚀 FitApp с фиксами запущен!');
+    // При первом открытии профиля, если статистика ещё не показана, графики не рисуются.
+    // При переключении на вкладку статистики они отрисуются.
+
+    console.log('🚀 FitApp с графиками внутри статистики запущен!');
   })();
 </script>
 </body>
