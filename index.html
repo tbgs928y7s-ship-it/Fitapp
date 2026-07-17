@@ -372,7 +372,7 @@
     }
     .back-label:active { transform: scale(0.95); color: #0055cc; }
 
-    /* ===== ТАБЫ НА ВСЮ ШИРИНУ ===== */
+    /* ===== ТАБЫ ===== */
     .tab-group {
       display: flex;
       gap: 10px;
@@ -383,7 +383,44 @@
       border-radius: 40px;
     }
 
-    /* ===== АДАПТИВ ===== */
+    /* ===== ПОДСКАЗКИ ПОИСКА (мобильная версия) ===== */
+    .search-result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: #f8f8fa;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+      border: 1px solid transparent;
+      min-height: 56px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .search-result-item:active {
+      background: #e5e5ea;
+      transform: scale(0.97);
+    }
+    .search-result-item .name {
+      font-size: 17px;
+      font-weight: 500;
+      color: #1c1c1e;
+      line-height: 1.3;
+    }
+    .search-result-item .name strong {
+      color: #007aff;
+      font-weight: 700;
+    }
+    .search-result-item .cal {
+      font-size: 15px;
+      font-weight: 600;
+      color: #6e6e73;
+      white-space: nowrap;
+      padding-left: 12px;
+    }
+
     @media (max-width: 500px) {
       body { padding: 12px 12px 30px; }
       .apple-card { padding: 18px 16px; border-radius: 20px; }
@@ -406,6 +443,13 @@
       .app-container { gap: 18px; }
       .page { gap: 18px; }
       .tab-group .apple-button { font-size: 15px; padding: 12px 16px; }
+      .search-result-item {
+        padding: 12px 14px;
+        min-height: 50px;
+        border-radius: 12px;
+      }
+      .search-result-item .name { font-size: 16px; }
+      .search-result-item .cal { font-size: 14px; }
     }
     @media (max-width: 380px) {
       body { padding: 8px 8px 20px; }
@@ -417,6 +461,12 @@
       .apple-card { padding: 14px 12px; border-radius: 16px; }
       .page-title { font-size: 20px; }
       .stat-box .number { font-size: 18px; }
+      .search-result-item {
+        padding: 10px 12px;
+        min-height: 44px;
+      }
+      .search-result-item .name { font-size: 15px; }
+      .search-result-item .cal { font-size: 13px; }
     }
     @supports (padding: max(0px)) {
       body {
@@ -426,7 +476,7 @@
       }
     }
     .page { scroll-behavior: smooth; }
-    .menu-card, .apple-button, .list-item, .back-button, .back-label, .day-checkbox {
+    .menu-card, .apple-button, .list-item, .back-button, .back-label, .day-checkbox, .search-result-item {
       -webkit-user-select: none;
       user-select: none;
     }
@@ -569,7 +619,7 @@
 
     <div class="apple-card">
       <h2 class="page-title">🍽️ Дневник питания</h2>
-      <p class="page-subtitle">🔍 Введи название продукта — калории подставятся сами</p>
+      <p class="page-subtitle">🔍 Введи 2 буквы — появятся подсказки</p>
 
       <div class="input-group">
         <label for="meal-search">Продукт</label>
@@ -615,7 +665,7 @@
       <span class="back-label" data-back>Назад</span>
     </div>
 
-    <!-- Табы на всю ширину -->
+    <!-- Табы -->
     <div class="apple-card" style="padding-bottom: 12px;">
       <div class="tab-group">
         <button class="apple-button apple-button-primary" id="tabProfile">👤 Профиль</button>
@@ -825,7 +875,7 @@
     // =====================================================
     let profile = loadData('fit_profile', { weight: '', height: '', goal: 'Поддерживать' });
     let meals = loadData('fit_meals', []);
-    let plan = loadData('fit_plan', { days: [], exercises: [], history: [] }); // { days: [0..6], exercises: [{id, name, sets, reps, weight, note, done}], history: [{date, exercises, done}] }
+    let plan = loadData('fit_plan', { days: [], exercises: [], history: [] });
 
     // =====================================================
     // НАВИГАЦИЯ
@@ -876,7 +926,6 @@
     const historyList = document.getElementById('history-list');
     const historyCount = document.getElementById('history-count');
 
-    // Инициализация выбора дней
     function initDaySelector() {
       const checkboxes = daySelector.querySelectorAll('.day-checkbox');
       checkboxes.forEach(el => {
@@ -897,7 +946,6 @@
       });
     }
 
-    // Добавление упражнения в план
     addBtn.addEventListener('click', function() {
       const name = planExercise.value.trim();
       const sets = parseInt(planSets.value) || 0;
@@ -926,9 +974,7 @@
       planNote.value = '';
     });
 
-    // Рендер плана
     function renderPlan() {
-      // Прогресс
       const total = plan.exercises.length;
       const done = plan.exercises.filter(e => e.done).length;
       const percent = total > 0 ? Math.round((done / total) * 100) : 0;
@@ -936,7 +982,6 @@
       progressText.textContent = percent + '%';
       planExercisesCount.textContent = total + ' упражнений';
 
-      // Список упражнений
       if (total === 0) {
         planList.innerHTML = '<div class="empty-state">Нет упражнений в плане</div>';
       } else {
@@ -954,7 +999,6 @@
         `).join('');
       }
 
-      // История
       const hist = plan.history || [];
       historyCount.textContent = hist.length;
       if (hist.length === 0) {
@@ -973,7 +1017,6 @@
       }
     }
 
-    // Глобальные функции для кнопок
     window.toggleExercise = function(id) {
       const ex = plan.exercises.find(e => e.id === id);
       if (ex) { ex.done = !ex.done; saveData('fit_plan', plan); renderPlan(); }
@@ -984,27 +1027,18 @@
       renderPlan();
     };
 
-    // Отметить день выполненным
     markDayDoneBtn.addEventListener('click', function() {
       const today = getToday();
       if (plan.exercises.length === 0) { alert('Нет упражнений в плане'); return; }
-      // Проверяем, не был ли уже сегодня сохранён
       const existing = plan.history.find(h => h.date === today);
       if (existing) { alert('Сегодня уже отмечен'); return; }
-
       const allDone = plan.exercises.every(e => e.done);
-      plan.history.push({
-        date: today,
-        exercises: plan.exercises.length,
-        done: allDone
-      });
-      // Сбрасываем done для упражнений на следующий день
+      plan.history.push({ date: today, exercises: plan.exercises.length, done: allDone });
       plan.exercises.forEach(e => e.done = false);
       saveData('fit_plan', plan);
       renderPlan();
     });
 
-    // Очистить план
     clearPlanBtn.addEventListener('click', function() {
       if (!confirm('Удалить все упражнения из плана?')) return;
       plan.exercises = [];
@@ -1012,11 +1046,10 @@
       renderPlan();
     });
 
-    // Инициализация выбора дней
     initDaySelector();
 
     // =====================================================
-    // ДНЕВНИК ПИТАНИЯ
+    // ДНЕВНИК ПИТАНИЯ (с улучшенным поиском)
     // =====================================================
     const mealSearch = document.getElementById('meal-search');
     const mealWeight = document.getElementById('meal-weight');
@@ -1028,7 +1061,7 @@
     const searchResults = document.getElementById('search-results');
     let searchTimeout;
 
-    // Поиск по базе продуктов
+    // УМНЫЙ ПОИСК (2 буквы, 6 результатов)
     mealSearch.addEventListener('input', function() {
       clearTimeout(searchTimeout);
       const query = this.value.trim();
@@ -1038,20 +1071,37 @@
       }
       searchTimeout = setTimeout(() => {
         const normalized = normalizeText(query);
-        const matches = Object.keys(FOOD_DB).filter(key => key.includes(normalized)).slice(0, 8);
+        const startsWith = [];
+        const contains = [];
+        Object.keys(FOOD_DB).forEach(key => {
+          const lowerKey = key.toLowerCase();
+          if (lowerKey.startsWith(normalized)) {
+            startsWith.push(key);
+          } else if (lowerKey.includes(normalized)) {
+            contains.push(key);
+          }
+        });
+        startsWith.sort((a, b) => a.length - b.length);
+        contains.sort((a, b) => a.length - b.length);
+        const matches = startsWith.concat(contains).slice(0, 6);
+
         if (matches.length === 0) {
           searchResults.innerHTML = '<div style="padding: 8px 0; color: #8e8e93; font-size: 14px;">Ничего не найдено</div>';
           return;
         }
+
         let html = '';
         matches.forEach(key => {
           const cal = FOOD_DB[key];
+          const regex = new RegExp(normalized, 'i');
+          const highlighted = key.replace(regex, match => `<strong>${match}</strong>`);
           html += `<div class="search-result-item" data-name="${escapeHtml(key)}" data-cal="${cal}">
-            <span class="name">${escapeHtml(key)}</span>
+            <span class="name">${highlighted}</span>
             <span class="cal">${cal} ккал/100г</span>
           </div>`;
         });
         searchResults.innerHTML = html;
+
         document.querySelectorAll('.search-result-item').forEach(el => {
           el.addEventListener('click', function() {
             const name = this.dataset.name;
@@ -1061,10 +1111,9 @@
             searchResults.innerHTML = '';
           });
         });
-      }, 300);
+      }, 150);
     });
 
-    // Сохранение приёма пищи
     saveMealBtn.addEventListener('click', function() {
       const name = mealSearch.value.trim();
       const weight = parseInt(mealWeight.value);
@@ -1134,7 +1183,7 @@
     });
 
     // =====================================================
-    // СТАТИСТИКА (для вкладки)
+    // СТАТИСТИКА
     // =====================================================
     let statPeriod = 'day';
     const statContent = document.getElementById('stat-content');
@@ -1157,14 +1206,11 @@
       const startStr = startDate.toISOString().slice(0,10);
       const todayStr = today.toISOString().slice(0,10);
 
-      // Тренировки: считаем из истории плана (количество записей за период)
       const historyEntries = plan.history?.filter(h => h.date >= startStr && h.date <= todayStr) || [];
       const trainingCount = historyEntries.length;
       const doneCount = historyEntries.filter(h => h.done).length;
-      // Для сожжённых калорий возьмём приблизительно 300 ккал за тренировку
       const burned = trainingCount * 300;
 
-      // Питание
       const filteredMeals = meals.filter(m => m.date >= startStr && m.date <= todayStr);
       const totalCalEaten = filteredMeals.reduce((s, m) => s + m.totalCalories, 0);
 
@@ -1225,12 +1271,9 @@
     renderProfile();
     renderStatistics('day');
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
-
-    // Если при загрузке есть план, показываем его
     renderPlan();
 
     console.log('🚀 Fitness Tracker запущен!');
-
   })();
 </script>
 </body>
