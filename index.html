@@ -99,7 +99,7 @@
     }
     .text-secondary { color: #8e8e93; }
 
-    /* ===== КНОПКИ (БОЛЬШИЕ) ===== */
+    /* ===== КНОПКИ ===== */
     .apple-button {
       background: transparent;
       border: none;
@@ -326,17 +326,18 @@
     .stat-box .label { font-size: 15px; color: #6e6e73; margin-top: 6px; line-height: 1.3; }
     .stat-box .emoji { font-size: 24px; display: block; margin-bottom: 4px; }
 
-    /* ===== МЕНЮ (РАСТЯНУТОЕ) ===== */
+    /* ===== МЕНЮ (ГОРИЗОНТАЛЬНЫЕ КНОПКИ) ===== */
     .menu-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       margin-top: 8px;
+      width: 100%;
     }
     .menu-card {
       background: #ffffff;
       border-radius: 28px;
-      padding: 24px 12px;
+      padding: 16px 6px;
       text-align: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
       transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.35, 1), box-shadow 0.2s ease, background 0.15s ease;
@@ -349,11 +350,12 @@
       -webkit-touch-callout: none;
       will-change: transform;
       position: relative;
-      min-height: 140px;
+      min-height: 110px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
     .menu-card:nth-child(1) { animation-delay: 0.05s; }
     .menu-card:nth-child(2) { animation-delay: 0.10s; }
@@ -363,34 +365,40 @@
       0% { opacity: 0; transform: translateY(10px) scale(0.97); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .menu-card:active { transform: scale(0.95); transition-duration: 0.05s; background: #f8f8fa; }
+    .menu-card:active {
+      transform: scale(0.95);
+      transition-duration: 0.05s;
+      background: #f8f8fa;
+    }
     .menu-card .icon {
-      font-size: 52px;
-      margin-bottom: 8px;
+      font-size: 40px;
+      margin-bottom: 4px;
       transition: transform 0.2s ease;
       display: block;
       line-height: 1;
     }
-    .menu-card:active .icon { transform: scale(0.9); }
+    .menu-card:active .icon {
+      transform: scale(0.9);
+    }
     .menu-card .label {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       color: #1c1c1e;
-      line-height: 1.3;
+      line-height: 1.2;
     }
     .menu-card .desc {
-      font-size: 14px;
+      font-size: 12px;
       color: #8e8e93;
-      margin-top: 4px;
-      line-height: 1.3;
+      margin-top: 2px;
+      line-height: 1.2;
     }
     .menu-card.active-card::after {
       content: '';
       position: absolute;
-      bottom: 8px;
-      left: 25%;
-      right: 25%;
-      height: 4px;
+      bottom: 6px;
+      left: 20%;
+      right: 20%;
+      height: 3px;
       background: #007aff;
       border-radius: 6px;
     }
@@ -508,13 +516,13 @@
         gap: 10px;
       }
       .menu-card {
-        padding: 20px 10px;
-        min-height: 120px;
-        border-radius: 24px;
+        padding: 14px 4px;
+        min-height: 100px;
+        border-radius: 22px;
       }
-      .menu-card .icon { font-size: 42px; }
-      .menu-card .label { font-size: 16px; }
-      .menu-card .desc { font-size: 13px; }
+      .menu-card .icon { font-size: 36px; }
+      .menu-card .label { font-size: 15px; }
+      .menu-card .desc { font-size: 11px; }
       .stats-grid { gap: 12px; }
       .stat-box .number { font-size: 28px; }
       .apple-button { padding: 16px 22px; font-size: 18px; min-height: 56px; min-width: 100px; }
@@ -533,19 +541,19 @@
       .water-stats { font-size: 17px; }
       .progress-bar-container { height: 14px; }
     }
-    @media (max-width: 380px) {
+    @media (max-width: 400px) {
       body { padding: 12px 8px 20px; }
       .menu-grid {
         gap: 8px;
       }
       .menu-card {
-        padding: 16px 6px;
-        min-height: 100px;
-        border-radius: 20px;
+        padding: 12px 4px;
+        min-height: 90px;
+        border-radius: 18px;
       }
-      .menu-card .icon { font-size: 36px; }
-      .menu-card .label { font-size: 14px; }
-      .menu-card .desc { font-size: 12px; }
+      .menu-card .icon { font-size: 30px; }
+      .menu-card .label { font-size: 13px; }
+      .menu-card .desc { font-size: 10px; }
       .apple-card { padding: 18px 14px; border-radius: 24px; }
       .page-title { font-size: 24px; }
       .stat-box .number { font-size: 24px; }
@@ -585,26 +593,26 @@
     </div>
 
     <div class="menu-grid">
-      <div class="menu-card" data-page="training">
+      <button class="menu-card" data-page="training">
         <span class="icon">📋</span>
-        <div class="label">План</div>
-        <div class="desc">Тренировки</div>
-      </div>
-      <div class="menu-card" data-page="food">
+        <span class="label">План</span>
+        <span class="desc">Тренировки</span>
+      </button>
+      <button class="menu-card" data-page="food">
         <span class="icon">🍽️</span>
-        <div class="label">Питание</div>
-        <div class="desc">Дневник</div>
-      </div>
-      <div class="menu-card" data-page="water">
+        <span class="label">Питание</span>
+        <span class="desc">Дневник</span>
+      </button>
+      <button class="menu-card" data-page="water">
         <span class="icon">💧</span>
-        <div class="label">Вода</div>
-        <div class="desc">Трекер</div>
-      </div>
-      <div class="menu-card" data-page="profile">
+        <span class="label">Вода</span>
+        <span class="desc">Трекер</span>
+      </button>
+      <button class="menu-card" data-page="profile">
         <span class="icon">👤</span>
-        <div class="label">Профиль</div>
-        <div class="desc">Статистика</div>
-      </div>
+        <span class="label">Профиль</span>
+        <span class="desc">Статистика</span>
+      </button>
     </div>
 
     <div style="margin-top: 24px; color: #8e8e93; font-size: 16px; text-align: center; border-top: 1px solid #e5e5ea; padding-top: 20px; animation: fadeIn 0.5s ease;">
@@ -1554,7 +1562,7 @@
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
     renderPlan();
 
-    console.log('🚀 Fitness Tracker (растянутое меню) запущен!');
+    console.log('🚀 Fitness Tracker с горизонтальным меню запущен!');
   })();
 </script>
 </body>
