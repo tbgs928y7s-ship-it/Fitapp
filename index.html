@@ -44,17 +44,38 @@
     body.dark-theme .apple-card .label,
     body.dark-theme .apple-card .cal,
     body.dark-theme .apple-card .stat-box .label,
-    body.dark-theme .apple-card .stat-box .number {
-      color: #f2f2f7;
+    body.dark-theme .apple-card .stat-box .number,
+    body.dark-theme .apple-card h3,
+    body.dark-theme .apple-card .page-title,
+    body.dark-theme .apple-card .input-group label,
+    body.dark-theme .apple-card .list-item .left .title,
+    body.dark-theme .apple-card .list-item .right {
+      color: #f2f2f7 !important;
     }
     body.dark-theme .apple-card .stat-box {
-      background: #3a3a3c;
+      background: #3a3a3c !important;
     }
-    body.dark-theme .apple-card .stat-box:nth-child(1) { background: #1a2a3a; }
-    body.dark-theme .apple-card .stat-box:nth-child(2) { background: #3a2a1a; }
-    body.dark-theme .apple-card .stat-box:nth-child(3) { background: #1a3a2a; }
-    body.dark-theme .apple-card .stat-box:nth-child(4) { background: #2a1a3a; }
-    body.dark-theme .apple-card .stat-box:nth-child(5) { background: #1a3a3a; }
+    body.dark-theme .apple-card .stat-box:nth-child(1) { background: #1a2a3a !important; }
+    body.dark-theme .apple-card .stat-box:nth-child(2) { background: #3a2a1a !important; }
+    body.dark-theme .apple-card .stat-box:nth-child(3) { background: #1a3a2a !important; }
+    body.dark-theme .apple-card .stat-box:nth-child(4) { background: #2a1a3a !important; }
+    body.dark-theme .apple-card .stat-box:nth-child(5) { background: #1a3a3a !important; }
+    body.dark-theme .apple-card .list-item {
+      border-bottom-color: #3a3a3c !important;
+    }
+    body.dark-theme .apple-card .input-group input,
+    body.dark-theme .apple-card .input-group select,
+    body.dark-theme .apple-card .input-group textarea {
+      background: #3a3a3c !important;
+      border-color: #4a4a4c !important;
+      color: #f2f2f7 !important;
+    }
+    body.dark-theme .apple-card .input-group input:focus,
+    body.dark-theme .apple-card .input-group select:focus,
+    body.dark-theme .apple-card .input-group textarea:focus {
+      border-color: #0a84ff !important;
+      box-shadow: 0 0 0 5px rgba(10, 132, 255, 0.15) !important;
+    }
     body.dark-theme .menu-card {
       background: #2c2c2e;
       border-color: #3a3a3c;
@@ -67,29 +88,6 @@
     body.dark-theme .menu-card.active-card {
       background: #1a2a3a;
       border-color: #007aff40;
-    }
-    body.dark-theme .input-group input,
-    body.dark-theme .input-group select,
-    body.dark-theme .input-group textarea {
-      background: #3a3a3c;
-      border-color: #4a4a4c;
-      color: #f2f2f7;
-    }
-    body.dark-theme .input-group input:focus,
-    body.dark-theme .input-group select:focus,
-    body.dark-theme .input-group textarea:focus {
-      border-color: #007aff;
-      box-shadow: 0 0 0 5px rgba(0, 122, 255, 0.2);
-    }
-    body.dark-theme .input-group label {
-      color: #f2f2f7;
-    }
-    body.dark-theme .list-item {
-      border-bottom-color: #3a3a3c;
-    }
-    body.dark-theme .list-item .left .title,
-    body.dark-theme .list-item .right {
-      color: #f2f2f7;
     }
     body.dark-theme .day-checkbox {
       background: #3a3a3c;
@@ -105,35 +103,75 @@
     }
     body.dark-theme .back-button,
     body.dark-theme .back-label {
-      color: #0a84ff;
+      color: #0a84ff !important;
     }
     body.dark-theme .apple-button {
-      color: #0a84ff;
-      background: rgba(10, 132, 255, 0.15);
+      color: #0a84ff !important;
+      background: rgba(10, 132, 255, 0.15) !important;
     }
     body.dark-theme .apple-button-primary {
-      background: linear-gradient(135deg, #0a84ff, #0055cc);
-      color: #fff;
+      background: linear-gradient(135deg, #0a84ff, #0055cc) !important;
+      color: #fff !important;
     }
     body.dark-theme .apple-button-primary:active {
-      background: linear-gradient(135deg, #0055cc, #003d99);
+      background: linear-gradient(135deg, #0055cc, #003d99) !important;
     }
     body.dark-theme .apple-button-success {
-      background: rgba(52, 199, 89, 0.2);
-      color: #34c759;
+      background: rgba(52, 199, 89, 0.2) !important;
+      color: #34c759 !important;
     }
     body.dark-theme .apple-button-danger {
-      background: rgba(255, 59, 48, 0.2);
-      color: #ff3b30;
+      background: rgba(255, 59, 48, 0.2) !important;
+      color: #ff3b30 !important;
+    }
+    body.dark-theme .tab-group .apple-button {
+      color: #f2f2f7 !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+    body.dark-theme .tab-group .apple-button-primary {
+      background: linear-gradient(135deg, #0a84ff, #0055cc) !important;
+      color: #fff !important;
     }
     body.dark-theme .stat-period-buttons .apple-button {
-      background: rgba(10, 132, 255, 0.15);
-      color: #0a84ff;
+      color: #f2f2f7 !important;
+      background: rgba(255, 255, 255, 0.06) !important;
     }
     body.dark-theme .stat-period-buttons .apple-button-primary {
-      background: linear-gradient(135deg, #0a84ff, #0055cc);
-      color: #fff;
+      background: linear-gradient(135deg, #0a84ff, #0055cc) !important;
+      color: #fff !important;
     }
+    body.dark-theme .export-options select {
+      background: #3a3a3c !important;
+      border-color: #4a4a4c !important;
+      color: #f2f2f7 !important;
+    }
+    body.dark-theme .export-options select:focus {
+      border-color: #0a84ff !important;
+      box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.15) !important;
+    }
+    body.dark-theme .export-options .input-group label {
+      color: #f2f2f7 !important;
+    }
+    body.dark-theme .theme-switch label {
+      color: #f2f2f7 !important;
+    }
+    body.dark-theme .chart-title {
+      color: #f2f2f7 !important;
+    }
+    body.dark-theme .search-result-item {
+      background: #3a3a3c !important;
+    }
+    body.dark-theme .search-result-item .name {
+      color: #f2f2f7 !important;
+    }
+    body.dark-theme .search-result-item .cal {
+      color: #8e8e93 !important;
+    }
+    body.dark-theme .search-result-item .api-badge {
+      background: rgba(10, 132, 255, 0.2) !important;
+      color: #0a84ff !important;
+    }
+
     .theme-switch {
       display: flex;
       align-items: center;
@@ -148,9 +186,6 @@
       font-size: 17px;
       font-weight: 500;
       color: #1c1c1e;
-    }
-    body.dark-theme .theme-switch label {
-      color: #f2f2f7;
     }
     .switch {
       position: relative;
@@ -619,10 +654,6 @@
       border-radius: 12px;
       margin-left: 8px;
     }
-    body.dark-theme .search-result-item .api-badge {
-      background: rgba(10, 132, 255, 0.2);
-      color: #0a84ff;
-    }
 
     .water-quick-buttons {
       display: flex;
@@ -691,9 +722,6 @@
       font-weight: 600;
       margin-bottom: 4px;
       color: #1c1c1e;
-    }
-    body.dark-theme .chart-title {
-      color: #f2f2f7;
     }
 
     @media (max-width: 500px) {
@@ -863,7 +891,7 @@
     </div>
   </div>
 
-  <!-- ==================== ПИТАНИЕ (ГИБРИДНЫЙ ПОИСК) ==================== -->
+  <!-- ==================== ПИТАНИЕ ==================== -->
   <div id="food" class="page">
     <div class="back-row"><button class="back-button" data-back>‹</button><span class="back-label" data-back>Назад</span></div>
     <div class="apple-card">
@@ -1039,7 +1067,7 @@
     'use strict';
 
     // =====================================================
-    // БАЗА ПРОДУКТОВ (сокращённая, но можно расширить)
+    // БАЗА ПРОДУКТОВ (сокращённая для примера)
     // =====================================================
     const BASE_FOOD_DB = {
       'гречка':130,'гречневая':130,'рис':116,'рис варёный':116,'рис бурый':123,
@@ -1178,6 +1206,7 @@
 
     let customFoodDB = loadData('fit_custom_foods', {});
     let FOOD_DB = { ...BASE_FOOD_DB, ...customFoodDB };
+    let apiCache = loadData('fit_api_cache', {});
 
     // =====================================================
     // УТИЛИТЫ
@@ -1188,9 +1217,6 @@
     function normalizeText(text) { return text.toLowerCase().trim().replace(/ё/g, 'е'); }
     function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 
-    // =====================================================
-    // LOCALSTORAGE
-    // =====================================================
     function loadData(key, def) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : def; } catch { return def; } }
     function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
@@ -1215,9 +1241,7 @@
     };
 
     function showPage(pageId) {
-      Object.keys(pages).forEach(id => {
-        pages[id].classList.toggle('active', id === pageId);
-      });
+      Object.keys(pages).forEach(id => { pages[id].classList.toggle('active', id === pageId); });
       document.querySelectorAll('.menu-card').forEach(el => {
         el.classList.remove('active-card');
         if (el.dataset.page === pageId) el.classList.add('active-card');
@@ -1266,13 +1290,8 @@
         el.addEventListener('click', function() {
           const dayNum = parseInt(this.dataset.day);
           const idx = plan.days.indexOf(dayNum);
-          if (idx > -1) {
-            plan.days.splice(idx, 1);
-            this.classList.remove('active');
-          } else {
-            plan.days.push(dayNum);
-            this.classList.add('active');
-          }
+          if (idx > -1) { plan.days.splice(idx, 1); this.classList.remove('active'); }
+          else { plan.days.push(dayNum); this.classList.add('active'); }
           saveData('fit_plan', plan);
         });
       });
@@ -1290,11 +1309,7 @@
       plan.exercises.push({ id: generateId(), name, sets, reps, weight, note, done: false });
       saveData('fit_plan', plan);
       renderPlan();
-      planExercise.value = '';
-      planSets.value = '3';
-      planReps.value = '10';
-      planWeight.value = '0';
-      planNote.value = '';
+      planExercise.value = ''; planSets.value = '3'; planReps.value = '10'; planWeight.value = '0'; planNote.value = '';
     });
 
     function renderPlan() {
@@ -1341,8 +1356,7 @@
     };
     window.removeExercise = function(id) {
       plan.exercises = plan.exercises.filter(e => e.id !== id);
-      saveData('fit_plan', plan);
-      renderPlan();
+      saveData('fit_plan', plan); renderPlan();
     };
 
     markDayDoneBtn.addEventListener('click', function() {
@@ -1379,7 +1393,6 @@
     const todayFoodTotal = document.getElementById('today-food-total');
     const searchResults = document.getElementById('search-results');
     let searchTimeout;
-    let apiCache = loadData('fit_api_cache', {});
 
     async function fetchFromOpenFoodFacts(query) {
       try {
@@ -1428,39 +1441,29 @@
         return a.name.length - b.name.length;
       });
       const topLocal = localResults.slice(0, 6);
-
       let apiData = [];
       if (topLocal.length < 6) {
         searchResults.innerHTML = '<div style="padding: 10px 0; color: #8e8e93; font-size: 16px;">⏳ Поиск в интернете...</div>';
         apiData = await fetchFromOpenFoodFacts(query);
         apiData.forEach(item => {
           const key = item.name.toLowerCase();
-          if (!apiCache[key]) {
-            apiCache[key] = { name: item.name, cal: item.cal };
-          }
+          if (!apiCache[key]) { apiCache[key] = { name: item.name, cal: item.cal }; }
         });
         saveData('fit_api_cache', apiCache);
         Object.keys(apiCache).forEach(key => {
-          if (!FOOD_DB[key]) {
-            FOOD_DB[key] = apiCache[key].cal;
-          }
+          if (!FOOD_DB[key]) { FOOD_DB[key] = apiCache[key].cal; }
         });
       }
-
       const combined = [...topLocal];
       apiData.forEach(item => {
         const exists = combined.some(l => l.name.toLowerCase() === item.name.toLowerCase());
-        if (!exists) {
-          combined.push({ ...item, source: 'api' });
-        }
+        if (!exists) { combined.push({ ...item, source: 'api' }); }
       });
       const finalResults = combined.slice(0, 10);
-
       if (finalResults.length === 0) {
         searchResults.innerHTML = '<div style="padding: 10px 0; color: #8e8e93; font-size: 16px;">Ничего не найдено</div>';
         return;
       }
-
       let html = '';
       finalResults.forEach(item => {
         const name = item.name;
@@ -1474,7 +1477,6 @@
         </div>`;
       });
       searchResults.innerHTML = html;
-
       document.querySelectorAll('.search-result-item').forEach(el => {
         el.addEventListener('click', function() {
           const name = this.dataset.name;
@@ -1500,13 +1502,8 @@
     mealSearch.addEventListener('input', function() {
       clearTimeout(searchTimeout);
       const query = this.value.trim();
-      if (query.length < 2) {
-        searchResults.innerHTML = '';
-        return;
-      }
-      searchTimeout = setTimeout(() => {
-        triggerSearch(query);
-      }, 300);
+      if (query.length < 2) { searchResults.innerHTML = ''; return; }
+      searchTimeout = setTimeout(() => { triggerSearch(query); }, 300);
     });
 
     addProductBtn.addEventListener('click', function() {
@@ -1515,19 +1512,14 @@
       const calStr = prompt('Введите калорийность на 100 г:');
       if (calStr === null) return;
       const cal = parseInt(calStr);
-      if (isNaN(cal) || cal < 0) {
-        alert('Введите корректное число калорий');
-        return;
-      }
+      if (isNaN(cal) || cal < 0) { alert('Введите корректное число калорий'); return; }
       const key = name.trim().toLowerCase();
       customFoodDB[key] = cal;
       saveData('fit_custom_foods', customFoodDB);
       FOOD_DB = { ...BASE_FOOD_DB, ...customFoodDB };
       alert(`✅ Продукт "${name}" добавлен в базу!`);
       const query = mealSearch.value.trim();
-      if (query.length >= 2) {
-        triggerSearch(query);
-      }
+      if (query.length >= 2) { triggerSearch(query); }
     });
 
     saveMealBtn.addEventListener('click', function() {
@@ -1541,10 +1533,7 @@
       meals.push({ id: generateId(), date: today, name, weight, totalCalories: cal });
       saveData('fit_meals', meals);
       renderFood();
-      mealSearch.value = '';
-      mealWeight.value = '';
-      mealCalories.value = '';
-      searchResults.innerHTML = '';
+      mealSearch.value = ''; mealWeight.value = ''; mealCalories.value = ''; searchResults.innerHTML = '';
     });
 
     function renderFood() {
@@ -1553,16 +1542,10 @@
       const allMeals = meals.slice().sort((a,b) => a.date.localeCompare(b.date));
       todayFoodTotal.textContent = todayMeals.reduce((s, m) => s + m.totalCalories, 0);
       todayFoodList.innerHTML = todayMeals.length ? todayMeals.map(m => `
-        <div class="list-item">
-          <div class="left"><span class="title">${escapeHtml(m.name)}</span><span class="sub">${m.weight} г</span></div>
-          <div class="right">${m.totalCalories} ккал</div>
-        </div>
+        <div class="list-item"><div class="left"><span class="title">${escapeHtml(m.name)}</span><span class="sub">${m.weight} г</span></div><div class="right">${m.totalCalories} ккал</div></div>
       `).join('') : '<div class="empty-state">Нет записей за сегодня</div>';
       allFoodList.innerHTML = allMeals.length ? allMeals.slice(-10).reverse().map(m => `
-        <div class="list-item">
-          <div class="left"><span class="title">${escapeHtml(m.name)}</span><span class="sub">${formatDate(m.date)} · ${m.weight} г</span></div>
-          <div class="right">${m.totalCalories} ккал</div>
-        </div>
+        <div class="list-item"><div class="left"><span class="title">${escapeHtml(m.name)}</span><span class="sub">${formatDate(m.date)} · ${m.weight} г</span></div><div class="right">${m.totalCalories} ккал</div></div>
       `).join('') : '<div class="empty-state">Нет записей</div>';
     }
 
@@ -1607,9 +1590,7 @@
           const val = parseInt(input);
           if (isNaN(val) || val <= 0) { alert('Введите положительное число'); return; }
           amount = val;
-        } else {
-          amount = parseInt(add);
-        }
+        } else { amount = parseInt(add); }
         const today = getToday();
         waterLog[today] = (waterLog[today] || 0) + amount;
         saveData('fit_water', waterLog);
@@ -2033,7 +2014,7 @@
     renderPlan();
     document.querySelector('[data-stat-period="day"]')?.classList.add('apple-button-primary');
 
-    console.log('🚀 FitApp с гибридным поиском запущен!');
+    console.log('🚀 FitApp запущен!');
   })();
 </script>
 </body>
