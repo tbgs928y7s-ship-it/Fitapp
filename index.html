@@ -6,7 +6,7 @@
   <title>FitApp</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+  <!-- Удалили SortableJS -->
   <style>
     /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
     * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -172,7 +172,7 @@
       background: rgba(10, 132, 255, 0.2) !important;
       color: #0a84ff !important;
     }
-    /* Стили для календаря (увеличенные) */
+    /* Стили для календаря */
     .calendar-container {
       display: flex;
       align-items: center;
@@ -203,22 +203,22 @@
     .calendar-days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 6px; /* увеличено с 4px */
+      gap: 6px;
     }
     .calendar-day {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 14px 0; /* увеличено с 8px */
+      padding: 14px 0;
       border-radius: 30px;
-      font-size: 18px; /* увеличено с 16px */
+      font-size: 18px;
       background: transparent;
       border: none;
       cursor: pointer;
       color: #1c1c1e;
       transition: background 0.2s;
       touch-action: manipulation;
-      min-height: 50px; /* добавлено для удобства нажатия */
+      min-height: 50px;
     }
     .calendar-day.selected {
       background: #007aff;
@@ -248,12 +248,12 @@
     body.dark-theme .calendar-day.selected {
       background: #0a84ff;
     }
-    /* Карточки упражнений */
+    /* Карточки упражнений (уменьшенные) */
     .exercise-card {
       background: #f8f8fa;
       border-radius: 16px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
       border-left: 4px solid #007aff;
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
@@ -270,28 +270,25 @@
     }
     .exercise-card .header .name {
       font-weight: 600;
-      font-size: 17px;
+      font-size: 16px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .exercise-card .header .name .icon {
-      font-size: 20px;
+      font-size: 18px;
     }
     .exercise-card .header .right {
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-    .exercise-card .header .right .difficulty {
-      font-size: 14px;
-      color: #8e8e93;
+      gap: 6px;
     }
     .exercise-card .details {
       display: none;
-      margin-top: 10px;
-      padding-top: 10px;
+      margin-top: 8px;
+      padding-top: 8px;
       border-top: 1px solid #e5e5ea;
+      font-size: 14px;
     }
     .exercise-card .details.open {
       display: block;
@@ -299,25 +296,25 @@
     .exercise-card .details .meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 6px;
+      gap: 4px;
+      margin-bottom: 4px;
     }
     .exercise-card .details .meta .tag {
       background: rgba(0, 122, 255, 0.1);
-      padding: 2px 10px;
+      padding: 2px 8px;
       border-radius: 12px;
-      font-size: 13px;
+      font-size: 12px;
       color: #007aff;
     }
     .exercise-card .details .video-link {
       color: #007aff;
       text-decoration: none;
-      font-size: 15px;
+      font-size: 14px;
       display: inline-block;
       margin-top: 4px;
     }
     .exercise-card .details .note {
-      font-size: 15px;
+      font-size: 14px;
       color: #6e6e73;
       margin-top: 4px;
     }
@@ -342,10 +339,32 @@
     body.dark-theme .exercise-card .details {
       border-top-color: #4a4a4c;
     }
-    /* Стили для шаблонов */
+    /* Стили для шаблонов (select) */
+    #templateSelect {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e8e93' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 30px;
+      border: 1px solid #e5e5ea;
+      background: #f8f8fa;
+      font-size: 16px;
+      font-family: inherit;
+      color: #1c1c1e;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+    }
+    body.dark-theme #templateSelect {
+      background: #3a3a3c;
+      border-color: #4a4a4c;
+      color: #f2f2f7;
+    }
     .template-selector {
       display: flex;
-      flex-wrap: wrap;
       gap: 8px;
       margin: 8px 0 12px;
     }
@@ -370,7 +389,7 @@
     .stars {
       display: inline-flex;
       gap: 2px;
-      font-size: 18px;
+      font-size: 16px;
       color: #ffcc00;
     }
     .stars .star-empty {
@@ -379,16 +398,7 @@
     body.dark-theme .stars .star-empty {
       color: #4a4a4c;
     }
-    .sortable-ghost {
-      opacity: 0.4;
-      background: #d2d2d7;
-    }
-    .sortable-drag {
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    }
-    body.dark-theme .sortable-ghost {
-      background: #4a4a4c;
-    }
+    /* Удалены стили для sortable */
     /* прочие */
     .flex-between {
       display: flex;
@@ -985,7 +995,6 @@
       .export-options .input-group { min-width: unset; }
       .theme-switch { flex-wrap: wrap; }
       .chart-container { height: 160px; }
-      /* Увеличенный календарь на маленьких экранах */
       .calendar-day {
         padding: 12px 0;
         font-size: 17px;
@@ -993,6 +1002,12 @@
       }
       .calendar-days {
         gap: 5px;
+      }
+      .exercise-card {
+        padding: 10px 12px;
+      }
+      .exercise-card .header .name {
+        font-size: 15px;
       }
     }
     @media (max-width: 400px) {
@@ -1020,6 +1035,12 @@
       }
       .calendar-days {
         gap: 4px;
+      }
+      .exercise-card {
+        padding: 8px 10px;
+      }
+      .exercise-card .header .name {
+        font-size: 14px;
       }
     }
     @media (max-width: 360px) {
@@ -1075,7 +1096,7 @@
     </div>
   </div>
 
-  <!-- ==================== ТРЕНИРОВКИ (обновлённые) ==================== -->
+  <!-- ==================== ТРЕНИРОВКИ ==================== -->
   <div id="training" class="page">
     <div class="back-row"><button class="back-button" data-back>‹</button><span class="back-label" data-back>Назад</span></div>
 
@@ -1133,13 +1154,18 @@
         <button class="apple-button apple-button-primary apple-button-block" id="add-plan-exercise">➕ Добавить в план</button>
       </div>
 
-      <!-- Шаблоны -->
+      <!-- Шаблоны (select) -->
       <div style="margin-top: 16px; border-top: 1px solid #e5e5ea; padding-top: 16px;">
         <div class="flex-between">
           <span style="font-weight: 600;">Шаблоны</span>
           <button class="apple-button apple-button-sm" id="save-template-btn">💾 Сохранить как шаблон</button>
         </div>
-        <div class="template-selector" id="templateSelector"></div>
+        <div class="template-selector">
+          <select id="templateSelect">
+            <option value="">Выберите шаблон...</option>
+          </select>
+          <button class="apple-button apple-button-sm" id="apply-template-btn" style="min-height:44px;">Применить</button>
+        </div>
       </div>
 
       <!-- Список упражнений на выбранный день -->
@@ -1677,7 +1703,7 @@
       planNote.value = '';
     }
 
-    // --- Рендер упражнений ---
+    // --- Рендер упражнений (без Sortable) ---
     function renderExercises() {
       const list = document.getElementById('plan-list');
       const exercises = plan.exercises[selectedDate] || [];
@@ -1693,7 +1719,7 @@
         return;
       }
 
-      let html = '<div id="exercise-sortable">';
+      let html = '<div id="exercise-list">';
       exercises.forEach((ex) => {
         const icon = getIconForExercise(ex.name);
         const difficultyStars = renderStars(ex.difficulty || 3);
@@ -1706,7 +1732,6 @@
                 ${escapeHtml(ex.name)}
               </div>
               <div class="right">
-                <span class="difficulty">${difficultyStars}</span>
                 <button class="apple-button apple-button-sm" onclick="window.toggleExercise('${ex.id}')">${ex.done ? '↩️' : '✅'}</button>
                 <button class="apple-button apple-button-sm" onclick="window.removeExercise('${ex.id}')">✕</button>
               </div>
@@ -1716,6 +1741,7 @@
                 ${ex.tags ? ex.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('') : ''}
               </div>
               <div>${ex.sets}×${ex.reps} · ${ex.weight} кг</div>
+              ${ex.difficulty ? `<div style="font-size:14px; color:#8e8e93;">Сложность: ${difficultyStars}</div>` : ''}
               ${ex.video ? `<a href="${escapeHtml(ex.video)}" target="_blank" class="video-link">▶️ Смотреть видео</a>` : ''}
               ${ex.note ? `<div class="note">${escapeHtml(ex.note)}</div>` : ''}
             </div>
@@ -1725,6 +1751,7 @@
       html += '</div>';
       list.innerHTML = html;
 
+      // Обработчики клика для раскрытия деталей
       document.querySelectorAll('.exercise-card .header').forEach(header => {
         header.addEventListener('click', function(e) {
           if (e.target.tagName === 'BUTTON') return;
@@ -1733,29 +1760,6 @@
           details.classList.toggle('open');
         });
       });
-
-      const sortableEl = document.getElementById('exercise-sortable');
-      if (sortableEl) {
-        Sortable.create(sortableEl, {
-          animation: 150,
-          ghostClass: 'sortable-ghost',
-          dragClass: 'sortable-drag',
-          onEnd: function(evt) {
-            const items = Array.from(evt.from.children);
-            const newOrder = items.map(el => el.dataset.id);
-            const exs = plan.exercises[selectedDate];
-            if (exs) {
-              const reordered = [];
-              newOrder.forEach(id => {
-                const found = exs.find(e => e.id === id);
-                if (found) reordered.push(found);
-              });
-              plan.exercises[selectedDate] = reordered;
-              saveData('fit_plan', plan);
-            }
-          }
-        });
-      }
     }
 
     function getIconForExercise(name) {
@@ -1795,83 +1799,41 @@
       renderCalendar();
     };
 
-    // --- Шаблоны ---
+    // --- Шаблоны (select) ---
     function renderTemplates() {
-      const container = document.getElementById('templateSelector');
-      if (!container) return;
-      let html = '';
+      const select = document.getElementById('templateSelect');
+      if (!select) return;
+      select.innerHTML = '<option value="">Выберите шаблон...</option>';
       templates.forEach(t => {
-        html += `<button class="template-btn" data-id="${t.id}">${escapeHtml(t.name)}</button>`;
+        const opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = t.name;
+        select.appendChild(opt);
       });
-      html += `<button class="template-btn" id="apply-custom-template">➕ Применить свой шаблон</button>`;
-      container.innerHTML = html;
 
-      document.querySelectorAll('.template-btn[data-id]').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const id = this.dataset.id;
-          const template = templates.find(t => t.id === id);
-          if (!template) return;
-          if (!plan.exercises[selectedDate]) plan.exercises[selectedDate] = [];
-          template.exercises.forEach(ex => {
-            plan.exercises[selectedDate].push({
-              id: generateId(),
-              name: ex.name,
-              sets: ex.sets || 3,
-              reps: ex.reps || 10,
-              weight: ex.weight || 0,
-              tags: ex.tags || [],
-              difficulty: ex.difficulty || 3,
-              video: ex.video || '',
-              note: ex.note || '',
-              done: false
-            });
+      document.getElementById('apply-template-btn').addEventListener('click', function() {
+        const id = select.value;
+        if (!id) { alert('Выберите шаблон'); return; }
+        const template = templates.find(t => t.id === id);
+        if (!template) return;
+        if (!plan.exercises[selectedDate]) plan.exercises[selectedDate] = [];
+        template.exercises.forEach(ex => {
+          plan.exercises[selectedDate].push({
+            id: generateId(),
+            name: ex.name,
+            sets: ex.sets || 3,
+            reps: ex.reps || 10,
+            weight: ex.weight || 0,
+            tags: ex.tags || [],
+            difficulty: ex.difficulty || 3,
+            video: ex.video || '',
+            note: ex.note || '',
+            done: false
           });
-          saveData('fit_plan', plan);
-          renderExercises();
-          renderCalendar();
         });
-      });
-
-      document.getElementById('apply-custom-template').addEventListener('click', function() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json';
-        input.onchange = function(e) {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = function(ev) {
-            try {
-              const data = JSON.parse(ev.target.result);
-              if (data.exercises && Array.isArray(data.exercises)) {
-                const exs = data.exercises.map(ex => ({
-                  id: generateId(),
-                  name: ex.name || 'Без названия',
-                  sets: ex.sets || 3,
-                  reps: ex.reps || 10,
-                  weight: ex.weight || 0,
-                  tags: ex.tags || [],
-                  difficulty: ex.difficulty || 3,
-                  video: ex.video || '',
-                  note: ex.note || '',
-                  done: false
-                }));
-                if (!plan.exercises[selectedDate]) plan.exercises[selectedDate] = [];
-                plan.exercises[selectedDate].push(...exs);
-                saveData('fit_plan', plan);
-                renderExercises();
-                renderCalendar();
-                alert('✅ Шаблон применён!');
-              } else {
-                alert('Неверный формат файла');
-              }
-            } catch (err) {
-              alert('Ошибка чтения файла');
-            }
-          };
-          reader.readAsText(file);
-        };
-        input.click();
+        saveData('fit_plan', plan);
+        renderExercises();
+        renderCalendar();
       });
     }
 
@@ -2614,7 +2576,7 @@
       renderTemplates();
     }, 100);
 
-    console.log('🚀 FitApp с увеличенным календарём запущен!');
+    console.log('🚀 FitApp без перетаскивания запущен!');
   })();
 </script>
 </body>
